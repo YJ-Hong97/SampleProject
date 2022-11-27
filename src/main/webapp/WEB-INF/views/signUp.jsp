@@ -13,7 +13,8 @@
 </head>
 <style>
 	.signup_form{
-    padding-bottom: 130px
+    padding-bottom: 130px;
+   
 	}
 	.page-navigation {
     min-width: 1020px;
@@ -47,7 +48,7 @@
     top: 50%;
     left: -15px;
     margin-top: -6px;
-    background: url(https://front.happypointcard.com/upfiles/appMain/resources/ha-web/images/pc/common/arrow/icon-arrow-12x12-gy.png) no-repeat 0 0;
+    
 }
 .section-inner {
     width: 1020px;
@@ -59,6 +60,7 @@
 .small-layout-inner {
     width: 400px;
     margin: 0 auto;
+
 }
 .subpage-title-area .title {
     display: block;
@@ -70,7 +72,11 @@
 form {
     margin: 0;
     padding: 0;
+  
     
+}
+fieldset{
+	border:0;
 }
 .fieldset .field:before, .fieldset .field:after {
     content: "";
@@ -118,6 +124,70 @@ input{
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
+.fieldset.row .btn-group {
+    margin-top: 50px;
+}
+.member-content .btn-group {
+    width: 400px;
+    margin: 60px auto 0;
+}
+.btn-group.half .btn {
+    float: left;
+    width: calc(50% - 6px);
+}
+.btn.normal {
+    color: #fff;
+    border-color: #888888;
+    background-color: #888888;
+}
+.btn.medium {
+    padding: 0 5px;
+    height: 48px;
+    line-height: 46px;
+    font-size: 16px;
+    font-weight: 400;
+}
+.btn, .btn-arrow {
+    display: inline-block;
+}
+.btn {
+    position: relative;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+    display: inline-block;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    border-radius: 8px;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    text-decoration: none;
+    -webkit-appearance: none;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    outline: none;
+    background-color: transparent;
+    -webkit-tap-highlight-color: transparent;
+}
+.btn-group.half .btn + .btn {
+    margin-left: 12px;
+}
+
+.btn.accent {
+    color: #fff;
+    border-color: #FE4F27;
+    background-color: #FE4F27;
+}
+input.btn, button.btn {
+    overflow: visible;
+}
+button, html [type="button"], [type="reset"], [type="submit"] {
+    -webkit-appearance: button;
+}
+
 </style>
 <body>
 <div class="signup_form">
@@ -139,15 +209,121 @@ input{
 							<label>아이디</label>
 							<div class="insert">
 								<div class="input-cover">
-									<input type="text" placeholder="아이디">
+									<input id="userId"type="text" placeholder="영문 소문자, 숫자 조합">
 								</div>
 							</div>
 						</div>
+					</div>
+					<div class="field">
+						<div class="label">
+							<label>이름</label>
+							<div class="insert">
+								<div class="input-cover">
+									<input id="userName"type="text" placeholder="이름을 입력하세요." maxlength="4">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<div class="label">
+							<label>생일</label>
+							<div class="insert">
+								<div class="input-cover">
+									<input id="userBirth"type="text" placeholder="예)1997-10-27">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<div class="label">
+							<label>비밀번호</label>
+							<div class="insert">
+								<div class="input-cover">
+									<input id="userPw"type="password" placeholder="영문 대문자, 소문자, 숫자, 특수문자 조합, 8~10자리까지"maxlength="10">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<div class="label">
+							<label>비밀번호 확인</label>
+							<div class="insert">
+								<div class="input-cover">
+									<input id="confirmPw" onClick="confirmPw()"type="password" placeholder="비밀번호 확인" maxlength="10">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<div class="label">
+							<label>이메일</label>
+							<div class="insert">
+								<div class="input-cover">
+									<input id="userEmail"type="text" placeholder="예)abc@def.com">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<div class="label">
+							<label>전화번호</label>
+							<div class="insert">
+								<div class="input-cover">
+									<input id="userPhone"type="text" placeholder="예)010-1234-5678" maxlength="13">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="btn-group half">
+						<a class="btn medium normal" onClick="reset()">초기화</a>
+						<button type="button"class="btn medium accent" onClick="submitSignup()">확인</button>
 					</div>
 				</fieldset>
 			</form>
 		</div>
 	</div>
 </div>
+<script>
+	var user = {userId:"",userName:"",userBirth:"",userPw:"",userEmail:"",userPhone:""};
+	var submitSignup = ()=>{
+		user.userId=$("#userId").val();
+		user.userName=$("#userName").val();
+		user.userBirth=$("#userBirth").val();
+		user.userPw=$("#userPw").val();
+		user.userEmail=$("#userEmail").val();
+		user.userPhone=$("#userPhone").val();
+		$.ajax({
+			url:"/myapp/signup",
+			method:"post",
+			data:user,
+			success:function(response){
+				alert("성공");
+				console.log(response);
+				
+			},
+			error:function(errorMessage){
+				console.log(errorMessage);
+			}
+		})
+	};
+	var confirmPw = ()=>{
+		let pw1 = $("#userPw").val();
+		let pw2 = $("#confirmPw").val();
+		if(pw1===pw2){
+			return true;
+		}else{
+			return false;
+		}
+	};
+	var reset = ()=>{
+		user.userId=$("#userId").val("");
+		user.userName=$("#userName").val("");
+		user.userBirth=$("#userBirth").val("");
+		user.userPw=$("#userPw").val("");
+		user.userEmail=$("#userEmail").val("");
+		user.userPhone=$("#userPhone").val("");
+		
+	};
+</script>
 </body>
 </html>
