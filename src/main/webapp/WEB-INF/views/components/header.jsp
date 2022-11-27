@@ -12,7 +12,7 @@
     min-width: 1200px;
     border-top: 3px solid #ff7c98;
     border-bottom: 1px solid #3f291a;
-    background: url(/assets/images/common/bg_header.gif) 50% 0 repeat-x;
+   
 }
 #header .top_area {
     border-bottom: 1px solid #e2d9d6;
