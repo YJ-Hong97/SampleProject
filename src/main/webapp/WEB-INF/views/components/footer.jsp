@@ -3,15 +3,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+	<meta charset="UTF-8">
+	<link href="${pageContext.request.contextPath}/resources/css/baskinrobbins.css" rel="stylesheet" type="text/css">
 </head>
-<style>
-#footer {
-    min-width: 1200px;
-    padding-bottom: 60px;
-    border-top: 1px solid #feaf2b;
-}
-</style>
 <body>
 <footer id="footer">
 	<div class="inner_footer">footer</div>
