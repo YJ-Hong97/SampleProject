@@ -11,13 +11,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@RequestMapping(value = "/user")
 public class UserController {
 	@Autowired
 	UserService userService;
+
+	/* 회원가입 페이지 이동 */
 	@RequestMapping(value = "/signup",method = RequestMethod.GET)
 	public String signup() {
-		return "signUp";
+		return "user/signUp";
 	}
+
+	/* 회원 가입 */
 	@ResponseBody
 	@RequestMapping(value = "/signup",method = RequestMethod.POST)
 	public String signup(UserVo user) {
