@@ -9,6 +9,10 @@ public class UserVo {
 	private String userPw;
 	private String userEmail;
 	private String userPhone;
+
+	/* 기본 생성자 */
+	public UserVo(){}
+
 	@Override
 	public String toString() {
 		return "UserVo [userId=" + userId + ", userName=" + userName + ", userBirth=" + userBirth + ", userPw=" + userPw
