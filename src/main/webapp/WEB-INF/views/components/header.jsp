@@ -65,12 +65,12 @@
 			<nav class="member">
 				<ul>
 					<li class="login">
-						<a href="/">
+						<a href="/user/login">
 							<span>LOGIN</span>
 						</a>
 					</li>
 					<li class="join">
-						<a href="/myapp/signup">
+						<a href="/user/signup">
 							<span>join</span>
 						</a>
 					</li>

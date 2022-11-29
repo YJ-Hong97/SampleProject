@@ -15,7 +15,7 @@ public class UserController {
 	/* 회원가입 페이지 이동 */
 	@RequestMapping(value = "/signup",method = RequestMethod.GET)
 	public String signup() {
-		return "signUp";
+		return "user/signUp";
 	}
 
 	/* 회원 가입 */
@@ -24,5 +24,11 @@ public class UserController {
 	public String signup(UserVo user) {
 		userService.insertUser(user);
 		return "success";
+	}
+
+	/* 로그인 페이지 이동 */
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(){
+		return "user/login";
 	}
 }

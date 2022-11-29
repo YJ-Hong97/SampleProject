@@ -2,9 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
-<%@ include file="/WEB-INF/views/components/common.jsp" %>
-<%@ include file="/WEB-INF/views/components/header.jsp" %>
-<%@ include file="/WEB-INF/views/components/footer.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -190,6 +187,7 @@ button, html [type="button"], [type="reset"], [type="submit"] {
 
 </style>
 <body>
+<%@ include file="/WEB-INF/views/components/header.jsp" %>
 <div class="signup_form">
 	<div class="page-navigation">
 		<div class="inner">
@@ -283,6 +281,7 @@ button, html [type="button"], [type="reset"], [type="submit"] {
 		</div>
 	</div>
 </div>
+<%@ include file="/WEB-INF/views/components/footer.jsp" %>
 <script>
 	var user = {userId:"",userName:"",userBirth:"",userPw:"",userEmail:"",userPhone:""};
 	var submitSignup = ()=>{
