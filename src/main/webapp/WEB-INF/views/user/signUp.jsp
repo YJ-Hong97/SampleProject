@@ -200,7 +200,7 @@ button, html [type="button"], [type="reset"], [type="submit"] {
 			<h2 class="title">회원가입</h2>
 		</div>
 		<div class="small-layout-inner">
-			<form id="signUpFrm" method="post" action="/myapp/signup">
+			<form id="signUpFrm" method="post" action="/user/signup">
 				<fieldset class="fieldset row">
 					<div class="field">
 						<div class="label">
