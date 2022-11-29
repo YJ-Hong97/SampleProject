@@ -25,7 +25,7 @@ public class UserController {
 	/* 회원 가입 */
 	@ResponseBody
 	@RequestMapping(value = "/signup",method = RequestMethod.POST)
-	public String signup(UserVo user) {
+	public String signupPOST(UserVo user) {
 		userService.insertUser(user);
 		return "success";
 	}
