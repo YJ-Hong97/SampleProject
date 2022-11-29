@@ -11,4 +11,10 @@ public class UserDAO {
 	public void insertUser(UserVo user) {
 		session.insert("user.userInsert",user);
 	}
+	public String checkId(String userId) {
+		return session.selectOne("user.checkId",userId);
+	}
+	public UserVo selectUser(UserVo user) {
+		return session.selectOne("user.selectUser",user);
+	}
 }

@@ -210,6 +210,7 @@ button, html [type="button"], [type="reset"], [type="submit"] {
 							<div class="insert">
 								<div class="input-cover">
 									<input id="userId"type="text" placeholder="영문 소문자, 숫자 조합">
+									<button type="button" id="checkId">중복확인</button>
 								</div>
 							</div>
 						</div>
@@ -229,7 +230,7 @@ button, html [type="button"], [type="reset"], [type="submit"] {
 							<label>생일</label>
 							<div class="insert">
 								<div class="input-cover">
-									<input id="userBirth"type="text" placeholder="예)1997-10-27">
+									<input id="userBirth" type="text" onKeydown="checkBirth(event)"placeholder="예)1997-10-27">
 								</div>
 							</div>
 						</div>
@@ -239,7 +240,7 @@ button, html [type="button"], [type="reset"], [type="submit"] {
 							<label>비밀번호</label>
 							<div class="insert">
 								<div class="input-cover">
-									<input id="userPw"type="password" placeholder="영문 대문자, 소문자, 숫자, 특수문자 조합, 8~10자리까지"maxlength="10">
+									<input id="userPw"type="password" onKeyup="checkPw1()"placeholder="영문 대문자, 소문자, 숫자, 특수문자 조합, 8~10자리까지"maxlength="10">
 								</div>
 							</div>
 						</div>
@@ -249,7 +250,7 @@ button, html [type="button"], [type="reset"], [type="submit"] {
 							<label>비밀번호 확인</label>
 							<div class="insert">
 								<div class="input-cover">
-									<input id="confirmPw" onClick="confirmPw()"type="password" placeholder="비밀번호 확인" maxlength="10">
+									<input id="confirmPw" onKeyup="confirmPw()"type="password" placeholder="비밀번호 확인" maxlength="10">
 								</div>
 							</div>
 						</div>
@@ -259,7 +260,7 @@ button, html [type="button"], [type="reset"], [type="submit"] {
 							<label>이메일</label>
 							<div class="insert">
 								<div class="input-cover">
-									<input id="userEmail"type="text" placeholder="예)abc@def.com">
+									<input id="userEmail"type="text" onKeyup="checkEmail()"placeholder="예)abc@def.com">
 								</div>
 							</div>
 						</div>
@@ -269,7 +270,7 @@ button, html [type="button"], [type="reset"], [type="submit"] {
 							<label>전화번호</label>
 							<div class="insert">
 								<div class="input-cover">
-									<input id="userPhone"type="text" placeholder="예)010-1234-5678" maxlength="13">
+									<input id="userPhone"type="text" onKeyup="checkPhone()"placeholder="예)010-1234-5678" maxlength="13">
 								</div>
 							</div>
 						</div>
@@ -284,6 +285,9 @@ button, html [type="button"], [type="reset"], [type="submit"] {
 	</div>
 </div>
 <script>
+	var checkId = false;
+	var boolBirth =false;
+	
 	var user = {userId:"",userName:"",userBirth:"",userPw:"",userEmail:"",userPhone:""};
 	var submitSignup = ()=>{
 		user.userId=$("#userId").val();
@@ -292,6 +296,8 @@ button, html [type="button"], [type="reset"], [type="submit"] {
 		user.userPw=$("#userPw").val();
 		user.userEmail=$("#userEmail").val();
 		user.userPhone=$("#userPhone").val();
+		
+		if(checkId&&confirmPw()&&checkEmail()&&boolBirth&&checkPhone()){
 		$.ajax({
 			url:"/myapp/signup",
 			method:"post",
@@ -305,15 +311,47 @@ button, html [type="button"], [type="reset"], [type="submit"] {
 				console.log(errorMessage);
 			}
 		})
-	};
+	}else if(!checkId){
+		$("#userId").focus();
+		alert("id Error")
+	}else if(!confirmPw()){
+		$("#confirmPw").focus();
+		alert("pw Error");
+	}else if(!boolBirth){
+		$("#userBirth").focus();
+		alert("birth error");
+	}else if(!checkEmail()){
+		$("#userEmail").focus();
+		alert("email error");
+	}else if(!checkPhone()){
+		$("#userPhone").focus();
+		alert("phone error");
+	}};
 	var confirmPw = ()=>{
 		let pw1 = $("#userPw").val();
 		let pw2 = $("#confirmPw").val();
-		if(pw1===pw2){
-			return true;
-		}else{
+		if(pw1.length==0||pw2.length==0){
 			return false;
 		}
+		if(pw1===pw2){
+			$("#confirmPw").css({"color":"blue"});
+			return true;
+		}else{
+			$("#confirmPw").css({"color":"red"});
+			return false;
+		}
+	};
+	var checkPw1 = ()=>{
+		let pw1 = $("#userPw").val();
+		let alpha = /[a-z]/gi;
+		let num = /[0-9]/g;
+		let tex = /[!@~#$%^&*()_+]/g;
+		if(alpha.test(pw1)&&num.test(pw1)&&tex.test(pw1)){
+			$("#userPw").css({"color":"blue"});
+		}else{
+			$("#userPw").css({"color":"red"})
+		}
+		
 	};
 	var reset = ()=>{
 		user.userId=$("#userId").val("");
@@ -323,6 +361,85 @@ button, html [type="button"], [type="reset"], [type="submit"] {
 		user.userEmail=$("#userEmail").val("");
 		user.userPhone=$("#userPhone").val("");
 		
+	};
+	$("#checkId").click(()=>{
+		let userId = {userId:$("#userId").val()};
+		console.log(user);
+		$.ajax({
+			url:"/myapp/checkId",
+			method:"post",
+			data:userId,
+			success:function(response){
+				console.log("response:"+response);
+				if(response==$("#userId").val()){
+					alert("fail");
+					checkId = false;
+				}else{
+					alert("success");
+					checkId = true;
+				}
+			}
+		});
+	});
+	var checkBirth = (event)=>{
+		console.log("fff")
+		let birth = $("#userBirth").val();
+		let reg = /[^0-9]/g;
+		if(event.keyCode==8){
+			boolBirth = false;
+		}
+		else if(birth.length<5){
+			birth = birth.replace(reg,"");
+			$("#userBirth").val(birth);
+			if(birth.length==4){
+				$("#userBirth").val(birth+"-");
+			}
+			boolBirth= false;
+		}else if(birth.length<8){
+			let second = birth.slice(5,birth.length);
+			let first = birth.slice(0,5);
+			second = second.replace(reg,"");
+			$("#userBirth").val(first+second);
+	
+			if(second.length ==2){
+				$("#userBirth").val(first+second+"-");
+			}
+			boolBirth= false;
+		}else{
+			let last = birth.slice(8,10);
+			last = last.replace(reg,"");
+			let first = birth.slice(0,8);
+			$("#userBirth").val(first+last);
+			if(last.length>=2){
+				event.preventDefault();
+				$("#userBirth").val(first+last);
+				boolBirth= true;
+			}else{
+				boolBirth= false;
+			}
+		}
+	};
+	var checkEmail = ()=>{
+		let email = $("#userEmail").val();
+		let reg = /^[a-zA-Z0-9~!@#$%^&*()_+]+@[a-z]+\.[a-z]+/g;
+		if(!reg.test(email)){
+			$("#userEmail").css({"color":"red"});
+			return false;
+		}else{
+			$("#userEmail").css({"color":"blue"});
+			return true;
+		}
+	};
+	var checkPhone= ()=>{
+		let phone = $("#userPhone").val();
+		let reg = /^[0-9]{3}-[0-9]{3,4}-[0-9]{4}/g;
+		if(reg.test(phone)){
+			$("#userPhone").css({"color":"blue"});
+			return true;
+		}else{
+			$("#userPhone").css({"color":"red"});
+			return false;
+		}
 	};
 </script>
 </body>

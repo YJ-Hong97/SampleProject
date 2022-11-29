@@ -5,7 +5,7 @@ import java.sql.Date;
 public class UserVo {
 	private String userId;
 	private String userName;
-	private Date userBirth;
+	private String userBirth;
 	private String userPw;
 	private String userEmail;
 	private String userPhone;
@@ -26,10 +26,11 @@ public class UserVo {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	public Date getUserBirth() {
+	
+	public String getUserBirth() {
 		return userBirth;
 	}
-	public void setUserBirth(Date userBirth) {
+	public void setUserBirth(String userBirth) {
 		this.userBirth = userBirth;
 	}
 	public String getUserPw() {

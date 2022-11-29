@@ -109,7 +109,7 @@ a {
 		<nav class="member">
 			<ul>
 				<li class="login">
-					<a><span>login</span></a>
+					<a href="/myapp/login"><span>login</span></a>
 				</li>
 				<li class="join">
 					<a href="/myapp/signup"><span>join</span></a>
