@@ -10,4 +10,13 @@ public class UserService {
 	public void insertUser(UserVo userVo) {
 		userDAO.insertUser(userVo);
 	}
+	public String checkId(String userId) {
+		return userDAO.checkId(userId);
+	}
+	public UserVo selectUser(UserVo user) {
+		return userDAO.selectUser(user);
+	}
+	public UserVo login(UserVo user) {
+		return userDAO.selectUser(user);
+	}
 }

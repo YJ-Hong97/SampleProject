@@ -28,4 +28,10 @@
 		#{userPhone}
 	)
 </insert>
+<select id="checkId" parameterType="java.lang.String" resultType="java.lang.String">
+	select user_id from tbl_user where user_id=#{value}
+</select>
+<select id="selectUser" parameterType="com.sample.myapp.user.UserVo" resultMap="user">
+	select * from tbl_user where user_id = #{userId} and user_pw = #{userPw}
+</select>
 </mapper>
