@@ -6,6 +6,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<!-- 메뉴바는 어느 페이지든 포함하고 있을 테니 여기서 contextPath 변수 값 만들기 -->
+<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
 </head>
 <body>
 <header id="header">
@@ -62,25 +64,6 @@
 	<div class="menu_area">
 
 	<div class="inner">
-		<nav class="member">
-			<ul>
-				<li class="login">
-					<a href="/myapp/user/login"><span>login</span></a>
-				</li>
-				<li class="join">
-					<a href="/myapp/user/signup"><span>join</span></a>
-				</li>
-			</ul>
-		</nav>
-		<nav id="gnb">
-			<div class="gnb_wrap">
-				<ul></ul>
-			</div>
-			<div class="gnb_bg">
-				<div></div>
-			</div>
-		</nav>
-
 		<div class="inner">
 			<nav class="member">
 				<ul>

@@ -14,7 +14,7 @@
 </head>
 <body id="br_main">
 <%@ include file="/WEB-INF/views/components/header.jsp" %>
-<%@ include file="/WEB-INF/views/components/common.jsp" %>
+<%@ include file="/WEB-INF/views/components/body.jsp" %>
 <%@ include file="/WEB-INF/views/components/footer.jsp" %>
 </body>
 </html>
