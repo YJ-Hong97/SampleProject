@@ -5,19 +5,40 @@ import java.sql.Date;
 public class UserVo {
 	private String userId;
 	private String userName;
-	private String userBirth;
+	private Date userBirth;
 	private String userPw;
 	private String userEmail;
 	private String userPhone;
+	private int manager;
+	
+	@Override
+	public String toString() {
+		return "UserVo [userId=" + userId + ", userName=" + userName + ", userBirth=" + userBirth + ", userPw=" + userPw
+				+ ", userEmail=" + userEmail + ", userPhone=" + userPhone + ", manager=" + manager + ", activate="
+				+ activate + "]";
+	}
+
+	public int getManager() {
+		return manager;
+	}
+
+	public void setManager(int manager) {
+		this.manager = manager;
+	}
+
+	public int getActivate() {
+		return activate;
+	}
+
+	public void setActivate(int activate) {
+		this.activate = activate;
+	}
+	private int activate;
 
 	/* 기본 생성자 */
 	public UserVo(){}
 
-	@Override
-	public String toString() {
-		return "UserVo [userId=" + userId + ", userName=" + userName + ", userBirth=" + userBirth + ", userPw=" + userPw
-				+ ", userEmail=" + userEmail + ", userPhone=" + userPhone + "]";
-	}
+	
 	public String getUserId() {
 		return userId;
 	}
@@ -31,10 +52,10 @@ public class UserVo {
 		this.userName = userName;
 	}
 	
-	public String getUserBirth() {
+	public Date getUserBirth() {
 		return userBirth;
 	}
-	public void setUserBirth(String userBirth) {
+	public void setUserBirth(Date userBirth) {
 		this.userBirth = userBirth;
 	}
 	public String getUserPw() {

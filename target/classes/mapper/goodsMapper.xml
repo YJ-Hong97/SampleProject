@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="goodsMapper">
+<resultMap id="goods" type="com.sample.myapp.goods.GoodsVo">
+	<result column="goods_id" property="goodsId"/>
+	<result column="goods_type" property="goodsType"/>
+	<result column="goods_name" property="goodsName"/>
+	<result column="goods_price" property="goodsPrice"/>	
+	<result column="goods_color" property="goodsColor"/>
+	<result column="goods_size" property="goodsSize"/>
+	<result column="goods_option_1" property="goodsOption1"/>
+	<result column="goods_option_2" property="goodsOption2"/>
+	<result column="goods_option_3" property="goodsOption3"/>
+	<result column="goods_image" property="goodsImage"/>
+	<result column="goods_date" property="goodsDate"/>
+</resultMap>
+<select id="goodsSelectAll" parameterType="com.sample.myapp.PageVO" resultMap="goods">
+	select * from goods
+	order by goods_date
+	limit #{size} offset #{start}
+</select>
+<select id="goodsTotal" resultType="java.lang.Integer">
+	select count(goods_id) from goods
+</select>
+</mapper>

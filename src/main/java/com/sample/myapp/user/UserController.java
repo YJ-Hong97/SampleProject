@@ -45,12 +45,21 @@ public class UserController {
 	@RequestMapping(value="/login",method=RequestMethod.POST)
 	public String login(UserVo user,HttpSession session) {
 		UserVo loginUser = userService.login(user);
-		System.out.println("dkdk");
-		if(loginUser!=null) {
-			session.setAttribute("user", loginUser);
-			return "success";
+		if(loginUser!=null&&loginUser.getActivate()==1) {
+			if(loginUser.getManager()==1) {
+				session.setAttribute("manager", loginUser);
+				return "manager";
+			}else {
+				session.setAttribute("user", loginUser);
+				return "success";
+			}
 		}else {
 			return "fail";
 		}
+	}
+	/*마이페이지로 이동*/
+	@RequestMapping(value = "/mypage")
+	public String mypage(UserVo user) {
+		return "/user/mypage";
 	}
 }

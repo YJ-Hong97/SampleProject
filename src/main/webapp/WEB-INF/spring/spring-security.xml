@@ -7,4 +7,5 @@
 
     <!-- 암호화와 관련된 bean생성 -->
     <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+	
 </beans>
