@@ -22,4 +22,8 @@
 <select id="goodsTotal" resultType="java.lang.Integer">
 	select count(goods_id) from goods
 </select>
+<select id="goodsOption" resultType="STRING">
+	select * from goods
+	where goods_type =1
+</select>
 </mapper>

@@ -2,6 +2,11 @@ package com.sample.myapp.goods;
 
 import java.sql.Date;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class OrderVo {
 	private String orderId;
 	private String userId;
@@ -10,6 +15,7 @@ public class OrderVo {
 	private int delivery;
 	private String orderListId;
 	private Date pay_date;
+	private Date payDate;
 	
 	@Override
 	public String toString() {
@@ -17,48 +23,5 @@ public class OrderVo {
 				+ ", delivery=" + delivery + ", orderListId=" + orderListId + ", pay_date=" + pay_date + ", payDate="
 				+ payDate + "]";
 	}
-	public String getOrderId() {
-		return orderId;
-	}
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
-	}
 	
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	public int getPrice() {
-		return price;
-	}
-	public void setPrice(int price) {
-		this.price = price;
-	}
-	public int getPayment() {
-		return payment;
-	}
-	public void setPayment(int payment) {
-		this.payment = payment;
-	}
-	public int getDelivery() {
-		return delivery;
-	}
-	public void setDelivery(int delivery) {
-		this.delivery = delivery;
-	}
-	public String getOrderListId() {
-		return orderListId;
-	}
-	public void setOrderListId(String orderListId) {
-		this.orderListId = orderListId;
-	}
-	public Date getPayDate() {
-		return payDate;
-	}
-	public void setPayDate(Date payDate) {
-		this.payDate = payDate;
-	}
-	private Date payDate;
 }

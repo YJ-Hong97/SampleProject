@@ -18,4 +18,7 @@ public class GoodsDAO {
 	public int totalCount() {
 		return session.selectOne("goodsMapper.goodsTotal");
 	}
+	public List<String> selectOption(){
+		return session.selectList("goodsMapper.goodsOption");
+	}
 }
