@@ -76,17 +76,17 @@ public class PageVO {
 	}
 	public void setPageList(int count) {
 		int[] pageList =null;
-		int fakeCount = count/10+1;
+		int fakeCount = count/size+1;
 		if(fakeCount>5) {
 			if(page>fakeCount) {
 				pageList = new int[count%5];
 				for(int i = 0; i<pageList.length;i++) {
-					pageList[i] = i+1+page;
+					pageList[i] = i+1;
 				}
 			}else {
 				pageList = new int[5];
 				for(int i = 0;i<5;i++) {
-					pageList[i] = i+1+(page);
+					pageList[i] = i+1;
 				}
 			}
 		}else {

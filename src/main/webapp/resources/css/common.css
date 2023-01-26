@@ -58,3 +58,6 @@ html,body{
 	width:100%;
 	heigth:100%;
 }
+input, textarea, select{
+	outline:none;
+}

@@ -11,8 +11,16 @@
 	<result column="goods_option_1" property="goodsOption1"/>
 	<result column="goods_option_2" property="goodsOption2"/>
 	<result column="goods_option_3" property="goodsOption3"/>
-	<result column="goods_image" property="goodsImage"/>
+	<result column="goods_image" property="dbGoodsImage"/>
 	<result column="goods_date" property="goodsDate"/>
+</resultMap>
+<resultMap id="emoji" type="com.sample.myapp.goods.EmojiVo">
+	<result column="emojis_code" property="emojis_code"/>
+	<result column="emojis_type" property="emojis_type"/>
+</resultMap>
+<resultMap id="goodsType" type="com.sample.myapp.goods.GoodsTypeVo">
+	<result column="goods_code" property="goodsCode"/>
+	<result column="type_name" property="typeName"/>
 </resultMap>
 <select id="goodsSelectAll" parameterType="com.sample.myapp.PageVO" resultMap="goods">
 	select * from goods
@@ -21,5 +29,15 @@
 </select>
 <select id="goodsTotal" resultType="java.lang.Integer">
 	select count(goods_id) from goods
+</select>
+<select id="goodsTypeSelectAll" resultMap="goodsType">
+	select * from goods_type
+</select>
+<select id="emojisSelectAll" parameterType="com.sample.myapp.PageVO" resultMap="emoji">
+	select * from emojis
+	limit #{size} offset #{start}
+</select>
+<select id="emojisCount" resultType="java.lang.Integer">
+	select count(*) from emojis
 </select>
 </mapper>

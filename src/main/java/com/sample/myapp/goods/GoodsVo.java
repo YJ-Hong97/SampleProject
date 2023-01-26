@@ -1,6 +1,8 @@
 package com.sample.myapp.goods;
 
 import java.sql.Date;
+import java.util.Arrays;
+
 
 public class GoodsVo {
 	private String goodsId;
@@ -12,16 +14,11 @@ public class GoodsVo {
 	private String goodsOption1;
 	private String goodsOption2;
 	private String goodsOption3;
-	private String goodsImage;
+	private String[] goodsImage;
+	private String dbGoodsImage;
 	private Date goodsDate;
 	
-	@Override
-	public String toString() {
-		return "GoodsVo [goodsId=" + goodsId + ", goodsType=" + goodsType + ", goodsName=" + goodsName + ", goodsPrice="
-				+ goodsPrice + ", goodsColor=" + goodsColor + ", goodsSize=" + goodsSize + ", goodsOption1="
-				+ goodsOption1 + ", goodsOption2=" + goodsOption2 + ", goodsOption3=" + goodsOption3 + ", goodsImage="
-				+ goodsImage + ", goodsDate=" + goodsDate + "]";
-	}
+	
 	public String getGoodsColor() {
 		return goodsColor;
 	}
@@ -52,10 +49,12 @@ public class GoodsVo {
 	public void setGoodsOption3(String goodsOption3) {
 		this.goodsOption3 = goodsOption3;
 	}
-	public String getGoodsImage() {
+	
+	public String[] getGoodsImage() {
 		return goodsImage;
 	}
-	public void setGoodsImage(String goodsImage) {
+	public void setGoodsImage(String[] goodsImage) {
+		this.dbGoodsImage = Arrays.toString(goodsImage);
 		this.goodsImage = goodsImage;
 	}
 	public Date getGoodsDate() {
