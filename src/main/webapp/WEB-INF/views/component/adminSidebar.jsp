@@ -10,7 +10,6 @@
 		display:inline-block;
 		float:left;
 		width:251px;
-		height:830px;
 		background:#D9D9D9;
 	}
 	.logoWrap{

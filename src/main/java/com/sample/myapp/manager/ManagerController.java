@@ -1,5 +1,9 @@
 package com.sample.myapp.manager;
 
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.websocket.server.PathParam;
@@ -8,11 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.sample.myapp.PageVO;
+import com.sample.myapp.goods.EmojiVo;
 import com.sample.myapp.goods.GoodsDAO;
+import com.sample.myapp.goods.GoodsTypeVo;
 import com.sample.myapp.goods.GoodsVo;
 @RequestMapping("/manager")
 @Controller
@@ -39,5 +49,34 @@ public class ManagerController {
 		return "admin/goods";
 		
 	}
-	
+	/*상품 등록 페이지 이동*/
+	@RequestMapping("/goods/insert")
+	public String insertGoods(Model model,PageVO page) {
+		List<GoodsTypeVo> typeList = goodsDAO.selectAllType();
+		
+		/*폰트 가져오기*/
+		GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		Font[] fonts = e.getAllFonts();
+		/*이모지*/
+		int count = goodsDAO.countEmojis();
+		page.setSize(50);
+		page.setPageList(count);
+		List<EmojiVo> emojis = goodsDAO.selectAllEmojis(page);
+		System.out.println(page);
+		model.addAttribute("page",page);
+		model.addAttribute("emojis",emojis);
+		model.addAttribute("typeList",typeList);
+		model.addAttribute("fonts",fonts);
+		return "admin/insertGoods";
+	}
+	@ResponseBody
+	@RequestMapping(value="/goods/emojiPage",method = RequestMethod.GET,headers="Accept=*/*",produces="application/json; charset=utf-8")
+	public List<EmojiVo> emojiPage(PageVO page){
+		
+		int count = goodsDAO.countEmojis();
+		page.setSize(50);
+		page.setPageList(count);
+		List<EmojiVo> emojis = goodsDAO.selectAllEmojis(page);
+		return emojis;
+	}
 }

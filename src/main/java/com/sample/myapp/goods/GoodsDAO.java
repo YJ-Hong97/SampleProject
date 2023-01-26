@@ -18,4 +18,13 @@ public class GoodsDAO {
 	public int totalCount() {
 		return session.selectOne("goodsMapper.goodsTotal");
 	}
+	public List<GoodsTypeVo> selectAllType(){
+		return session.selectList("goodsMapper.goodsTypeSelectAll");
+	}
+	public List<EmojiVo> selectAllEmojis(PageVO page){
+		return session.selectList("goodsMapper.emojisSelectAll",page);
+	}
+	public Integer countEmojis() {
+		return session.selectOne("goodsMapper.emojisCount");
+	}
 }

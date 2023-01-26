@@ -178,7 +178,7 @@
 	<div class="nav">
 		<a class="prev" onClick="prevPage('${page.page-1}')">&#60;</a>
 		<c:forEach items="${page.pageList }" var="page">
-			<a>${page }</a>
+			<a href="${pageContext.request.contextPath }?page=${page-1}">${page }</a>
 		</c:forEach>
 		<a class="next" onClick="nextPage('${page.page+1}','${count }')">&#62;</a>
 	</div>
@@ -189,16 +189,16 @@
 <script>
 	function prevPage(page){
 		if(page==-1){
-			location.href="http://localhost:9090/manager/goods?page=0";
+			location.href=`<%request.getContextPath();%>?page=0`;
 		}else{
-			location.href="http://localhost:9090/manager/goods?page="+page;
+			location.href=`<%request.getContextPath();%>?page=`+page;
 		}
 	}
 	function nextPage(page,count){
 		if(Math.floor(count/10)<page){
-			location.href="http://localhost:9090/manager/goods?page="+Math.floor(count/10);
+			location.href=`<%request.getContextPath();%>?page=`+Math.floor(count/10);
 		}else{
-			location.href="http://localhost:9090/manager/goods?page="+page;
+			location.href=`<%request.getContextPath();%>?page=`+page;
 		}
 	}
 </script>
