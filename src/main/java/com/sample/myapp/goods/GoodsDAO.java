@@ -27,4 +27,8 @@ public class GoodsDAO {
 	public Integer countEmojis() {
 		return session.selectOne("goodsMapper.emojisCount");
 	}
+	
+	public List<String> selectOption(){
+ 		return session.selectList("goodsMapper.goodsOption");
+ 	}
 }
