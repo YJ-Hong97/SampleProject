@@ -40,4 +40,8 @@
 <select id="emojisCount" resultType="java.lang.Integer">
 	select count(*) from emojis
 </select>
+<select id="goodsOption" resultType="STRING">
+ 	select * from goods
+ 	where goods_type =1
+ </select>
 </mapper>
