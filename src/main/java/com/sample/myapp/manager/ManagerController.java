@@ -11,6 +11,8 @@ import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,7 +52,7 @@ public class ManagerController {
 		
 	}
 	/*상품 등록 페이지 이동*/
-	@RequestMapping("/goods/insert")
+	@RequestMapping(value = "/goods/insert",method = RequestMethod.GET)
 	public String insertGoods(Model model,PageVO page) {
 		List<GoodsTypeVo> typeList = goodsDAO.selectAllType();
 		
@@ -62,7 +64,6 @@ public class ManagerController {
 		page.setSize(50);
 		page.setPageList(count);
 		List<EmojiVo> emojis = goodsDAO.selectAllEmojis(page);
-		System.out.println(page);
 		model.addAttribute("page",page);
 		model.addAttribute("emojis",emojis);
 		model.addAttribute("typeList",typeList);
@@ -78,5 +79,10 @@ public class ManagerController {
 		page.setPageList(count);
 		List<EmojiVo> emojis = goodsDAO.selectAllEmojis(page);
 		return emojis;
+	}
+	@ResponseBody
+	@RequestMapping(value = "/goods/insert",method = RequestMethod.POST)
+	public void insertGoods(@ModelAttribute GoodsVo goodsVo) {
+		goodsDAO.insertGoods(goodsVo);
 	}
 }

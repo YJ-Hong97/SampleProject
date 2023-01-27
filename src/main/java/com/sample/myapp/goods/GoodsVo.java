@@ -5,8 +5,8 @@ import java.util.Arrays;
 
 
 public class GoodsVo {
-	private String goodsId;
-	private String goodsType;
+	private int goodsId;
+	private int goodsType;
 	private String goodsName;
 	private int goodsPrice;
 	private String goodsColor;
@@ -17,8 +17,23 @@ public class GoodsVo {
 	private String[] goodsImage;
 	private String dbGoodsImage;
 	private Date goodsDate;
+	private String goodsHTML;
 	
 	
+	@Override
+	public String toString() {
+		return "GoodsVo [goodsId=" + goodsId + ", goodsType=" + goodsType + ", goodsName=" + goodsName + ", goodsPrice="
+				+ goodsPrice + ", goodsColor=" + goodsColor + ", goodsSize=" + goodsSize + ", goodsOption1="
+				+ goodsOption1 + ", goodsOption2=" + goodsOption2 + ", goodsOption3=" + goodsOption3 + ", goodsImage="
+				+ Arrays.toString(goodsImage) + ", dbGoodsImage=" + dbGoodsImage + ", goodsDate=" + goodsDate
+				+ ", goodsHTML=" + goodsHTML + "]";
+	}
+	public String getGoodsHTML() {
+		return goodsHTML;
+	}
+	public void setGoodsHTML(String goodsHTML) {
+		this.goodsHTML = goodsHTML;
+	}
 	public String getGoodsColor() {
 		return goodsColor;
 	}
@@ -63,16 +78,17 @@ public class GoodsVo {
 	public void setGoodsDate(Date goodsDate) {
 		this.goodsDate = goodsDate;
 	}
-	public String getGoodsId() {
+	
+	public int getGoodsId() {
 		return goodsId;
 	}
-	public void setGoodsId(String goodsId) {
+	public void setGoodsId(int goodsId) {
 		this.goodsId = goodsId;
 	}
-	public String getGoodsType() {
+	public int getGoodsType() {
 		return goodsType;
 	}
-	public void setGoodsType(String goodsType) {
+	public void setGoodsType(int goodsType) {
 		this.goodsType = goodsType;
 	}
 	public String getGoodsName() {

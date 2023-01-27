@@ -375,16 +375,16 @@ html, body{
 <div class="boxWrap">
 	<div class="title"><h1>상품 등록</h1></div>
 	<div class="formWrap">
-		<form class="frmGoods" enctype= multipart/form-data>
+		<form class="frmGoods" method="post" action="/manager/goods/insert" >
 			<div class="half">
-			<div class="line"><label><span class="required">&#42;</span>상품 이름</label><input type="text"><span><button type="button" class="checkName">중복확인</button></span></div>
+			<div class="line"><label><span class="required">&#42;</span>상품 이름</label><input type="text" name="goodsName"><span><button type="button" class="checkName">중복확인</button></span></div>
 			<div class="line"><label><span class="required">&#42;</span>상품 종류</label><select name="goodsType">
 				<c:forEach items="${typeList }" var="type">
 					<option value="${type.goodsCode }">${type.typeName}</option>
 				</c:forEach>
 			</select></div>
-			<div class="line"><label><span class="required">&#42;</span>상품 색상</label><input type="text"></div>
-			<div class="line"><label><span class="required">&#42;</span>상품 사이즈</label><input type="text"></div>
+			<div class="line"><label><span class="required">&#42;</span>상품 색상</label><input type="text" name="goodsColor"></div>
+			<div class="line"><label><span class="required">&#42;</span>상품 사이즈</label><input type="text" name="goodsSize"></div>
 			<div class="line"><label>옵션_1</label><input type="text"></div>
 			<div class="line"><label>옵션_2</label><input type="text"></div>
 			<div class="line"><label>옵션_3</label><input type="text"></div>
@@ -532,7 +532,8 @@ html, body{
 				</div>
 			</div>
 			<div class="whiteSpace" contenteditable="true"></div>
-			<input type="submit" value="저장">
+			<input type="hidden" name="goodsHTML" id="goodsHTML">
+			<input type="submit" value="저장" onclick="fn_gosubmit(event)">
 		</form>	
 	</div>
 </div>
@@ -1083,6 +1084,13 @@ html, body{
 			setCursor(hr);
 			getCursor(hr)
 		}
+	}
+	function fn_gosubmit(event){
+		
+		event.preventDefault();
+		var goodshtml = $(".whiteSpace").html();
+		$("#goodsHTML").val(String(goodshtml));
+		$(".frmGoods").submit();
 	}
 </script>
 </body>
