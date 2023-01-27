@@ -27,4 +27,7 @@ public class GoodsDAO {
 	public Integer countEmojis() {
 		return session.selectOne("goodsMapper.emojisCount");
 	}
+	public void insertGoods(GoodsVo goodsVo) {
+		session.insert("goodsMapper.goodsInsert",goodsVo);
+	}
 }
