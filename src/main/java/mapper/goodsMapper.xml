@@ -55,5 +55,10 @@
 		#{dbGoodsImage},
 		SYSDATE(),
 		#{goodsHTML}
-	);</insert>
+	);
+</insert>
+<select id="goodsOption" resultType="STRING">
+ 	select * from goods
+ 	where goods_type =1
+ </select>
 </mapper>

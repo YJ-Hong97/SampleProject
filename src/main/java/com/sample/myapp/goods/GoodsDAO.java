@@ -30,4 +30,7 @@ public class GoodsDAO {
 	public void insertGoods(GoodsVo goodsVo) {
 		session.insert("goodsMapper.goodsInsert",goodsVo);
 	}
+	public List<String> selectOption(){
+ 		return session.selectList("goodsMapper.goodsOption");
+ 	}
 }

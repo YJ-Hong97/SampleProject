@@ -41,6 +41,7 @@
 <select id="emojisCount" resultType="java.lang.Integer">
 	select count(*) from emojis
 </select>
+<<<<<<< HEAD
 <insert id="goodsInsert" parameterType="com.sample.myapp.goods.GoodsVo">
 	insert into goods values(
 		(select IFNULL(max(a.goods_id),0)+1 from goods a),
@@ -55,10 +56,11 @@
 		#{dbGoodsImage},
 		SYSDATE(),
 		#{goodsHTML}
-	);
-</insert>
+	);</insert>
+=======
 <select id="goodsOption" resultType="STRING">
  	select * from goods
  	where goods_type =1
  </select>
+>>>>>>> branch 'main' of https://github.com/YJ-Hong97/SampleProject.git
 </mapper>

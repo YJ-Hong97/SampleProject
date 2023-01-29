@@ -3,7 +3,11 @@ package com.sample.myapp.goods;
 import java.sql.Date;
 import java.util.Arrays;
 
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class GoodsVo {
 	private int goodsId;
 	private int goodsType;
@@ -103,4 +107,5 @@ public class GoodsVo {
 	public void setGoodsPrice(int goodsPrice) {
 		this.goodsPrice = goodsPrice;
 	}
+	
 }
