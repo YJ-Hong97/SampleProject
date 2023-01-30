@@ -14,6 +14,8 @@
 	<result column="goods_image" property="dbGoodsImage"/>
 	<result column="goods_date" property="goodsDate"/>
 	<result column="goods_html" property="goodsHTML"/>
+	<result column="goods_sale" property="goodsSale"/>
+	<result column="goods_best" property="goodsBest"/>
 </resultMap>
 <resultMap id="emoji" type="com.sample.myapp.goods.EmojiVo">
 	<result column="emojis_code" property="emojis_code"/>
@@ -54,7 +56,9 @@
 		#{goodsOption3},
 		#{dbGoodsImage},
 		SYSDATE(),
-		#{goodsHTML}
+		#{goodsHTML},
+		#{goodsSale},
+		#{goodsBest}
 	);
 </insert>
 <select id="goodsOption" resultType="STRING">

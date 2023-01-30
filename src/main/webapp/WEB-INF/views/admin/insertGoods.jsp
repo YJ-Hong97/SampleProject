@@ -128,7 +128,7 @@ html, body{
 		border:0;
 		margin-bottom:30px;
 	}
-	.imageBox input{
+	.imageBox .input{
 		display:none;
 	}
 	.whiteSpace h1{
@@ -367,6 +367,33 @@ html, body{
 		width:50px;
 		margin-bottom:11px;
 	}
+	.thumbnail{
+		width:697px;
+		height:200px;
+	}
+	.thumbnail button{
+		width:20px;
+		height:20px;
+		vertical-align:top;
+		border:0;
+		background:transparent;		
+	}
+	#readMe{
+		display:block;
+		width:100%;
+		height:10px;
+		line-height:10px;
+		font-size:0.5rem;
+		color:red;
+		background:transparent;
+		
+	}
+	#radioLabel{
+		background:transparent;
+	}
+	#hiddenImage{
+		display:none;
+	}
 </style>
 <body>
 <%@ include file="/WEB-INF/views/component/adminSidebar.jsp" %>
@@ -375,19 +402,28 @@ html, body{
 <div class="boxWrap">
 	<div class="title"><h1>상품 등록</h1></div>
 	<div class="formWrap">
-		<form class="frmGoods" method="post" action="/manager/goods/insert" >
+		<form class="frmGoods" method="post" action="/manager/goods/insert" enctype="multipart/form-data">
 			<div class="half">
-			<div class="line"><label><span class="required">&#42;</span>상품 이름</label><input type="text" name="goodsName"><span><button type="button" class="checkName">중복확인</button></span></div>
-			<div class="line"><label><span class="required">&#42;</span>상품 종류</label><select name="goodsType">
+			<div class="line"><label><span class="required">&#42;</span>상품 이름</label><input type="text" name="goodsName" class="input"><span><button type="button" class="checkName">중복확인</button></span></div>
+			<div class="line"><label><span class="required">&#42;</span>상품 종류</label><select name="goodsType" class="input">
 				<c:forEach items="${typeList }" var="type">
 					<option value="${type.goodsCode }">${type.typeName}</option>
 				</c:forEach>
 			</select></div>
-			<div class="line"><label><span class="required">&#42;</span>상품 색상</label><input type="text" name="goodsColor"></div>
-			<div class="line"><label><span class="required">&#42;</span>상품 사이즈</label><input type="text" name="goodsSize"></div>
-			<div class="line"><label>옵션_1</label><input type="text"></div>
-			<div class="line"><label>옵션_2</label><input type="text"></div>
-			<div class="line"><label>옵션_3</label><input type="text"></div>
+			<div class="line"><label><span class="required">&#42;</span>상품 색상</label><input type="text" name="goodsColor" class="input"></div>
+			<div class="line"><label><span class="required">&#42;</span>상품 사이즈</label><input type="text" name="goodsSize" class="input"></div>
+			<div class="line"><label><span class="required">&#42;</span>상품 할인 여부</label><input type="number" name="goodsSale" class="input" min="0" max="100"></div>
+			<label id="readMe">할인 없을 시 0 또는 비워둠, 할인율에서 '%'를 제외하고 기입</label>
+			<div class="line"><label><span class="required">&#42;</span>인기 상품 여부</label><input type="radio" name="goodsBest" value="0" class="input"><label id="radioLabel">인기상품</label><input type="radio" name="goodsBest" value="1" class="input"><label id="radioLabel">일반상품</label></div>
+			<div class="line"><label>옵션_1</label><input type="text" class="input"></div>
+			<div class="line"><label>옵션_2</label><input type="text" class="input"></div>
+			<div class="line"><label>옵션_3</label><input type="text"class="input"></div>
+			<div id="divImages" class="line">
+				<label>사진 첨부</label><input type="file" accept="image/*"	onchange="fn_changeImages(event)" class="input">
+			</div>
+			<div class="thumbnail">
+				
+			</div>
 			</div>
 			<div class="smallTitle">
 				<span>상품상세 내용 입력</span>
@@ -541,6 +577,7 @@ html, body{
 <%@ include file="/WEB-INF/views/component/adminFooter.jsp" %>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script>
+	
 	var currentStyle = {"fontFamily":"","fontWeight":"","fontStyle":"","color":"","background":"","textAlign":""};
 	function fn_insertImage(event){
 		let inputTag = document.createElement("input");
@@ -1082,7 +1119,7 @@ html, body{
 		}
 		document.onkeypress=function(event){
 			setCursor(hr);
-			getCursor(hr)
+			getCursor(hr);
 		}
 	}
 	function fn_gosubmit(event){
@@ -1091,6 +1128,62 @@ html, body{
 		var goodshtml = $(".whiteSpace").html();
 		$("#goodsHTML").val(String(goodshtml));
 		$(".frmGoods").submit();
+	}
+	function fn_changeImages(event){
+		let imageCount = 0;
+		document.querySelector(".thumbnail").childNodes.forEach(el=>{
+			if(el.childNodes.length>0){
+				imageCount++;
+				
+			}
+		});
+		if(imageCount>=5){
+			alert("최대 5개의 이미지를 등록할 수 있습니다.")
+		}else{
+			var inputImage = document.createElement("input");
+			inputImage.setAttribute("type","file");
+			inputImage.setAttribute("accepts","image/*");
+			inputImage.setAttribute("name","image");
+			inputImage.setAttribute("id","hiddenImage");
+			inputImage.files=event.target.files;
+			
+			
+			var div = document.createElement("div");
+			div.setAttribute("style","display:inline-block;");
+			$(".thumbnail").append(div);
+			div.append(inputImage);
+			
+			var reader = new FileReader();
+			
+			reader.onload = function(event){
+				
+				
+				var button = document.createElement("button");
+				button.setAttribute("class","imageButton");
+				button.setAttribute("width","30px");
+				button.setAttribute("height","30px");
+				button.setAttribute("style","float:top;");
+				button.setAttribute("onClick","fn_deleteImage(event)");
+				button.innerText = "X";
+				div.append(button);
+				
+				var img = document.createElement("img");
+				img.setAttribute("src",event.target.result);
+				img.setAttribute("width","100px");
+				img.setAttribute("height","200px");
+				div.append(img);
+				
+				
+			}
+			reader.readAsDataURL(event.target.files[0]);
+		}
+		
+	}
+	function fn_deleteImage(event){
+		var parent = event.target.parentNode;
+		while(parent.firstChild)  {
+		    parent.removeChild(parent.firstChild);
+		  }
 	}
 </script>
 </body>

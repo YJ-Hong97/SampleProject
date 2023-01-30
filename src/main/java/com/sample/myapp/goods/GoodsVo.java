@@ -1,7 +1,10 @@
 package com.sample.myapp.goods;
 
+import java.io.File;
 import java.sql.Date;
 import java.util.Arrays;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,20 +21,14 @@ public class GoodsVo {
 	private String goodsOption1;
 	private String goodsOption2;
 	private String goodsOption3;
-	private String[] goodsImage;
 	private String dbGoodsImage;
 	private Date goodsDate;
 	private String goodsHTML;
+	private int goodsSale;
+	private int goodsBest;
 	
 	
-	@Override
-	public String toString() {
-		return "GoodsVo [goodsId=" + goodsId + ", goodsType=" + goodsType + ", goodsName=" + goodsName + ", goodsPrice="
-				+ goodsPrice + ", goodsColor=" + goodsColor + ", goodsSize=" + goodsSize + ", goodsOption1="
-				+ goodsOption1 + ", goodsOption2=" + goodsOption2 + ", goodsOption3=" + goodsOption3 + ", goodsImage="
-				+ Arrays.toString(goodsImage) + ", dbGoodsImage=" + dbGoodsImage + ", goodsDate=" + goodsDate
-				+ ", goodsHTML=" + goodsHTML + "]";
-	}
+	
 	public String getGoodsHTML() {
 		return goodsHTML;
 	}
@@ -68,14 +65,6 @@ public class GoodsVo {
 	public void setGoodsOption3(String goodsOption3) {
 		this.goodsOption3 = goodsOption3;
 	}
-	
-	public String[] getGoodsImage() {
-		return goodsImage;
-	}
-	public void setGoodsImage(String[] goodsImage) {
-		this.dbGoodsImage = Arrays.toString(goodsImage);
-		this.goodsImage = goodsImage;
-	}
 	public Date getGoodsDate() {
 		return goodsDate;
 	}
@@ -106,6 +95,26 @@ public class GoodsVo {
 	}
 	public void setGoodsPrice(int goodsPrice) {
 		this.goodsPrice = goodsPrice;
+	}
+	public int getGoodsSale() {
+		return goodsSale;
+	}
+	public void setGoodsSale(int goodsSale) {
+		this.goodsSale = goodsSale;
+	}
+	public int getGoodsBest() {
+		return goodsBest;
+	}
+	public void setGoodsBest(int goodsBest) {
+		this.goodsBest = goodsBest;
+	}
+	@Override
+	public String toString() {
+		return "GoodsVo [goodsId=" + goodsId + ", goodsType=" + goodsType + ", goodsName=" + goodsName + ", goodsPrice="
+				+ goodsPrice + ", goodsColor=" + goodsColor + ", goodsSize=" + goodsSize + ", goodsOption1="
+				+ goodsOption1 + ", goodsOption2=" + goodsOption2 + ", goodsOption3=" + goodsOption3 + ", goodsImage="
+				+ ", dbGoodsImage=" + dbGoodsImage + ", goodsDate=" + goodsDate
+				+ ", goodsHTML=" + goodsHTML + ", goodsSale=" + goodsSale + ", goodsBest=" + goodsBest + "]";
 	}
 	
 }
