@@ -13,6 +13,10 @@
 	<result column="goods_option_3" property="goodsOption3"/>
 	<result column="goods_image" property="dbGoodsImage"/>
 	<result column="goods_date" property="goodsDate"/>
+	<result column="goods_html" property="goodsHTML"/>
+	<result column="goods_sale" property="goodsSale"/>
+	<result column="goods_best" property="goodsBest"/>
+	<result column="goods_active" property="goodsActive"/>
 </resultMap>
 <resultMap id="emoji" type="com.sample.myapp.goods.EmojiVo">
 	<result column="emojis_code" property="emojis_code"/>
@@ -40,8 +44,30 @@
 <select id="emojisCount" resultType="java.lang.Integer">
 	select count(*) from emojis
 </select>
+<insert id="goodsInsert" parameterType="com.sample.myapp.goods.GoodsVo">
+	insert into goods values(
+		(select IFNULL(max(a.goods_id),0)+1 from goods a),
+		#{goodsType},
+		#{goodsName},
+		#{goodsPrice},
+		#{goodsColor},
+		#{goodsSize},
+		#{goodsOption1},
+		#{goodsOption2},
+		#{goodsOption3},
+		#{dbGoodsImage},
+		SYSDATE(),
+		#{goodsHTML},
+		#{goodsSale},
+		#{goodsBest},
+		#{goodsActive}
+	);
+</insert>
 <select id="goodsOption" resultType="STRING">
  	select * from goods
  	where goods_type =1
+ </select>
+ <select id="selectOneGoods" parameterType="java.lang.Integer" resultMap="goods">
+ 	select * from goods where goods_id = #{goodsId}
  </select>
 </mapper>

@@ -128,7 +128,7 @@ html, body{
 		border:0;
 		margin-bottom:30px;
 	}
-	.imageBox input{
+	.imageBox .input{
 		display:none;
 	}
 	.whiteSpace h1{
@@ -367,6 +367,33 @@ html, body{
 		width:50px;
 		margin-bottom:11px;
 	}
+	.thumbnail{
+		width:697px;
+		height:200px;
+	}
+	.thumbnail button{
+		width:20px;
+		height:20px;
+		vertical-align:top;
+		border:0;
+		background:transparent;		
+	}
+	#readMe{
+		display:block;
+		width:100%;
+		height:10px;
+		line-height:10px;
+		font-size:0.5rem;
+		color:red;
+		background:transparent;
+		
+	}
+	#radioLabel{
+		background:transparent;
+	}
+	#hiddenImage{
+		display:none;
+	}
 </style>
 <body>
 <%@ include file="/WEB-INF/views/component/adminSidebar.jsp" %>
@@ -375,19 +402,30 @@ html, body{
 <div class="boxWrap">
 	<div class="title"><h1>상품 등록</h1></div>
 	<div class="formWrap">
-		<form class="frmGoods" enctype= multipart/form-data>
+		<form class="frmGoods" method="post" action="/manager/goods/insert" enctype="multipart/form-data">
 			<div class="half">
-			<div class="line"><label><span class="required">&#42;</span>상품 이름</label><input type="text"><span><button type="button" class="checkName">중복확인</button></span></div>
-			<div class="line"><label><span class="required">&#42;</span>상품 종류</label><select name="goodsType">
+			<div class="line"><label><span class="required">&#42;</span>상품 이름</label><input type="text" name="goodsName" class="input"><span><button type="button" class="checkName">중복확인</button></span></div>
+			<div class="line"><label><span class="required">&#42;</span>상품 종류</label><select name="goodsType" class="input">
 				<c:forEach items="${typeList }" var="type">
 					<option value="${type.goodsCode }">${type.typeName}</option>
 				</c:forEach>
 			</select></div>
-			<div class="line"><label><span class="required">&#42;</span>상품 색상</label><input type="text"></div>
-			<div class="line"><label><span class="required">&#42;</span>상품 사이즈</label><input type="text"></div>
-			<div class="line"><label>옵션_1</label><input type="text"></div>
-			<div class="line"><label>옵션_2</label><input type="text"></div>
-			<div class="line"><label>옵션_3</label><input type="text"></div>
+			<div class="line"><label><span class="required">&#42;</span>상품 가격</label><input type="text" name="goodsPrice" class="input"></div>
+			<div class="line"><label><span class="required">&#42;</span>상품 색상</label><input type="text" name="goodsColor" class="input"></div>
+			<div class="line"><label><span class="required">&#42;</span>상품 사이즈</label><input type="text" name="goodsSize" class="input"></div>
+			<div class="line"><label><span class="required">&#42;</span>상품 할인 여부</label><input type="number" name="goodsSale" class="input" min="0" max="100"></div>
+			<label id="readMe">할인 없을 시 0 또는 비워둠, 할인율에서 '%'를 제외하고 기입</label>
+			<div class="line"><label><span class="required">&#42;</span>인기 상품 여부</label><input type="radio" name="goodsBest" value="0" class="input"><label id="radioLabel">인기상품</label><input type="radio" name="goodsBest" value="1" class="input"><label id="radioLabel">일반상품</label></div>
+			<div class="line"><label>옵션_1</label><input type="text" class="input"></div>
+			<div class="line"><label>옵션_2</label><input type="text" class="input"></div>
+			<div class="line"><label>옵션_3</label><input type="text"class="input"></div>
+			<div class="line"><label><span class="required">&#42;</span>활성화 여부</label><input type="radio" name="goodsActive" value="0" class="input"><label id="radioLabel">비활성화</label><input type="radio" name="goodsActive" value="1" class="input"><label id="radioLabel">활성화</label></div>
+			<div id="divImages" class="line">
+				<label>사진 첨부</label><input type="file" accept="image/*"	onchange="fn_changeImages(event)" class="input">
+			</div>
+			<div class="thumbnail">
+				
+			</div>
 			</div>
 			<div class="smallTitle">
 				<span>상품상세 내용 입력</span>
@@ -532,15 +570,18 @@ html, body{
 				</div>
 			</div>
 			<div class="whiteSpace" contenteditable="true"></div>
-			<input type="submit" value="저장">
+			<input type="hidden" name="goodsHTML" id="goodsHTML">
+			<input type="submit" value="저장" onclick="fn_gosubmit(event)">
 		</form>	
 	</div>
 </div>
 </div>
 <%@ include file="/WEB-INF/views/component/adminFooter.jsp" %>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="/resources/js/insertGoods.js"></script>
 <script>
-	var currentStyle = {"fontFamily":"","fontWeight":"","fontStyle":"","color":"","background":"","textAlign":""};
+	
+	
 	function fn_insertImage(event){
 		let inputTag = document.createElement("input");
 		inputTag.setAttribute("type","file");
@@ -566,22 +607,7 @@ html, body{
 		var tag = document.createElement(tagName);
 		var inputText = "";
 		$(".whiteSpace").append(tag);
-		document.onkeypress = function(event){
-			setCursor(tag);
-			if(event.keyCode==13){
-				document.onkeypress = null;
-			}else if(event.keyCode==32){
-				event.preventDefault();
-				let space = document.createElement("span");
-				space.innerHTML="&nbsp;";
-				tag.append(space);
-			}else{
-				event.preventDefault();
-				tag.append(event.key);
-				fn_styleChange(tag);
-			}
-			getCursor(tag);
-		}
+		documentKeypress(tag);
 		
 	}
 	function fn_insertFonts(){
@@ -593,26 +619,7 @@ html, body{
 			$(".whiteSpace").append(tag);
 		}
 		currentStyle["fontFamily"]=font;
-		document.onkeypress = function(event){
-			setCursor(tag);
-			if(event.keyCode==13){
-				event.preventDefault();
-				let br = document.createElement("br");
-				tag.append(br);
-				fn_styleChange(tag);
-			}else if(event.keyCode==32){
-				event.preventDefault();
-				let space = document.createElement("span");
-				space.innerHTML="&nbsp;";
-				tag.append(space);
-			}else{
-				event.preventDefault();
-				tag.append(event.key);
-				fn_styleChange(tag);
-			}
-			getCursor(tag);
-		}
-		
+		documentKeypress(tag);
 
 	}
 	function fn_changeWeight(event){
@@ -631,23 +638,7 @@ html, body{
 			currentStyle["fontWeight"] = "bold";
 			fn_styleChange(span);
 			
-			document.onkeypress=function(event){
-				setCursor(span);
-				if(event.keyCode==13){
-					event.preventDefault();
-					let br = document.createElement("br");
-					span.append(br);
-				}else if(event.keyCode==32){
-					event.preventDefault();
-					let space = document.createElement("span");
-					space.innerHTML="&nbsp;";
-					span.append(space);
-				}else{
-					event.preventDefault();
-					span.append(event.key);
-				}
-				getCursor(span);
-			}
+			documentKeypress(span);
 		}else{
 			$(".notBold").css({"display":"none"});
 			$(".bold").css({"display":"inline-block"});
@@ -655,44 +646,11 @@ html, body{
 			currentStyle["fontWeight"] = "normal";
 			fn_styleChange(span);
 			
-			document.onkeypress=function(event){
-				setCursor(span);
-				if(event.keyCode==13){
-					event.preventDefault();
-					let br = document.createElement("br");
-					span.append(br);
-				}else if(event.keyCode==32){
-					event.preventDefault();
-					let space = document.createElement("span");
-					space.innerHTML="&nbsp;";
-					span.append(space);
-				}else{
-					event.preventDefault();
-					span.append(event.key);
-				}
-				getCursor(span);
-			}
+			documentKeypress(span);
 		}
 		
 	}
-	function setCursor(node){
-		var cursor = document.createElement("span");
-		cursor.id = "cursor";
-		$(".whiteSpace").append(cursor);
-		
-		var range = document.createRange();
-		range.selectNode(cursor);
-		var selection = window.getSelection();
-		selection.removeAllRanges();
-		selection.addRange(range);
-		
-		node.blur();
-	}
-	function getCursor(node){
-		var range = window.getSelection().getRangeAt(0).deleteContents();
-		$("#cursor").focus();
-		$("#cursor").remove();
-	}
+	
 	function fn_styleChange(tag){
 		tag.style.fontWeight = currentStyle["fontWeight"];
 		tag.style.fontFamily = currentStyle["fontFamily"];
@@ -718,23 +676,7 @@ html, body{
 			currentStyle["fontStyle"] = "italic";
 			fn_styleChange(span);
 			
-			document.onkeypress=function(event){
-				setCursor(span);
-				if(event.keyCode==13){
-					event.preventDefault();
-					let br = document.createElement("br");
-					span.append(br);
-				}else if(event.keyCode==32){
-					event.preventDefault();
-					let space = document.createElement("span");
-					space.innerHTML="&nbsp;";
-					span.append(space);
-				}else{
-					event.preventDefault();
-					span.append(event.key);
-				}
-				getCursor(span);
-			}
+			documentKeypress(span);
 		}else{
 			$(".notItalic").css({"display":"none"});
 			$(".italic").css({"display":"inline-block"});
@@ -742,23 +684,7 @@ html, body{
 			currentStyle["fontStyle"] = "normal";
 			fn_styleChange(span);
 			
-			document.onkeypress=function(event){
-				setCursor(span);
-				if(event.keyCode==13){
-					event.preventDefault();
-					let br = document.createElement("br");
-					span.append(br);
-				}else if(event.keyCode==32){
-					event.preventDefault();
-					let space = document.createElement("span");
-					space.innerHTML="&nbsp;";
-					span.append(space);
-				}else{
-					event.preventDefault();
-					span.append(event.key);
-				}
-				getCursor(span);
-			}
+			documentKeypress(span);
 		}
 	}
 	function fn_changeUnderline(event){
@@ -777,23 +703,8 @@ html, body{
 			currentStyle["textDecoration"] = "underline";
 			fn_styleChange(span);
 			
-			document.onkeypress=function(event){
-				setCursor(span);
-				if(event.keyCode==13){
-					event.preventDefault();
-					let br = document.createElement("br");
-					span.append(br);
-				}else if(event.keyCode==32){
-					event.preventDefault();
-					let space = document.createElement("span");
-					space.innerHTML="&nbsp;";
-					span.append(space);
-				}else{
-					event.preventDefault();
-					span.append(event.key);
-				}
-				getCursor(span);
-			}
+			documentKeypress(span);
+			
 		}else{
 			$(".notUnderline").css({"display":"none"});
 			$(".underline").css({"display":"inline-block"});
@@ -801,23 +712,7 @@ html, body{
 			currentStyle["textDecoration"] = "none";
 			fn_styleChange(span);
 			
-			document.onkeypress=function(event){
-				setCursor(span);
-				if(event.keyCode==13){
-					event.preventDefault();
-					let br = document.createElement("br");
-					span.append(br);
-				}else if(event.keyCode==32){
-					event.preventDefault();
-					let space = document.createElement("span");
-					space.innerHTML="&nbsp;";
-					span.append(space);
-				}else{
-					event.preventDefault();
-					span.append(event.key);
-				}
-				getCursor(span);
-			}
+			documentKeypress(span);
 		}
 	}
 	function fn_changeCancel(event){
@@ -836,23 +731,7 @@ html, body{
 			currentStyle["textDecoration"] = "line-through";
 			fn_styleChange(span);
 			
-			document.onkeypress=function(event){
-				setCursor(span);
-				if(event.keyCode==13){
-					event.preventDefault();
-					let br = document.createElement("br");
-					span.append(br);
-				}else if(event.keyCode==32){
-					event.preventDefault();
-					let space = document.createElement("span");
-					space.innerHTML="&nbsp;";
-					span.append(space);
-				}else{
-					event.preventDefault();
-					span.append(event.key);
-				}
-				getCursor(span);
-			}
+			documentKeypress(span);
 		}else{
 			$(".notCancel").css({"display":"none"});
 			$(".cancel").css({"display":"inline-block"});
@@ -860,23 +739,7 @@ html, body{
 			currentStyle["textDecoration"] = "none";
 			fn_styleChange(span);
 			
-			document.onkeypress=function(event){
-				setCursor(span);
-				if(event.keyCode==13){
-					event.preventDefault();
-					let br = document.createElement("br");
-					span.append(br);
-				}else if(event.keyCode==32){
-					event.preventDefault();
-					let space = document.createElement("span");
-					space.innerHTML="&nbsp;";
-					span.append(space);
-				}else{
-					event.preventDefault();
-					span.append(event.key);
-				}
-				getCursor(span);
-			}
+			documentKeypress(span);
 		}
 	}
 	var color = null;
@@ -893,23 +756,7 @@ html, body{
 		currentStyle["color"] = color;
 		fn_styleChange(span);
 		
-		document.onkeypress=function(event){
-			setCursor(span);
-			if(event.keyCode==13){
-				event.preventDefault();
-				let br = document.createElement("br");
-				span.append(br);
-			}else if(event.keyCode==32){
-				event.preventDefault();
-				let space = document.createElement("span");
-				space.innerHTML="&nbsp;";
-				span.append(space);
-			}else{
-				event.preventDefault();
-				span.append(event.key);
-			}
-			getCursor(span);
-		}
+		documentKeypress(span);
 		
 	}
 	var back = null;
@@ -926,23 +773,7 @@ html, body{
 		currentStyle["background"] = back;
 		fn_styleChange(span);
 		
-		document.onkeypress=function(event){
-			setCursor(span);
-			if(event.keyCode==13){
-				event.preventDefault();
-				let br = document.createElement("br");
-				span.append(br);
-			}else if(event.keyCode==32){
-				event.preventDefault();
-				let space = document.createElement("span");
-				space.innerHTML="&nbsp;";
-				span.append(space);
-			}else{
-				event.preventDefault();
-				span.append(event.key);
-			}
-			getCursor(span);
-		}
+		documentKeypress(span);
 		
 	}
 	function fn_changeTextColor(event){
@@ -977,23 +808,7 @@ html, body{
 		currentStyle["textAlign"] = event.target.value;
 		fn_styleChange(span);
 		
-		document.onkeypress=function(event){
-			setCursor(span);
-			if(event.keyCode==13){
-				event.preventDefault();
-				let br = document.createElement("br");
-				span.append(br);
-			}else if(event.keyCode==32){
-				event.preventDefault();
-				let space = document.createElement("span");
-				space.innerHTML="&nbsp;";
-				span.append(space);
-			}else{
-				event.preventDefault();
-				span.append(event.key);
-			}
-			getCursor(span);
-		}
+		documentKeypress(span);
 	}
 	function fn_insertQuote(event){
 		
@@ -1008,23 +823,7 @@ html, body{
 		quote.append(quoteImage);
 		quote.append(quoteText);
 		
-		document.onkeypress=function(event){
-			setCursor(quoteText);
-			if(event.keyCode==13){
-				event.preventDefault();
-				var enter = document.createElement("br");
-				quoteText.append(enter);
-			}else if(event.keyCode==32){
-				event.preventDefault();
-				var space = document.createElement("span");
-				space.innerHTML = "&nbsp;";
-				quoteText.append(space);
-			}else{
-				event.preventDefault();
-				quoteText.append(event.key);
-			}
-			getCursor(quoteText);
-		};
+		documentKeypress(quoteText);
 	}
 	function fn_changePage(event){
 		var page= event.target.value-1;
@@ -1081,8 +880,71 @@ html, body{
 		}
 		document.onkeypress=function(event){
 			setCursor(hr);
-			getCursor(hr)
+			getCursor(hr);
 		}
+	}
+	function fn_gosubmit(event){
+		
+		event.preventDefault();
+		var goodshtml = $(".whiteSpace").html();
+		$("#goodsHTML").val(String(goodshtml));
+		$(".frmGoods").submit();
+	}
+	function fn_changeImages(event){
+		let imageCount = 0;
+		document.querySelector(".thumbnail").childNodes.forEach(el=>{
+			if(el.childNodes.length>0){
+				imageCount++;
+				
+			}
+		});
+		if(imageCount>=5){
+			alert("최대 5개의 이미지를 등록할 수 있습니다.")
+		}else{
+			var inputImage = document.createElement("input");
+			inputImage.setAttribute("type","file");
+			inputImage.setAttribute("accepts","image/*");
+			inputImage.setAttribute("name","image");
+			inputImage.setAttribute("id","hiddenImage");
+			inputImage.files=event.target.files;
+			
+			
+			var div = document.createElement("div");
+			div.setAttribute("style","display:inline-block;");
+			$(".thumbnail").append(div);
+			div.append(inputImage);
+			
+			var reader = new FileReader();
+			
+			reader.onload = function(event){
+				
+				
+				var button = document.createElement("button");
+				button.setAttribute("class","imageButton");
+				button.setAttribute("width","30px");
+				button.setAttribute("height","30px");
+				button.setAttribute("style","float:top;");
+				button.setAttribute("onClick","fn_deleteImage(event)");
+				button.innerText = "X";
+				div.append(button);
+				
+				var img = document.createElement("img");
+				img.setAttribute("src",event.target.result);
+				img.setAttribute("width","100px");
+				img.setAttribute("height","200px");
+				div.append(img);
+				
+				
+			}
+			reader.readAsDataURL(event.target.files[0]);
+		}
+		
+	}
+	function fn_deleteImage(event){
+		var parent = event.target.parentNode;
+		while(parent.firstChild)  {
+		    parent.removeChild(parent.firstChild);
+		  }
 	}
 </script>
 </body>

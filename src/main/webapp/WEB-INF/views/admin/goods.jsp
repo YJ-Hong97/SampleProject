@@ -84,16 +84,10 @@
 		margin:0;
 		vertical-align:top;
 		float:right;
+		text-align:center;
+		line-height:25px;
 	}
-	.insertWrap button{
-		
-		width:100%;
-		height:100%;
-		background:#D9D9D9;
-		border:0;
-		margin:0;
-		padding:0;
-	}
+	
 	.listWrap{
 		width:815px;
 		height:564px;
@@ -139,7 +133,7 @@
 			<input type="text"><span><button type="button" class="searchIcon"></button></span>
 		</div>
 		<div class="insertWrap">
-			<button type="button">상품 등록</button>
+			<a class="insertGoods" href="/manager/goods/insert">상품 등록</a>
 		</div>
 	</div>
 	<div class="listWrap">
@@ -170,7 +164,7 @@
 						<c:when test="${goods.goodsType==8 }"><td>acc</td></c:when>
 						<c:otherwise><td>미등록 코드</td></c:otherwise>
 					</c:choose>
-					<td ><button type="button">상세보기</button></td>
+					<td ><button type="button" onclick="fn_detailGoods(${goods.goodsId})">상세보기</button></td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -200,6 +194,9 @@
 		}else{
 			location.href=`<%request.getContextPath();%>?page=`+page;
 		}
+	}
+	function fn_detailGoods(goodsId){
+		location.href = "/manager/goods/detail?goodsId="+goodsId;
 	}
 </script>
 </body>
