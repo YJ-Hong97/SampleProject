@@ -410,6 +410,7 @@ html, body{
 					<option value="${type.goodsCode }">${type.typeName}</option>
 				</c:forEach>
 			</select></div>
+			<div class="line"><label><span class="required">&#42;</span>상품 가격</label><input type="text" name="goodsPrice" class="input"></div>
 			<div class="line"><label><span class="required">&#42;</span>상품 색상</label><input type="text" name="goodsColor" class="input"></div>
 			<div class="line"><label><span class="required">&#42;</span>상품 사이즈</label><input type="text" name="goodsSize" class="input"></div>
 			<div class="line"><label><span class="required">&#42;</span>상품 할인 여부</label><input type="number" name="goodsSale" class="input" min="0" max="100"></div>
@@ -418,6 +419,7 @@ html, body{
 			<div class="line"><label>옵션_1</label><input type="text" class="input"></div>
 			<div class="line"><label>옵션_2</label><input type="text" class="input"></div>
 			<div class="line"><label>옵션_3</label><input type="text"class="input"></div>
+			<div class="line"><label><span class="required">&#42;</span>활성화 여부</label><input type="radio" name="goodsActive" value="0" class="input"><label id="radioLabel">비활성화</label><input type="radio" name="goodsActive" value="1" class="input"><label id="radioLabel">활성화</label></div>
 			<div id="divImages" class="line">
 				<label>사진 첨부</label><input type="file" accept="image/*"	onchange="fn_changeImages(event)" class="input">
 			</div>
@@ -576,9 +578,10 @@ html, body{
 </div>
 <%@ include file="/WEB-INF/views/component/adminFooter.jsp" %>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="/resources/js/insertGoods.js"></script>
 <script>
 	
-	var currentStyle = {"fontFamily":"","fontWeight":"","fontStyle":"","color":"","background":"","textAlign":""};
+	
 	function fn_insertImage(event){
 		let inputTag = document.createElement("input");
 		inputTag.setAttribute("type","file");
@@ -604,22 +607,7 @@ html, body{
 		var tag = document.createElement(tagName);
 		var inputText = "";
 		$(".whiteSpace").append(tag);
-		document.onkeypress = function(event){
-			setCursor(tag);
-			if(event.keyCode==13){
-				document.onkeypress = null;
-			}else if(event.keyCode==32){
-				event.preventDefault();
-				let space = document.createElement("span");
-				space.innerHTML="&nbsp;";
-				tag.append(space);
-			}else{
-				event.preventDefault();
-				tag.append(event.key);
-				fn_styleChange(tag);
-			}
-			getCursor(tag);
-		}
+		documentKeypress(tag);
 		
 	}
 	function fn_insertFonts(){
@@ -631,26 +619,7 @@ html, body{
 			$(".whiteSpace").append(tag);
 		}
 		currentStyle["fontFamily"]=font;
-		document.onkeypress = function(event){
-			setCursor(tag);
-			if(event.keyCode==13){
-				event.preventDefault();
-				let br = document.createElement("br");
-				tag.append(br);
-				fn_styleChange(tag);
-			}else if(event.keyCode==32){
-				event.preventDefault();
-				let space = document.createElement("span");
-				space.innerHTML="&nbsp;";
-				tag.append(space);
-			}else{
-				event.preventDefault();
-				tag.append(event.key);
-				fn_styleChange(tag);
-			}
-			getCursor(tag);
-		}
-		
+		documentKeypress(tag);
 
 	}
 	function fn_changeWeight(event){
@@ -669,23 +638,7 @@ html, body{
 			currentStyle["fontWeight"] = "bold";
 			fn_styleChange(span);
 			
-			document.onkeypress=function(event){
-				setCursor(span);
-				if(event.keyCode==13){
-					event.preventDefault();
-					let br = document.createElement("br");
-					span.append(br);
-				}else if(event.keyCode==32){
-					event.preventDefault();
-					let space = document.createElement("span");
-					space.innerHTML="&nbsp;";
-					span.append(space);
-				}else{
-					event.preventDefault();
-					span.append(event.key);
-				}
-				getCursor(span);
-			}
+			documentKeypress(span);
 		}else{
 			$(".notBold").css({"display":"none"});
 			$(".bold").css({"display":"inline-block"});
@@ -693,44 +646,11 @@ html, body{
 			currentStyle["fontWeight"] = "normal";
 			fn_styleChange(span);
 			
-			document.onkeypress=function(event){
-				setCursor(span);
-				if(event.keyCode==13){
-					event.preventDefault();
-					let br = document.createElement("br");
-					span.append(br);
-				}else if(event.keyCode==32){
-					event.preventDefault();
-					let space = document.createElement("span");
-					space.innerHTML="&nbsp;";
-					span.append(space);
-				}else{
-					event.preventDefault();
-					span.append(event.key);
-				}
-				getCursor(span);
-			}
+			documentKeypress(span);
 		}
 		
 	}
-	function setCursor(node){
-		var cursor = document.createElement("span");
-		cursor.id = "cursor";
-		$(".whiteSpace").append(cursor);
-		
-		var range = document.createRange();
-		range.selectNode(cursor);
-		var selection = window.getSelection();
-		selection.removeAllRanges();
-		selection.addRange(range);
-		
-		node.blur();
-	}
-	function getCursor(node){
-		var range = window.getSelection().getRangeAt(0).deleteContents();
-		$("#cursor").focus();
-		$("#cursor").remove();
-	}
+	
 	function fn_styleChange(tag){
 		tag.style.fontWeight = currentStyle["fontWeight"];
 		tag.style.fontFamily = currentStyle["fontFamily"];
@@ -756,23 +676,7 @@ html, body{
 			currentStyle["fontStyle"] = "italic";
 			fn_styleChange(span);
 			
-			document.onkeypress=function(event){
-				setCursor(span);
-				if(event.keyCode==13){
-					event.preventDefault();
-					let br = document.createElement("br");
-					span.append(br);
-				}else if(event.keyCode==32){
-					event.preventDefault();
-					let space = document.createElement("span");
-					space.innerHTML="&nbsp;";
-					span.append(space);
-				}else{
-					event.preventDefault();
-					span.append(event.key);
-				}
-				getCursor(span);
-			}
+			documentKeypress(span);
 		}else{
 			$(".notItalic").css({"display":"none"});
 			$(".italic").css({"display":"inline-block"});
@@ -780,23 +684,7 @@ html, body{
 			currentStyle["fontStyle"] = "normal";
 			fn_styleChange(span);
 			
-			document.onkeypress=function(event){
-				setCursor(span);
-				if(event.keyCode==13){
-					event.preventDefault();
-					let br = document.createElement("br");
-					span.append(br);
-				}else if(event.keyCode==32){
-					event.preventDefault();
-					let space = document.createElement("span");
-					space.innerHTML="&nbsp;";
-					span.append(space);
-				}else{
-					event.preventDefault();
-					span.append(event.key);
-				}
-				getCursor(span);
-			}
+			documentKeypress(span);
 		}
 	}
 	function fn_changeUnderline(event){
@@ -815,23 +703,8 @@ html, body{
 			currentStyle["textDecoration"] = "underline";
 			fn_styleChange(span);
 			
-			document.onkeypress=function(event){
-				setCursor(span);
-				if(event.keyCode==13){
-					event.preventDefault();
-					let br = document.createElement("br");
-					span.append(br);
-				}else if(event.keyCode==32){
-					event.preventDefault();
-					let space = document.createElement("span");
-					space.innerHTML="&nbsp;";
-					span.append(space);
-				}else{
-					event.preventDefault();
-					span.append(event.key);
-				}
-				getCursor(span);
-			}
+			documentKeypress(span);
+			
 		}else{
 			$(".notUnderline").css({"display":"none"});
 			$(".underline").css({"display":"inline-block"});
@@ -839,23 +712,7 @@ html, body{
 			currentStyle["textDecoration"] = "none";
 			fn_styleChange(span);
 			
-			document.onkeypress=function(event){
-				setCursor(span);
-				if(event.keyCode==13){
-					event.preventDefault();
-					let br = document.createElement("br");
-					span.append(br);
-				}else if(event.keyCode==32){
-					event.preventDefault();
-					let space = document.createElement("span");
-					space.innerHTML="&nbsp;";
-					span.append(space);
-				}else{
-					event.preventDefault();
-					span.append(event.key);
-				}
-				getCursor(span);
-			}
+			documentKeypress(span);
 		}
 	}
 	function fn_changeCancel(event){
@@ -874,23 +731,7 @@ html, body{
 			currentStyle["textDecoration"] = "line-through";
 			fn_styleChange(span);
 			
-			document.onkeypress=function(event){
-				setCursor(span);
-				if(event.keyCode==13){
-					event.preventDefault();
-					let br = document.createElement("br");
-					span.append(br);
-				}else if(event.keyCode==32){
-					event.preventDefault();
-					let space = document.createElement("span");
-					space.innerHTML="&nbsp;";
-					span.append(space);
-				}else{
-					event.preventDefault();
-					span.append(event.key);
-				}
-				getCursor(span);
-			}
+			documentKeypress(span);
 		}else{
 			$(".notCancel").css({"display":"none"});
 			$(".cancel").css({"display":"inline-block"});
@@ -898,23 +739,7 @@ html, body{
 			currentStyle["textDecoration"] = "none";
 			fn_styleChange(span);
 			
-			document.onkeypress=function(event){
-				setCursor(span);
-				if(event.keyCode==13){
-					event.preventDefault();
-					let br = document.createElement("br");
-					span.append(br);
-				}else if(event.keyCode==32){
-					event.preventDefault();
-					let space = document.createElement("span");
-					space.innerHTML="&nbsp;";
-					span.append(space);
-				}else{
-					event.preventDefault();
-					span.append(event.key);
-				}
-				getCursor(span);
-			}
+			documentKeypress(span);
 		}
 	}
 	var color = null;
@@ -931,23 +756,7 @@ html, body{
 		currentStyle["color"] = color;
 		fn_styleChange(span);
 		
-		document.onkeypress=function(event){
-			setCursor(span);
-			if(event.keyCode==13){
-				event.preventDefault();
-				let br = document.createElement("br");
-				span.append(br);
-			}else if(event.keyCode==32){
-				event.preventDefault();
-				let space = document.createElement("span");
-				space.innerHTML="&nbsp;";
-				span.append(space);
-			}else{
-				event.preventDefault();
-				span.append(event.key);
-			}
-			getCursor(span);
-		}
+		documentKeypress(span);
 		
 	}
 	var back = null;
@@ -964,23 +773,7 @@ html, body{
 		currentStyle["background"] = back;
 		fn_styleChange(span);
 		
-		document.onkeypress=function(event){
-			setCursor(span);
-			if(event.keyCode==13){
-				event.preventDefault();
-				let br = document.createElement("br");
-				span.append(br);
-			}else if(event.keyCode==32){
-				event.preventDefault();
-				let space = document.createElement("span");
-				space.innerHTML="&nbsp;";
-				span.append(space);
-			}else{
-				event.preventDefault();
-				span.append(event.key);
-			}
-			getCursor(span);
-		}
+		documentKeypress(span);
 		
 	}
 	function fn_changeTextColor(event){
@@ -1015,23 +808,7 @@ html, body{
 		currentStyle["textAlign"] = event.target.value;
 		fn_styleChange(span);
 		
-		document.onkeypress=function(event){
-			setCursor(span);
-			if(event.keyCode==13){
-				event.preventDefault();
-				let br = document.createElement("br");
-				span.append(br);
-			}else if(event.keyCode==32){
-				event.preventDefault();
-				let space = document.createElement("span");
-				space.innerHTML="&nbsp;";
-				span.append(space);
-			}else{
-				event.preventDefault();
-				span.append(event.key);
-			}
-			getCursor(span);
-		}
+		documentKeypress(span);
 	}
 	function fn_insertQuote(event){
 		
@@ -1046,23 +823,7 @@ html, body{
 		quote.append(quoteImage);
 		quote.append(quoteText);
 		
-		document.onkeypress=function(event){
-			setCursor(quoteText);
-			if(event.keyCode==13){
-				event.preventDefault();
-				var enter = document.createElement("br");
-				quoteText.append(enter);
-			}else if(event.keyCode==32){
-				event.preventDefault();
-				var space = document.createElement("span");
-				space.innerHTML = "&nbsp;";
-				quoteText.append(space);
-			}else{
-				event.preventDefault();
-				quoteText.append(event.key);
-			}
-			getCursor(quoteText);
-		};
+		documentKeypress(quoteText);
 	}
 	function fn_changePage(event){
 		var page= event.target.value-1;

@@ -93,4 +93,12 @@ public class ManagerController {
 	public void insertGoods(@ModelAttribute GoodsVo goodsVo,HttpServletRequest request) throws IOException {
 		goodsDAO.insertGoods(goodsVo,request);
 	}
+	/*
+	@RequestMapping(value = "/goods/detail",method = RequestMethod.GET)
+	public String detailGoods(int goodsId,Model model) {
+		GoodsVo goodsVo = goodsDAO.selectGoods(goodsId);
+		model.addAttribute("goods",goodsVo);
+		return 
+	}
+	*/
 }

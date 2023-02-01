@@ -16,6 +16,7 @@
 	<result column="goods_html" property="goodsHTML"/>
 	<result column="goods_sale" property="goodsSale"/>
 	<result column="goods_best" property="goodsBest"/>
+	<result column="goods_active" property="goodsActive"/>
 </resultMap>
 <resultMap id="emoji" type="com.sample.myapp.goods.EmojiVo">
 	<result column="emojis_code" property="emojis_code"/>
@@ -58,11 +59,15 @@
 		SYSDATE(),
 		#{goodsHTML},
 		#{goodsSale},
-		#{goodsBest}
+		#{goodsBest},
+		#{goodsActive}
 	);
 </insert>
 <select id="goodsOption" resultType="STRING">
  	select * from goods
  	where goods_type =1
+ </select>
+ <select id="selectOneGoods" parameterType="java.lang.Integer" resultMap="goods">
+ 	select * from goods where goods_id = #{goodsId}
  </select>
 </mapper>

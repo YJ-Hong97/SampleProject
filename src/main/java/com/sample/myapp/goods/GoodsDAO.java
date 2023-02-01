@@ -95,4 +95,7 @@ public class GoodsDAO {
 	public List<String> selectOption() {
 		return session.selectList("goodsMapper.goodsOption");
 	}
+	public GoodsVo selectGoods(int goodsId) {
+		return session.selectOne("goodsMapper.selectOneGoods",goodsId);
+	}
 }

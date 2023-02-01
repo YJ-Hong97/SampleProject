@@ -26,6 +26,7 @@ public class GoodsVo {
 	private String goodsHTML;
 	private int goodsSale;
 	private int goodsBest;
+	private int goodsActive;
 	
 	
 	
@@ -108,13 +109,20 @@ public class GoodsVo {
 	public void setGoodsBest(int goodsBest) {
 		this.goodsBest = goodsBest;
 	}
+	public int getGoodsActive() {
+		return goodsActive;
+	}
+	public void setGoodsActive(int goodsActive) {
+		this.goodsActive = goodsActive;
+	}
 	@Override
 	public String toString() {
 		return "GoodsVo [goodsId=" + goodsId + ", goodsType=" + goodsType + ", goodsName=" + goodsName + ", goodsPrice="
 				+ goodsPrice + ", goodsColor=" + goodsColor + ", goodsSize=" + goodsSize + ", goodsOption1="
-				+ goodsOption1 + ", goodsOption2=" + goodsOption2 + ", goodsOption3=" + goodsOption3 + ", goodsImage="
-				+ ", dbGoodsImage=" + dbGoodsImage + ", goodsDate=" + goodsDate
-				+ ", goodsHTML=" + goodsHTML + ", goodsSale=" + goodsSale + ", goodsBest=" + goodsBest + "]";
+				+ goodsOption1 + ", goodsOption2=" + goodsOption2 + ", goodsOption3=" + goodsOption3 + ", dbGoodsImage="
+				+ dbGoodsImage + ", goodsDate=" + goodsDate + ", goodsHTML=" + goodsHTML + ", goodsSale=" + goodsSale
+				+ ", goodsBest=" + goodsBest + ", goodsActive=" + goodsActive + "]";
 	}
+	
 	
 }

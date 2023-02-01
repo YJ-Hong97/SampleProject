@@ -47,7 +47,7 @@
 			<a><span>주문</span></a>
 		</div>
 		<div class="menu">
-			<a><span>상품</span></a>
+			<a href="/manager/goods"><span>상품</span></a>
 		</div>
 		<div class="menu">
 			<a><span>회원</span></a>
