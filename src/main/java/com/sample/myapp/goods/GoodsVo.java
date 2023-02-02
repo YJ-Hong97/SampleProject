@@ -1,13 +1,12 @@
 package com.sample.myapp.goods;
 
-import java.io.File;
-import java.sql.Date;
-import java.util.Arrays;
 
-import org.springframework.web.multipart.MultipartFile;
+import java.sql.Date;
+
 
 import lombok.Getter;
 import lombok.Setter;
+import software.amazon.ion.impl.PrivateByteTransferReader;
 
 @Getter
 @Setter
@@ -22,14 +21,32 @@ public class GoodsVo {
 	private String goodsOption2;
 	private String goodsOption3;
 	private String dbGoodsImage;
+	private String s3GoodsImage;
+	private String[] arrayImage;
 	private Date goodsDate;
 	private String goodsHTML;
 	private int goodsSale;
 	private int goodsBest;
 	private int goodsActive;
 	
-	
-	
+	public String[] getArrayImage() {
+		return arrayImage;
+	}
+	public void setArrayImage(String[] arrayImage) {
+		this.arrayImage = arrayImage;
+	}
+	public String getS3GoodsImage() {
+		return s3GoodsImage;
+	}
+	public void setS3GoodsImage(String s3GoodsImage) {
+		this.s3GoodsImage = s3GoodsImage;
+	}
+	public String getDbGoodsImage() {
+		return dbGoodsImage;
+	}
+	public void setDbGoodsImage(String dbGoodsImage) {
+		this.dbGoodsImage = dbGoodsImage;
+	}
 	public String getGoodsHTML() {
 		return goodsHTML;
 	}

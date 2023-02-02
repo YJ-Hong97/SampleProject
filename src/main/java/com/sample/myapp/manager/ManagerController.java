@@ -70,6 +70,10 @@ public class ManagerController {
 		page.setSize(50);
 		page.setPageList(count);
 		List<EmojiVo> emojis = goodsDAO.selectAllEmojis(page);
+		
+		GoodsVo goodsVo = new GoodsVo();
+		
+		model.addAttribute("goods",goodsVo);
 		model.addAttribute("page", page);
 		model.addAttribute("emojis", emojis);
 		model.addAttribute("typeList", typeList);
@@ -88,17 +92,25 @@ public class ManagerController {
 		return emojis;
 	}
 
-	@ResponseBody
 	@RequestMapping(value = "/goods/insert", method = RequestMethod.POST)
-	public void insertGoods(@ModelAttribute GoodsVo goodsVo,HttpServletRequest request) throws IOException {
-		goodsDAO.insertGoods(goodsVo,request);
+	public String insertGoods(@ModelAttribute GoodsVo goodsVo,HttpServletRequest request) throws IOException {
+		if(goodsVo.getGoodsId()!=0) {
+			goodsDAO.updateGoods(goodsVo, request);
+		}else {
+			goodsDAO.insertGoods(goodsVo,request);
+		}
+		
+		return "redirect:/manager/goods";
 	}
-	/*
+	/*상품 상세 페이지로 이동*/
 	@RequestMapping(value = "/goods/detail",method = RequestMethod.GET)
 	public String detailGoods(int goodsId,Model model) {
 		GoodsVo goodsVo = goodsDAO.selectGoods(goodsId);
+		String[] dbGoodsImages = goodsVo.getDbGoodsImage().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(",");
+		
+		model.addAttribute("dbGoodsImages",dbGoodsImages);
 		model.addAttribute("goods",goodsVo);
-		return 
+		return "/admin/insertGoods";
 	}
-	*/
+	
 }

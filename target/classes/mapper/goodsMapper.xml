@@ -17,6 +17,7 @@
 	<result column="goods_sale" property="goodsSale"/>
 	<result column="goods_best" property="goodsBest"/>
 	<result column="goods_active" property="goodsActive"/>
+	<result column="s3_goods_image" property="s3GoodsImage"/>
 </resultMap>
 <resultMap id="emoji" type="com.sample.myapp.goods.EmojiVo">
 	<result column="emojis_code" property="emojis_code"/>
@@ -45,7 +46,8 @@
 	select count(*) from emojis
 </select>
 <insert id="goodsInsert" parameterType="com.sample.myapp.goods.GoodsVo">
-	insert into goods values(
+	<if test = "goodsId == 0">
+		insert into goods values(
 		(select IFNULL(max(a.goods_id),0)+1 from goods a),
 		#{goodsType},
 		#{goodsName},
@@ -60,8 +62,30 @@
 		#{goodsHTML},
 		#{goodsSale},
 		#{goodsBest},
-		#{goodsActive}
-	);
+		#{goodsActive},
+		#{s3GoodsImage}
+	)
+	</if>
+	<if test = "goodsId != 0">
+		update goods set 
+			goods_type = #{goodsType},
+			goods_name = #{goodsName},
+			goods_price = #{goodsPrice},
+			goods_color = #{goodsColor},
+			goods_size = #{goodsSize},
+			goods_option_1 = #{goodsOption1},
+			goods_option_2 = #{goodsOption2},
+			goods_option_3 = #{goodsOption3},
+			goods_image = #{dbGoodsImage},
+			goods_date = SYSDATE(),
+			goods_html = #{goodsHTML},
+			goods_sale = #{goodsSale},
+			goods_best = #{goodsBest},
+			goods_active = #{goodsActive},
+			s3_goods_image = #{s3GoodsImage}
+		
+		where goods_id = #{goodsId}
+	</if>
 </insert>
 <select id="goodsOption" resultType="STRING">
  	select * from goods
