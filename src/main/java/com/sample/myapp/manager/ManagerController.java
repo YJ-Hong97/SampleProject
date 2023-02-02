@@ -42,7 +42,7 @@ public class ManagerController {
 	/* 상품 관리 페이지 이동 */
 	@RequestMapping("/goods")
 	public String goods(PageVO page, Model model,Integer goodsType) {
-		int count = goodsDAO.totalCount();
+		int count = goodsDAO.totalCount(goodsType);
 		page.setPageList(count);
 		
 		Map<String, Integer> map = new HashMap<>();

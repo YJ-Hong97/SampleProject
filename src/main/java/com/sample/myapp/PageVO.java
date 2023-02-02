@@ -77,7 +77,10 @@ public class PageVO {
 	public void setPageList(int count) {
 		int[] pageList =null;
 		size = getSize();
-		int fakeCount =Math.round(count/size);
+		int fakeCount = count/size;
+		if(count%size>0) {
+			fakeCount = fakeCount+1;
+		}
 		
 		if(fakeCount>5) {
 			if(page>fakeCount) {

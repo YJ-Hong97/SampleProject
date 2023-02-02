@@ -183,7 +183,9 @@
 <%@ include file="/WEB-INF/views/component/adminFooter.jsp" %>
 <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
 <script>
-	var goodsType = 0;
+
+var goodsType = -1;
+
 	function fn_changeType(type){
 		goodsType = type;
 		location.href=`<%request.getContextPath();%>?page=0&goodsType=`+goodsType;

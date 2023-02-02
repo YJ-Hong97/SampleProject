@@ -30,8 +30,8 @@ public class GoodsDAO {
 		return session.selectList("goodsMapper.goodsSelectAll", map);
 	}
 
-	public int totalCount() {
-		return session.selectOne("goodsMapper.goodsTotal");
+	public int totalCount(Integer goodsType) {
+		return session.selectOne("goodsMapper.goodsTotal",goodsType);
 	}
 
 	public List<GoodsTypeVo> selectAllType() {

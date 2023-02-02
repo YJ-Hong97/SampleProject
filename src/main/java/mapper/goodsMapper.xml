@@ -32,14 +32,20 @@
 	<if test = "goodsType==null">
 		where 1= 1
 	</if>
-	<if test = "goodsType!=null">
+	<if test = "goodsType!=null or goodsType == -1">
 		where goods_type = #{goodsType}
 	</if>
 	order by goods_date
 	limit #{size} offset #{start}
 </select>
-<select id="goodsTotal" resultType="java.lang.Integer">
-	select count(goods_id) from goods
+<select id="goodsTotal" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+	select count(goods_id) from goods 
+	<if test = "value==null">
+		where 1= 1
+	</if>
+	<if test = "value!=null or value == -1">
+		where goods_type = #{value}
+	</if>
 </select>
 <select id="goodsTypeSelectAll" resultMap="goodsType">
 	select * from goods_type
