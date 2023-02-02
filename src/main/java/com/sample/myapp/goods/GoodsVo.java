@@ -1,17 +1,13 @@
 package com.sample.myapp.goods;
 
-import java.io.File;
 import java.sql.Date;
-import java.util.Arrays;
-
-import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class GoodsVo implements Comparable<GoodsVo>{
+public class GoodsVo {
 	private int goodsId;
 	private int goodsType;
 	private String goodsName;
@@ -123,10 +119,5 @@ public class GoodsVo implements Comparable<GoodsVo>{
 				+ dbGoodsImage + ", goodsDate=" + goodsDate + ", goodsHTML=" + goodsHTML + ", goodsSale=" + goodsSale
 				+ ", goodsBest=" + goodsBest + ", goodsActive=" + goodsActive + "]";
 	}
-	@Override
-	public int compareTo(GoodsVo o) { 
-	   return 0;
-	}
-	
 	
 }

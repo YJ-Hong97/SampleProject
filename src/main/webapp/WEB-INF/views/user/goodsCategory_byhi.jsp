@@ -162,15 +162,15 @@
  		<table>
  			<tr>
  				<th><button class="btn"
-        type="button" onclick="getGoods_Best()">인기순</button></th>
+        type="button" onclick="getGoods_sort('${page.page}','goods_best')">인기순</button></th>
  				<th><button class="btn"
-        type="button" onclick="getGoods_Id()">신상품순</th>
+        type="button" onclick="getGoods_sort('${page.page}','goods_date')">신상품순</th>
  				<th><button class="btn"
-        type="button" onclick="getGoods_Price_down()">낮은가격순</th>
+        type="button" onclick="getGoods_sort('${page.page}','goods_price_down')">낮은가격순</th>
  				<th><button class="btn"
-        type="button" onclick="getGoods_Price_up()">높은가격순</th>
+        type="button" onclick="getGoods_sort('${page.page}','goods_price_up')">높은가격순</th>
  				<th><button class="btn"
-        type="button" onclick="getUserName()">icon</th>
+        type="button" onclick="getGoods_sort('${page.page}',goods_icon)">icon</th>
  			</tr>
  		</table>
  		</div>
@@ -223,31 +223,24 @@
  <script>
  	function prevPage(page){
  		if(page==-1){
- 			location.href="http://localhost:8080/myapp/user/goodsList_byhi?page=0";
+ 			location.href=`<%request.getContextPath();%>?page=`+page;
  		}else{
- 			location.href="http://localhost:8080/myapp/user/goodsList_byhi?page="+page;
+ 			location.href=`<%request.getContextPath();%>?page=`+page;
  		}
  	}
  	function nextPage(page,count){
  		if(Math.floor(count/10)<page){
- 			location.href="http://localhost:8080/myapp/user/goodsList_byhi?page="+Math.floor(count/10);
+ 			location.href=`<%request.getContextPath();%>?page=`+page;
  		}else{
- 			location.href="http://localhost:8080/myapp/user/goodsList_byhi?page="+page;
+ 			location.href=`<%request.getContextPath();%>?page=`+page;
+ 			
  		}
  	}
  	
- 	function getGoods_Best() {
- 		location.href="http://localhost:8080/myapp/user/goodsList_byhi2?page=0&order_by=goods_best";
+ 	function getGoods_sort(page,order_by) {
+ 		location.href="http://localhost:8080/myapp/user/goodsList_byhi2?page="+page+"&orderby="+order_by;
 	}
-	function getGoods_Id() {
- 		location.href="http://localhost:8080/myapp/user/goodsList_byhi2?page=0&order_by=goods_date";
-	}
-	function getGoods_Price_down() {
- 		location.href="http://localhost:8080/myapp/user/goodsList_byhi2?page=0&order_by=goods_price_down";
-	}
-	function getGoods_Price_up() {
- 		location.href="http://localhost:8080/myapp/user/goodsList_byhi2?page=0&order_by=goods_price_up";
-	}
+	
  </script>
  </body>
  </html>

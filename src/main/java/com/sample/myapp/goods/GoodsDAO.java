@@ -2,11 +2,9 @@ package com.sample.myapp.goods;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.plaf.multi.MultiDesktopIconUI;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,5 +95,22 @@ public class GoodsDAO {
 	}
 	public GoodsVo selectGoods(int goodsId) {
 		return session.selectOne("goodsMapper.selectOneGoods",goodsId);
+	}
+	
+	public List<GoodsVo> selectOrderBy_price_down(PageVO page) {
+		
+		return session.selectList("goodsMapper.goodsSelectOrderby_price_down", page);
+	}
+	public List<GoodsVo> selectOrderBy_price_up(PageVO page) {
+		
+		return session.selectList("goodsMapper.goodsSelectOrderby_price_up", page);
+	}
+	public List<GoodsVo> selectOrderBy_date(PageVO page) {
+	
+	return session.selectList("goodsMapper.goodsSelectOrderby_date_new", page);
+	}
+	public List<GoodsVo> selectOrderBy_best(PageVO page) {
+	
+	return session.selectList("goodsMapper.goodsSelectOrderby_best", page);
 	}
 }
