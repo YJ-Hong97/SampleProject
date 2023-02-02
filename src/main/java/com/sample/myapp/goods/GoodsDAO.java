@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,8 +26,8 @@ public class GoodsDAO {
 	private S3Service s3Service;
 	
 
-	public List<GoodsVo> selectAll(PageVO page) {
-		return session.selectList("goodsMapper.goodsSelectAll", page);
+	public List<GoodsVo> selectAll(Map<String, Integer> map) {
+		return session.selectList("goodsMapper.goodsSelectAll", map);
 	}
 
 	public int totalCount() {
@@ -75,7 +76,7 @@ public class GoodsDAO {
 					break;
 				case 1:
 					dbimageStrings.add(s3Service.uploadFile(multipartFile, "knit"));
-					s3GoodsImages.add("top/"+multipartFile.getOriginalFilename());
+					s3GoodsImages.add("knit/"+multipartFile.getOriginalFilename());
 					break;
 				case 2:
 					dbimageStrings.add(s3Service.uploadFile(multipartFile, "shirt"));
@@ -164,5 +165,7 @@ public class GoodsDAO {
 				
 				
 	}
-	
+	public void deleteGoods(int goodsId) {
+		session.delete("goodsMapper.deleteGoods",goodsId);
+	}
 }

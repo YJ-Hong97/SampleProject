@@ -5,24 +5,19 @@ import java.awt.Font;
 
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.sample.myapp.PageVO;
 import com.sample.myapp.goods.EmojiVo;
@@ -46,10 +41,16 @@ public class ManagerController {
 
 	/* 상품 관리 페이지 이동 */
 	@RequestMapping("/goods")
-	public String goods(PageVO page, Model model) {
+	public String goods(PageVO page, Model model,Integer goodsType) {
 		int count = goodsDAO.totalCount();
 		page.setPageList(count);
-		List<GoodsVo> goodsList = goodsDAO.selectAll(page);
+		
+		Map<String, Integer> map = new HashMap<>();
+		map.put("start",page.getStart());
+		map.put("size", page.getSize());
+		map.put("goodsType", goodsType);
+		
+		List<GoodsVo> goodsList = goodsDAO.selectAll(map);
 		model.addAttribute("goodsList", goodsList);
 		model.addAttribute("page", page);
 		model.addAttribute("count", count);
@@ -112,5 +113,10 @@ public class ManagerController {
 		model.addAttribute("goods",goodsVo);
 		return "/admin/insertGoods";
 	}
-	
+	/*상품삭제*/
+	@RequestMapping("/goods/delete")
+	public String deleteGoods(int goodsId) {
+		goodsDAO.deleteGoods(goodsId);
+		return "redirect:/manager/goods";
+	}
 }

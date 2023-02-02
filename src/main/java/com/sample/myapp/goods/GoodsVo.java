@@ -3,6 +3,7 @@ package com.sample.myapp.goods;
 
 import java.sql.Date;
 
+import com.sample.myapp.PageVO;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,7 @@ public class GoodsVo {
 	private int goodsSale;
 	private int goodsBest;
 	private int goodsActive;
+	
 	
 	public String[] getArrayImage() {
 		return arrayImage;

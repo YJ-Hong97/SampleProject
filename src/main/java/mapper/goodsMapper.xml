@@ -27,8 +27,14 @@
 	<result column="goods_code" property="goodsCode"/>
 	<result column="type_name" property="typeName"/>
 </resultMap>
-<select id="goodsSelectAll" parameterType="com.sample.myapp.PageVO" resultMap="goods">
+<select id="goodsSelectAll" parameterType="HashMap" resultMap="goods">
 	select * from goods
+	<if test = "goodsType==null">
+		where 1= 1
+	</if>
+	<if test = "goodsType!=null">
+		where goods_type = #{goodsType}
+	</if>
 	order by goods_date
 	limit #{size} offset #{start}
 </select>
@@ -94,4 +100,7 @@
  <select id="selectOneGoods" parameterType="java.lang.Integer" resultMap="goods">
  	select * from goods where goods_id = #{goodsId}
  </select>
+ <delete id="deleteGoods" parameterType="java.lang.Integer">
+ 	delete from goods where goods_id = #{goodsId}
+ </delete>
 </mapper>
