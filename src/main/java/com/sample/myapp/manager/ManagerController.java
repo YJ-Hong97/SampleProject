@@ -51,6 +51,10 @@ public class ManagerController {
 		map.put("goodsType", goodsType);
 		
 		List<GoodsVo> goodsList = goodsDAO.selectAll(map);
+		
+		List<GoodsTypeVo> typeList = goodsDAO.selectAllType();
+		
+		model.addAttribute("typeList",typeList);
 		model.addAttribute("goodsList", goodsList);
 		model.addAttribute("page", page);
 		model.addAttribute("count", count);

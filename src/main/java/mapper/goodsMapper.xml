@@ -29,23 +29,28 @@
 </resultMap>
 <select id="goodsSelectAll" parameterType="HashMap" resultMap="goods">
 	select * from goods
-	<if test = "goodsType==null">
+	<choose>
+		<when test = "goodsType==null or goodsType == -1">
 		where 1= 1
-	</if>
-	<if test = "goodsType!=null or goodsType == -1">
+	</when>
+	<otherwise>
 		where goods_type = #{goodsType}
-	</if>
+	</otherwise>
+	</choose>
 	order by goods_date
 	limit #{size} offset #{start}
 </select>
 <select id="goodsTotal" parameterType="java.lang.Integer" resultType="java.lang.Integer">
 	select count(goods_id) from goods 
-	<if test = "value==null">
+	<choose>
+		<when test = "value==null or value == -1">
 		where 1= 1
-	</if>
-	<if test = "value!=null or value == -1">
+	</when>
+	<otherwise>
 		where goods_type = #{value}
-	</if>
+	</otherwise>
+	</choose>
+	
 </select>
 <select id="goodsTypeSelectAll" resultMap="goodsType">
 	select * from goods_type

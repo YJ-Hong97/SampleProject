@@ -126,7 +126,12 @@
 <%@ include file="/WEB-INF/views/component/adminHeader.jsp" %>
 <div class="boxWrap">
 	<div class="goodsBar">
-		<span><a onclick="fn_changeType(0)">top</a><a onclick="fn_changeType(1)">knit</a><a onclick="fn_changeType(2)">shirts</a><a onclick="fn_changeType(3)">outer</a><a onclick="fn_changeType(4)">bottom</a><a onclick="fn_changeType(5)">skirt</a><a onclick="fn_changeType(6)">bag</a><a onclick="fn_changeType(7)">shoes</a><a onclick="fn_changeType(8)">acc</a></span>
+		<span>
+			<a onclick = "fn_changeType(-1)">All</a>
+			<c:forEach items = "${typeList }" var="type">
+				<a onclick ="fn_changeType(${type.goodsCode})">${type.typeName }</a>
+			</c:forEach>
+		</span>
 	</div>
 	<div class="buttonWrap">
 		<div class="searchWrap">
@@ -184,7 +189,14 @@
 <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
 <script>
 
-var goodsType = -1;
+let query = window.location.search;
+let param = new URLSearchParams(query);
+var goodsType = param.get('goodsType');
+if(goodsType==null){
+	goodsType = -1;
+}
+	
+
 
 	function fn_changeType(type){
 		goodsType = type;
