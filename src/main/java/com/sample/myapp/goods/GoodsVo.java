@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GoodsVo {
+public class GoodsVo implements Comparable<GoodsVo>{
 	private int goodsId;
 	private int goodsType;
 	private String goodsName;
@@ -122,6 +122,10 @@ public class GoodsVo {
 				+ goodsOption1 + ", goodsOption2=" + goodsOption2 + ", goodsOption3=" + goodsOption3 + ", dbGoodsImage="
 				+ dbGoodsImage + ", goodsDate=" + goodsDate + ", goodsHTML=" + goodsHTML + ", goodsSale=" + goodsSale
 				+ ", goodsBest=" + goodsBest + ", goodsActive=" + goodsActive + "]";
+	}
+	@Override
+	public int compareTo(GoodsVo o) { 
+	   return 0;
 	}
 	
 	
