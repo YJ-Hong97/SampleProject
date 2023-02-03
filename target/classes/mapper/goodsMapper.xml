@@ -70,4 +70,26 @@
  <select id="selectOneGoods" parameterType="java.lang.Integer" resultMap="goods">
  	select * from goods where goods_id = #{goodsId}
  </select>
+ 
+
+<select id="goodsSelectOrderby_price_down" parameterType="com.sample.myapp.PageVO" resultMap="goods">
+	select * from goods
+	order by goods_price
+	limit #{size} offset #{start}
+</select>
+<select id="goodsSelectOrderby_price_up" parameterType="com.sample.myapp.PageVO" resultMap="goods">
+	select * from goods
+	order by goods_price desc
+	limit #{size} offset #{start}
+</select>
+<select id="goodsSelectOrderby_date_new" parameterType="com.sample.myapp.PageVO" resultMap="goods">
+	select * from goods
+	order by goods_date desc
+	limit #{size} offset #{start}
+</select>
+<select id="goodsSelectOrderby_best" parameterType="com.sample.myapp.PageVO" resultMap="goods">
+	select * from goods
+	order by goods_best
+	limit #{size} offset #{start}
+</select>
 </mapper>

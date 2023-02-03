@@ -77,14 +77,11 @@
  		border-left:1px solid black;
  	}
  	.insertWrap{
- 	display:inline-block;
- 		width:117px;
- 		height:100%;
- 		background:#D9D9D9;
- 		padding:0;
- 		margin:0;
- 		vertical-align:top;
- 		float:right;
+ 		display: inline-block;
+    height: 100px;
+    text-align: center;
+    font-size: 15px;
+    float:right;
  	}
  	.insertWrap button{
  		
@@ -95,6 +92,7 @@
  		margin:0;
  		padding:0;
  	}
+ 
  	.listWrap{
  		width:815px;
  		height:564px;
@@ -130,7 +128,7 @@
  <body>
  <%@ include file="/WEB-INF/views/component/mypageSidebar.jsp" %>
  <div class="goodsWrap">
- <%@ include file="/WEB-INF/views/component/adminHeader.jsp" %>
+ <%@ include file="/WEB-INF/views/component/header.jsp" %>
  <div class="boxWrap">
  	<div class = Main category>
  				<tr>
@@ -146,7 +144,6 @@
  						<c:when test="${mainCategory==8 }"><td>acc</td></c:when>
  						<c:otherwise><td>미등록 코드</td></c:otherwise>
  					</c:choose>
- 					<td ><button type="button">상세보기</button></td>
  				</tr>
  	</div>
  	<div class="goodsBar">
@@ -160,9 +157,23 @@
 
  		<div>
  		Total : ${count}
+ 		
+ 		<div class = "insertWrap">
+ 		<table>
+ 			<tr>
+ 				<th><button class="btn"
+        type="button" onclick="getGoods_sort('${page.page}','goods_best')">인기순</button></th>
+ 				<th><button class="btn"
+        type="button" onclick="getGoods_sort('${page.page}','goods_date')">신상품순</th>
+ 				<th><button class="btn"
+        type="button" onclick="getGoods_sort('${page.page}','goods_price_down')">낮은가격순</th>
+ 				<th><button class="btn"
+        type="button" onclick="getGoods_sort('${page.page}','goods_price_up')">높은가격순</th>
+ 				<th><button class="btn"
+        type="button" onclick="getGoods_sort('${page.page}',goods_icon)">icon</th>
+ 			</tr>
+ 		</table>
  		</div>
- 		<div class="insertWrap">
- 			<button type="button">상품 등록</button>
  		</div>
  	</div>
  	<div class="listWrap">
@@ -212,18 +223,24 @@
  <script>
  	function prevPage(page){
  		if(page==-1){
- 			location.href="http://localhost:9090/manager/goods?page=0";
+ 			location.href=`<%request.getContextPath();%>?page=`+page;
  		}else{
- 			location.href="http://localhost:9090/manager/goods?page="+page;
+ 			location.href=`<%request.getContextPath();%>?page=`+page;
  		}
  	}
  	function nextPage(page,count){
  		if(Math.floor(count/10)<page){
- 			location.href="http://localhost:9090/manager/goods?page="+Math.floor(count/10);
+ 			location.href=`<%request.getContextPath();%>?page=`+page;
  		}else{
- 			location.href="http://localhost:9090/manager/goods?page="+page;
+ 			location.href=`<%request.getContextPath();%>?page=`+page;
+ 			
  		}
  	}
+ 	
+ 	function getGoods_sort(page,order_by) {
+ 		location.href="http://localhost:8080/myapp/user/goodsList_byhi2?page="+page+"&orderby="+order_by;
+	}
+	
  </script>
  </body>
  </html>

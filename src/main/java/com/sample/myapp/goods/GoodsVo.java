@@ -1,10 +1,6 @@
 package com.sample.myapp.goods;
 
-import java.io.File;
 import java.sql.Date;
-import java.util.Arrays;
-
-import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -123,6 +119,5 @@ public class GoodsVo {
 				+ dbGoodsImage + ", goodsDate=" + goodsDate + ", goodsHTML=" + goodsHTML + ", goodsSale=" + goodsSale
 				+ ", goodsBest=" + goodsBest + ", goodsActive=" + goodsActive + "]";
 	}
-	
 	
 }
