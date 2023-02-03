@@ -1,9 +1,9 @@
 package com.sample.myapp.goods;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -126,6 +126,7 @@ public class GoodsDAO {
 	public GoodsVo selectGoods(int goodsId) {
 		return session.selectOne("goodsMapper.selectOneGoods",goodsId);
 	}
+
 	public void updateGoods(GoodsVo goodsVo,HttpServletRequest request) throws IOException {
 		GoodsVo beforeGoodsVo = selectGoods(goodsVo.getGoodsId());
 		String[] beforeGoodsImages = beforeGoodsVo.getDbGoodsImage().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(",");
@@ -167,5 +168,22 @@ public class GoodsDAO {
 	}
 	public void deleteGoods(int goodsId) {
 		session.delete("goodsMapper.deleteGoods",goodsId);
+	}
+	
+	public List<GoodsVo> selectOrderBy_price_down(PageVO page) {
+		
+		return session.selectList("goodsMapper.goodsSelectOrderby_price_down", page);
+	}
+	public List<GoodsVo> selectOrderBy_price_up(PageVO page) {
+		
+		return session.selectList("goodsMapper.goodsSelectOrderby_price_up", page);
+	}
+	public List<GoodsVo> selectOrderBy_date(PageVO page) {
+	
+	return session.selectList("goodsMapper.goodsSelectOrderby_date_new", page);
+	}
+	public List<GoodsVo> selectOrderBy_best(PageVO page) {
+	
+	return session.selectList("goodsMapper.goodsSelectOrderby_best", page);
 	}
 }

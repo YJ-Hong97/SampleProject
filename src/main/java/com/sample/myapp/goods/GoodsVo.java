@@ -1,9 +1,11 @@
 package com.sample.myapp.goods;
 
 
+
 import java.sql.Date;
 
 import com.sample.myapp.PageVO;
+import java.sql.Date;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -142,6 +144,5 @@ public class GoodsVo {
 				+ dbGoodsImage + ", goodsDate=" + goodsDate + ", goodsHTML=" + goodsHTML + ", goodsSale=" + goodsSale
 				+ ", goodsBest=" + goodsBest + ", goodsActive=" + goodsActive + "]";
 	}
-	
 	
 }
