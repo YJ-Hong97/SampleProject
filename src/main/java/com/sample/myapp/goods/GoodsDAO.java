@@ -170,20 +170,9 @@ public class GoodsDAO {
 		session.delete("goodsMapper.deleteGoods",goodsId);
 	}
 	
-	public List<GoodsVo> selectOrderBy_price_down(PageVO page) {
-		
-		return session.selectList("goodsMapper.goodsSelectOrderby_price_down", page);
-	}
-	public List<GoodsVo> selectOrderBy_price_up(PageVO page) {
-		
-		return session.selectList("goodsMapper.goodsSelectOrderby_price_up", page);
-	}
-	public List<GoodsVo> selectOrderBy_date(PageVO page) {
 	
-	return session.selectList("goodsMapper.goodsSelectOrderby_date_new", page);
+	public List<GoodsVo> selectOrderBy(Map<String, Object> map) {
+		return session.selectList("goodsMapper.goodsSelecOrderBy", map);
 	}
-	public List<GoodsVo> selectOrderBy_best(PageVO page) {
 	
-	return session.selectList("goodsMapper.goodsSelectOrderby_best", page);
-	}
 }
