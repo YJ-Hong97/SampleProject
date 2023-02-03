@@ -126,7 +126,12 @@
 <%@ include file="/WEB-INF/views/component/adminHeader.jsp" %>
 <div class="boxWrap">
 	<div class="goodsBar">
-		<span><a>top</a><a>knit</a><a>shirts</a><a>outer</a><a>bottom</a><a>skirt</a><a>bag</a><a>shoes</a><a>acc</a></span>
+		<span>
+			<a onclick = "fn_changeType(-1)">All</a>
+			<c:forEach items = "${typeList }" var="type">
+				<a onclick ="fn_changeType(${type.goodsCode})">${type.typeName }</a>
+			</c:forEach>
+		</span>
 	</div>
 	<div class="buttonWrap">
 		<div class="searchWrap">
@@ -145,6 +150,7 @@
 				<th>상품 가격</th>
 				<th>상품 유형</th>
 				<th>상세보기</th>
+				<th>삭제</th>
 			</tr>
 			<c:forEach items="${goodsList}" var="goods">
 				<tr>
@@ -165,6 +171,7 @@
 						<c:otherwise><td>미등록 코드</td></c:otherwise>
 					</c:choose>
 					<td ><button type="button" onclick="fn_detailGoods(${goods.goodsId})">상세보기</button></td>
+					<td><button type="button" onclick="fn_deleteGoods(${goods.goodsId})">X</button></td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -181,22 +188,41 @@
 <%@ include file="/WEB-INF/views/component/adminFooter.jsp" %>
 <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
 <script>
+
+let query = window.location.search;
+let param = new URLSearchParams(query);
+var goodsType = param.get('goodsType');
+if(goodsType==null){
+	goodsType = -1;
+}
+	
+
+
+	function fn_changeType(type){
+		goodsType = type;
+		location.href=`<%request.getContextPath();%>?page=0&goodsType=`+goodsType;
+	}
 	function prevPage(page){
 		if(page==-1){
-			location.href=`<%request.getContextPath();%>?page=0`;
+			location.href=`<%request.getContextPath();%>?page=0&goodsType=`+goodsType;
 		}else{
-			location.href=`<%request.getContextPath();%>?page=`+page;
+			location.href=`<%request.getContextPath();%>?page=`+page+"&goodsType="+goodsType;
 		}
 	}
 	function nextPage(page,count){
 		if(Math.floor(count/10)<page){
-			location.href=`<%request.getContextPath();%>?page=`+Math.floor(count/10);
+			location.href=`<%request.getContextPath();%>?page=`+Math.floor(count/10)+"&goodsType="+goodsType;
 		}else{
-			location.href=`<%request.getContextPath();%>?page=`+page;
+			location.href=`<%request.getContextPath();%>?page=`+page+"&goodsType="+goodsType;
 		}
 	}
 	function fn_detailGoods(goodsId){
 		location.href = "/manager/goods/detail?goodsId="+goodsId;
+	}
+	function fn_deleteGoods(goodsId){
+		if(window.confirm("정말 삭제하시겠습니까?")){
+			location.href = "/manager/goods/delete?goodsId="+goodsId;
+		}
 	}
 </script>
 </body>

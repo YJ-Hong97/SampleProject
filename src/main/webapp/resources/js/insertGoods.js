@@ -6,7 +6,11 @@ var currentStyle = {"fontFamily":"","fontWeight":"","fontStyle":"","color":"","b
 function setCursor(node){
 		var cursor = document.createElement("span");
 		cursor.id = "cursor";
-		$(".whiteSpace").append(cursor);
+		if(document.querySelector(".whiteSpace").childNodes.length>0){
+			document.querySelector(".whiteSpace").lastChild.append(cursor);
+		}else{
+			document.querySelector(".whiteSpace").append(cursor);
+		}
 		
 		var range = document.createRange();
 		range.selectNode(cursor);
@@ -26,7 +30,7 @@ function getCursor(node){
 function documentKeypress(targetTag){
 	document.onkeypress = function(event){
 		setCursor(targetTag);
-		/*
+		
 		if(event.keyCode==13){
 			event.preventDefault();
 			let br = document.createElement("br");
@@ -42,8 +46,17 @@ function documentKeypress(targetTag){
 			targetTag.append(event.key);
 			fn_styleChange(targetTag);
 		}
-		*/
+		
 		getCursor(targetTag);
 	}
 }
 
+function fn_styleChange(tag){
+	tag.style.fontWeight = currentStyle["fontWeight"];
+	tag.style.fontFamily = currentStyle["fontFamily"];
+	tag.style.fontStyle = currentStyle["fontStyle"];
+	tag.style.textDecoration = currentStyle["textDecoration"];
+	tag.style.color=currentStyle["color"];
+	tag.style.background=currentStyle["background"]
+	tag.style.textAlign=currentStyle["textAlign"];
+}

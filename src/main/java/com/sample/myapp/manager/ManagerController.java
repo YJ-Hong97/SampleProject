@@ -5,24 +5,19 @@ import java.awt.Font;
 
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.sample.myapp.PageVO;
 import com.sample.myapp.goods.EmojiVo;
@@ -46,10 +41,20 @@ public class ManagerController {
 
 	/* 상품 관리 페이지 이동 */
 	@RequestMapping("/goods")
-	public String goods(PageVO page, Model model) {
-		int count = goodsDAO.totalCount();
+	public String goods(PageVO page, Model model,Integer goodsType) {
+		int count = goodsDAO.totalCount(goodsType);
 		page.setPageList(count);
-		List<GoodsVo> goodsList = goodsDAO.selectAll(page);
+		
+		Map<String, Integer> map = new HashMap<>();
+		map.put("start",page.getStart());
+		map.put("size", page.getSize());
+		map.put("goodsType", goodsType);
+		
+		List<GoodsVo> goodsList = goodsDAO.selectAll(map);
+		
+		List<GoodsTypeVo> typeList = goodsDAO.selectAllType();
+		
+		model.addAttribute("typeList",typeList);
 		model.addAttribute("goodsList", goodsList);
 		model.addAttribute("page", page);
 		model.addAttribute("count", count);
@@ -70,6 +75,10 @@ public class ManagerController {
 		page.setSize(50);
 		page.setPageList(count);
 		List<EmojiVo> emojis = goodsDAO.selectAllEmojis(page);
+		
+		GoodsVo goodsVo = new GoodsVo();
+		
+		model.addAttribute("goods",goodsVo);
 		model.addAttribute("page", page);
 		model.addAttribute("emojis", emojis);
 		model.addAttribute("typeList", typeList);
@@ -88,17 +97,30 @@ public class ManagerController {
 		return emojis;
 	}
 
-	@ResponseBody
 	@RequestMapping(value = "/goods/insert", method = RequestMethod.POST)
-	public void insertGoods(@ModelAttribute GoodsVo goodsVo,HttpServletRequest request) throws IOException {
-		goodsDAO.insertGoods(goodsVo,request);
+	public String insertGoods(@ModelAttribute GoodsVo goodsVo,HttpServletRequest request) throws IOException {
+		if(goodsVo.getGoodsId()!=0) {
+			goodsDAO.updateGoods(goodsVo, request);
+		}else {
+			goodsDAO.insertGoods(goodsVo,request);
+		}
+		
+		return "redirect:/manager/goods";
 	}
-	/*
+	/*상품 상세 페이지로 이동*/
 	@RequestMapping(value = "/goods/detail",method = RequestMethod.GET)
 	public String detailGoods(int goodsId,Model model) {
 		GoodsVo goodsVo = goodsDAO.selectGoods(goodsId);
+		String[] dbGoodsImages = goodsVo.getDbGoodsImage().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(",");
+		
+		model.addAttribute("dbGoodsImages",dbGoodsImages);
 		model.addAttribute("goods",goodsVo);
-		return 
+		return "/admin/insertGoods";
 	}
-	*/
+	/*상품삭제*/
+	@RequestMapping("/goods/delete")
+	public String deleteGoods(int goodsId) {
+		goodsDAO.deleteGoods(goodsId);
+		return "redirect:/manager/goods";
+	}
 }

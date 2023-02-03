@@ -394,6 +394,14 @@ html, body{
 	#hiddenImage{
 		display:none;
 	}
+	#imageThumbnail{
+		width:100px;
+		height:200px;
+	}
+	.thumbnailBox{
+		display:inline-block;
+	}
+	
 </style>
 <body>
 <%@ include file="/WEB-INF/views/component/adminSidebar.jsp" %>
@@ -404,27 +412,39 @@ html, body{
 	<div class="formWrap">
 		<form class="frmGoods" method="post" action="/manager/goods/insert" enctype="multipart/form-data">
 			<div class="half">
-			<div class="line"><label><span class="required">&#42;</span>상품 이름</label><input type="text" name="goodsName" class="input"><span><button type="button" class="checkName">중복확인</button></span></div>
+			<input type="hidden" name="goodsId" value="${goods.goodsId }">
+			<div class="line"><label><span class="required">&#42;</span>상품 이름</label><input type="text" name="goodsName" class="input" value="${goods.goodsName }"><span><button type="button" class="checkName">중복확인</button></span></div>
 			<div class="line"><label><span class="required">&#42;</span>상품 종류</label><select name="goodsType" class="input">
 				<c:forEach items="${typeList }" var="type">
-					<option value="${type.goodsCode }">${type.typeName}</option>
+					<c:if test="${goods.goodsType== type.goodsCode}">
+						<option value="${type.goodsCode }" selected>${type.typeName}</option>
+					</c:if>
+					<c:if test="${goods.goodsType!=type.goodsCode }">
+						<option value="${type.goodsCode }">${type.typeName}</option>
+					</c:if>
 				</c:forEach>
 			</select></div>
-			<div class="line"><label><span class="required">&#42;</span>상품 가격</label><input type="text" name="goodsPrice" class="input"></div>
-			<div class="line"><label><span class="required">&#42;</span>상품 색상</label><input type="text" name="goodsColor" class="input"></div>
-			<div class="line"><label><span class="required">&#42;</span>상품 사이즈</label><input type="text" name="goodsSize" class="input"></div>
-			<div class="line"><label><span class="required">&#42;</span>상품 할인 여부</label><input type="number" name="goodsSale" class="input" min="0" max="100"></div>
+			<div class="line"><label><span class="required">&#42;</span>상품 가격</label><input type="text" name="goodsPrice" class="input" value="${goods.goodsPrice }"></div>
+			<div class="line"><label><span class="required">&#42;</span>상품 색상</label><input type="text" name="goodsColor" class="input" value="${goods.goodsColor }"></div>
+			<div class="line"><label><span class="required">&#42;</span>상품 사이즈</label><input type="text" name="goodsSize" class="input" value="${goods.goodsSize }"></div>
+			<div class="line"><label><span class="required">&#42;</span>상품 할인 여부</label><input type="number" name="goodsSale" class="input" min="0" max="100" value="${goods.goodsSale }"></div>
 			<label id="readMe">할인 없을 시 0 또는 비워둠, 할인율에서 '%'를 제외하고 기입</label>
-			<div class="line"><label><span class="required">&#42;</span>인기 상품 여부</label><input type="radio" name="goodsBest" value="0" class="input"><label id="radioLabel">인기상품</label><input type="radio" name="goodsBest" value="1" class="input"><label id="radioLabel">일반상품</label></div>
-			<div class="line"><label>옵션_1</label><input type="text" class="input"></div>
-			<div class="line"><label>옵션_2</label><input type="text" class="input"></div>
-			<div class="line"><label>옵션_3</label><input type="text"class="input"></div>
-			<div class="line"><label><span class="required">&#42;</span>활성화 여부</label><input type="radio" name="goodsActive" value="0" class="input"><label id="radioLabel">비활성화</label><input type="radio" name="goodsActive" value="1" class="input"><label id="radioLabel">활성화</label></div>
+			<div class="line"><label><span class="required">&#42;</span>인기 상품 여부</label><input type="radio" name="goodsBest" value="0" class="input" id="best0"><label id="radioLabel">인기상품</label><input type="radio" name="goodsBest" value="1" class="input" id="best1"><label id="radioLabel">일반상품</label></div>
+			<div class="line"><label>옵션_1</label><input type="text" class="input" value="${goods.goodsOption1 }"></div>
+			<div class="line"><label>옵션_2</label><input type="text" class="input" value="${goods.goodsOption2 }"></div>
+			<div class="line"><label>옵션_3</label><input type="text"class="input" value="${goods.goodsOption3 }"></div>
+			<div class="line"><label><span class="required">&#42;</span>활성화 여부</label><input type="radio" name="goodsActive" value="0" class="input" id="active0"><label id="radioLabel">비활성화</label><input type="radio" name="goodsActive" value="1" class="input" id="active1"><label id="radioLabel">활성화</label></div>
 			<div id="divImages" class="line">
 				<label>사진 첨부</label><input type="file" accept="image/*"	onchange="fn_changeImages(event)" class="input">
 			</div>
 			<div class="thumbnail">
-				
+				<c:forEach items="${dbGoodsImages }" var="image">
+					<div class="thumbnailBox">
+					<button type="button" onclick="fn_deleteImage(event)">X</button>
+					<input type="hidden" name="arrayImage" value="${image }">
+					<img src=${image } id="imageThumbnail">
+					</div>
+				</c:forEach>
 			</div>
 			</div>
 			<div class="smallTitle">
@@ -569,7 +589,7 @@ html, body{
 					</c:forEach>
 				</div>
 			</div>
-			<div class="whiteSpace" contenteditable="true"></div>
+			<div class="whiteSpace" contenteditable="true">${goods.goodsHTML }</div>
 			<input type="hidden" name="goodsHTML" id="goodsHTML">
 			<input type="submit" value="저장" onclick="fn_gosubmit(event)">
 		</form>	
@@ -579,14 +599,28 @@ html, body{
 <%@ include file="/WEB-INF/views/component/adminFooter.jsp" %>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="/resources/js/insertGoods.js"></script>
-<script>
-	
+<script th:inline="javascript">
+	window.onload= function(){
+		let best = [[${goods.goodsBest}]];
+		let active = [[${goods.goodsActive}]];
+		if(best[0]==0){
+			$("#best0").attr("checked","true");
+			
+		}else{
+			$("#best1").attr("checked","true");
+		}
+		if(active[0]==0){
+			$("#active0").attr("checked","true");
+		}else{
+			$("#active1").attr("checked","true");
+		}
+		
+	}
 	
 	function fn_insertImage(event){
 		let inputTag = document.createElement("input");
 		inputTag.setAttribute("type","file");
 		inputTag.setAttribute("accept","image/*");
-		inputTag.setAttribute("name","image");
 		inputTag.setAttribute("onchange","fn_addThumbnail(event)");
 		inputTag.click();
 		
@@ -651,15 +685,6 @@ html, body{
 		
 	}
 	
-	function fn_styleChange(tag){
-		tag.style.fontWeight = currentStyle["fontWeight"];
-		tag.style.fontFamily = currentStyle["fontFamily"];
-		tag.style.fontStyle = currentStyle["fontStyle"];
-		tag.style.textDecoration = currentStyle["textDecoration"];
-		tag.style.color=currentStyle["color"];
-		tag.style.background=currentStyle["background"]
-		tag.style.textAlign=currentStyle["textAlign"];
-	}
 	function fn_changeItalic(event){
 		var span = document.createElement("span");
 		if($(".whiteSpace").children()>0){
@@ -921,15 +946,13 @@ html, body{
 				
 				var button = document.createElement("button");
 				button.setAttribute("class","imageButton");
-				button.setAttribute("width","30px");
-				button.setAttribute("height","30px");
-				button.setAttribute("style","float:top;");
 				button.setAttribute("onClick","fn_deleteImage(event)");
 				button.innerText = "X";
 				div.append(button);
 				
 				var img = document.createElement("img");
 				img.setAttribute("src",event.target.result);
+				img.setAttribute("id","imageThumbnail");
 				img.setAttribute("width","100px");
 				img.setAttribute("height","200px");
 				div.append(img);
