@@ -116,26 +116,27 @@
  	delete from goods where goods_id = #{goodsId}
  </delete>
 
- 
 
-<select id="goodsSelectOrderby_price_down" parameterType="com.sample.myapp.PageVO" resultMap="goods">
+<select id="goodsSelecOrderBy" parameterType="HashMap" resultMap="goods">
 	select * from goods
-	order by goods_price
+	<choose>
+		<when test = "goodsType==null or goodsType == -1">
+		where goods_type = 0
+	</when>
+	<otherwise>
+		where goods_type = #{goodsType}
+		
+	</otherwise>
+	</choose>
+	 <trim prefix="ORDER BY"> 
+                        <if test="orderBy == 'goods_best'"> goods_best ASC </if>
+                        <if test="orderBy == 'goods_date'">  goods_date desc </if>     
+                        <if test="orderBy == 'goods_price_down'">  goods_price </if>     
+                        <if test="orderBy == 'goods_price_up'">  goods_price desc </if>   
+                        <if test="orderBy == 'goods_icon'">  goods_date </if>                        
+                    </trim>
 	limit #{size} offset #{start}
 </select>
-<select id="goodsSelectOrderby_price_up" parameterType="com.sample.myapp.PageVO" resultMap="goods">
-	select * from goods
-	order by goods_price desc
-	limit #{size} offset #{start}
-</select>
-<select id="goodsSelectOrderby_date_new" parameterType="com.sample.myapp.PageVO" resultMap="goods">
-	select * from goods
-	order by goods_date desc
-	limit #{size} offset #{start}
-</select>
-<select id="goodsSelectOrderby_best" parameterType="com.sample.myapp.PageVO" resultMap="goods">
-	select * from goods
-	order by goods_best
-	limit #{size} offset #{start}
-</select>
+
+
 </mapper>

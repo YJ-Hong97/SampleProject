@@ -78,13 +78,11 @@
  	}
  	.insertWrap{
  	display:inline-block;
- 		width:117px;
- 		height:100%;
- 		background:#D9D9D9;
- 		padding:0;
- 		margin:0;
- 		vertical-align:top;
- 		float:right;
+ 		display: inline-block;
+	    height: 100px;
+	    text-align: center;
+	    font-size: 15px;
+	    float:right;
  	}
  	.insertWrap button{
  		
@@ -130,7 +128,7 @@
  <body>
  <%@ include file="/WEB-INF/views/component/mypageSidebar.jsp" %>
  <div class="goodsWrap">
- <%@ include file="/WEB-INF/views/component/adminHeader.jsp" %>
+ <%@ include file="/WEB-INF/views/component/header.jsp" %>
  <div class="boxWrap">
  	<div class = Main category>
  				<tr>
@@ -162,8 +160,21 @@
  		Total : ${count}
  		</div>
  		<div class="insertWrap">
- 			<button type="button">상품 등록</button>
- 		</div>
+ 			<table>
+  			<tr>
+  				<th><button class="btn"
+         type="button" onclick="getGoods_sort('${page.page}','${goods.goodsType}','goods_best')">인기순</button></th>
+  				<th><button class="btn"
+         type="button" onclick="getGoods_sort('${page.page}','${goods.goodsType}','goods_date')">신상품순</th>
+  				<th><button class="btn"
+         type="button" onclick="getGoods_sort('${page.page}','${goods.goodsType}','goods_price_down')">낮은가격순</th>
+  				<th><button class="btn"
+         type="button" onclick="getGoods_sort('${page.page}','${goods.goodsType}','goods_price_up')">높은가격순</th>
+  				<th><button class="btn"
+         type="button" onclick="getGoods_sort('${page.page}','${goods.goodsType}','goods_icon')">icon</th>
+  			</tr>
+  		</table>
+  		</div>
  	</div>
  	<div class="listWrap">
  		<table>
@@ -199,31 +210,48 @@
  		</table>
  	</div>
  	<div class="nav">
- 		<a class="prev" onClick="prevPage('${page.page-1}')">&#60;</a>
+ 		<a class="prev" onClick="prevPage('${page.page-1}','${goods.goodsType}','${orderBy}')">&#60;</a>
  		<c:forEach items="${page.pageList }" var="page">
  			<a>${page }</a>
  		</c:forEach>
- 		<a class="next" onClick="nextPage('${page.page+1}','${count }')">&#62;</a>
+ 		<a class="next" onClick="nextPage('${page.page+1}','${count }','${goods.goodsType}','${orderBy}')">&#62;</a>
  	</div>
  </div>
  </div>
  <%@ include file="/WEB-INF/views/component/adminFooter.jsp" %>
  <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
- <script>
- 	function prevPage(page){
- 		if(page==-1){
- 			location.href="http://localhost:9090/manager/goods?page=0";
- 		}else{
- 			location.href="http://localhost:9090/manager/goods?page="+page;
- 		}
- 	}
- 	function nextPage(page,count){
- 		if(Math.floor(count/10)<page){
- 			location.href="http://localhost:9090/manager/goods?page="+Math.floor(count/10);
- 		}else{
- 			location.href="http://localhost:9090/manager/goods?page="+page;
- 		}
- 	}
+<script>
+ let query = window.location.search;
+let param = new URLSearchParams(query);
+var goodsType = param.get('goodsType');
+if(goodsType==null){
+	goodsType = -1;
+}
+	
+
+
+	function fn_changeType(type){
+		goodsType = type;
+		location.href=`<%request.getContextPath();%>?page=0&goodsType=`+goodsType;
+	}
+	function prevPage(page,goodsType,orderBy){
+		if(page==-1){
+			location.href=`<%request.getContextPath();%>?page=0&goodsType=`+goodsType+"&orderBy="+orderBy;
+		}else{
+			location.href=`<%request.getContextPath();%>?page=`+page+"&goodsType="+goodsType+"&orderBy="+orderBy;
+		}
+	}
+	function nextPage(page,count,goodsType,orderBy){
+		if(Math.floor(count/10)<page){
+			location.href=`<%request.getContextPath();%>?page=`+Math.floor(count/10)+"&goodsType="+goodsType+"&orderBy="+orderBy;
+		}else{
+			location.href=`<%request.getContextPath();%>?page=`+page+"&goodsType="+goodsType+"&orderBy="+orderBy;
+		}
+	}
+  	
+  	function getGoods_sort(page,goodsType,orderBy) {
+  		location.href="http://localhost:8080/myapp/user/goodsList_byhi?page="+page+"&goodsType="+goodsType+"&orderBy="+orderBy;
+  		}
  </script>
  </body>
  </html>
