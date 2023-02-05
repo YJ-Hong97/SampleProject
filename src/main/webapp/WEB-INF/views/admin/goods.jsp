@@ -135,7 +135,7 @@
 	</div>
 	<div class="buttonWrap">
 		<div class="searchWrap">
-			<input type="text"><span><button type="button" class="searchIcon"></button></span>
+			<input type="text" id="searchKeyword"><span><button type="button" class="searchIcon" onclick="fn_search(event)"></button></span>
 		</div>
 		<div class="insertWrap">
 			<a class="insertGoods" href="/manager/goods/insert">상품 등록</a>
@@ -179,7 +179,7 @@
 	<div class="nav">
 		<a class="prev" onClick="prevPage('${page.page-1}')">&#60;</a>
 		<c:forEach items="${page.pageList }" var="page">
-			<a href="${pageContext.request.contextPath }?page=${page-1}">${page }</a>
+			<a onclick = "fn_page(${page-1})" >${page }</a>
 		</c:forEach>
 		<a class="next" onClick="nextPage('${page.page+1}','${count }')">&#62;</a>
 	</div>
@@ -195,25 +195,33 @@ var goodsType = param.get('goodsType');
 if(goodsType==null){
 	goodsType = -1;
 }
-	
+var searchKeyword = param.get('searchKeyword');
+$("#searchKeyword").val(searchKeyword);
 
 
 	function fn_changeType(type){
 		goodsType = type;
-		location.href=`<%request.getContextPath();%>?page=0&goodsType=`+goodsType;
+		location.href=`<%request.getContextPath();%>?page=0&goodsType=`+goodsType+`&searchKeyword=`+searchKeyword;
 	}
 	function prevPage(page){
 		if(page==-1){
-			location.href=`<%request.getContextPath();%>?page=0&goodsType=`+goodsType;
+			location.href=`<%request.getContextPath();%>?page=0&goodsType=`+goodsType+`&searchKeyword=`+searchKeyword;;
 		}else{
-			location.href=`<%request.getContextPath();%>?page=`+page+"&goodsType="+goodsType;
+			location.href=`<%request.getContextPath();%>?page=`+page+"&goodsType="+goodsType+`&searchKeyword=`+searchKeyword;;
 		}
 	}
 	function nextPage(page,count){
 		if(Math.floor(count/10)<page){
-			location.href=`<%request.getContextPath();%>?page=`+Math.floor(count/10)+"&goodsType="+goodsType;
+			location.href=`<%request.getContextPath();%>?page=`+Math.floor(count/10)+"&goodsType="+goodsType+`&searchKeyword=`+searchKeyword;;
 		}else{
-			location.href=`<%request.getContextPath();%>?page=`+page+"&goodsType="+goodsType;
+			location.href=`<%request.getContextPath();%>?page=`+page+"&goodsType="+goodsType+`&searchKeyword=`+searchKeyword;;
+		}
+	}
+	function fn_page(page){
+		if(goodsType==-1){
+			location.href =`<%request.getContextPath();%>?page=`+page+`&searchKeyword=`+searchKeyword;;
+		}else{
+			location.href =`<%request.getContextPath();%>?page=`+page+"&goodsType="+goodsType+`&searchKeyword=`+searchKeyword;;
 		}
 	}
 	function fn_detailGoods(goodsId){
@@ -223,6 +231,10 @@ if(goodsType==null){
 		if(window.confirm("정말 삭제하시겠습니까?")){
 			location.href = "/manager/goods/delete?goodsId="+goodsId;
 		}
+	}
+	function fn_search(event){
+		searchKeyword = encodeURIComponent($("#searchKeyword").val());
+		location.href = `<%request.getContextPath();%>?searchKeyword=`+searchKeyword;
 	}
 </script>
 </body>
