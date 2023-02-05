@@ -4,7 +4,6 @@ package com.sample.myapp.goods;
 
 import java.sql.Date;
 
-
 import lombok.Getter;
 import lombok.Setter;
 
