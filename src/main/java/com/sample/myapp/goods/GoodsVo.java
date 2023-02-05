@@ -27,8 +27,15 @@ public class GoodsVo {
 	private int goodsSale;
 	private int goodsBest;
 	private int goodsActive;
+	private int goodsSmallType;
 	
 	
+	public int getGoodsSmallType() {
+		return goodsSmallType;
+	}
+	public void setGoodsSmallType(int goodsSmallType) {
+		this.goodsSmallType = goodsSmallType;
+	}
 	public String[] getArrayImage() {
 		return arrayImage;
 	}

@@ -1,7 +1,6 @@
 package com.sample.myapp.goods;
 
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,12 +25,12 @@ public class GoodsDAO {
 	private S3Service s3Service;
 	
 
-	public List<GoodsVo> selectAll(Map<String, Integer> map) {
+	public List<GoodsVo> selectAll(Map<String, Object> map) {
 		return session.selectList("goodsMapper.goodsSelectAll", map);
 	}
 
-	public int totalCount(Integer goodsType) {
-		return session.selectOne("goodsMapper.goodsTotal",goodsType);
+	public int totalCount(Map<String, Object> map) {
+		return session.selectOne("goodsMapper.goodsTotal",map);
 	}
 
 	public List<GoodsTypeVo> selectAllType() {
@@ -167,6 +166,13 @@ public class GoodsDAO {
 				
 	}
 	public void deleteGoods(int goodsId) {
+		GoodsVo goodsVo = selectGoods(goodsId);
+		if(goodsVo.getS3GoodsImage() != null) {
+			String[] s3images = goodsVo.getS3GoodsImage().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(",");
+			for(int i= 0;i<s3images.length; i++) {
+				s3Service.deleteFile(s3images[i]);
+			}
+		}
 		session.delete("goodsMapper.deleteGoods",goodsId);
 	}
 	

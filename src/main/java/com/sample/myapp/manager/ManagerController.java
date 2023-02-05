@@ -41,15 +41,19 @@ public class ManagerController {
 
 	/* 상품 관리 페이지 이동 */
 	@RequestMapping("/goods")
-	public String goods(PageVO page, Model model,Integer goodsType) {
-		int count = goodsDAO.totalCount(goodsType);
+	public String goods(PageVO page, Model model,Integer goodsType,String searchKeyword) {
+		
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("goodsType", goodsType);
+		map.put("searchKeyword", searchKeyword);
+		
+		int count = goodsDAO.totalCount(map);
 		page.setPageList(count);
 		
-		Map<String, Integer> map = new HashMap<>();
 		map.put("start",page.getStart());
 		map.put("size", page.getSize());
-		map.put("goodsType", goodsType);
-		
+
 		List<GoodsVo> goodsList = goodsDAO.selectAll(map);
 		
 		List<GoodsTypeVo> typeList = goodsDAO.selectAllType();
