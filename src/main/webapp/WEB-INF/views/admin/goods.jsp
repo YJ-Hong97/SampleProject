@@ -165,9 +165,10 @@
 						<c:when test="${goods.goodsType==3 }"><td>outer</td></c:when>
 						<c:when test="${goods.goodsType==4 }"><td>bottom</td></c:when>
 						<c:when test="${goods.goodsType==5 }"><td>skirt</td></c:when>
-						<c:when test="${goods.goodsType==6 }"><td>shoes</td></c:when>
-						<c:when test="${goods.goodsType==7 }"><td>bag</td></c:when>
-						<c:when test="${goods.goodsType==8 }"><td>acc</td></c:when>
+						<c:when test="${goods.goodsType==6 }"><td>dress</td></c:when>
+						<c:when test="${goods.goodsType==7 }"><td>shoes</td></c:when>
+						<c:when test="${goods.goodsType==8 }"><td>bag</td></c:when>
+						<c:when test="${goods.goodsType==9 }"><td>acc</td></c:when>
 						<c:otherwise><td>미등록 코드</td></c:otherwise>
 					</c:choose>
 					<td ><button type="button" onclick="fn_detailGoods(${goods.goodsId})">상세보기</button></td>
@@ -211,8 +212,8 @@ $("#searchKeyword").val(searchKeyword);
 		}
 	}
 	function nextPage(page,count){
-		if(Math.floor(count/10)<page){
-			location.href=`<%request.getContextPath();%>?page=`+Math.floor(count/10)+"&goodsType="+goodsType+`&searchKeyword=`+searchKeyword;;
+		if(Math.ceil(count/10)-1<page){
+			location.href=`<%request.getContextPath();%>?page=`+Math.ceil(count/10)-1+"&goodsType="+goodsType+`&searchKeyword=`+searchKeyword;;
 		}else{
 			location.href=`<%request.getContextPath();%>?page=`+page+"&goodsType="+goodsType+`&searchKeyword=`+searchKeyword;;
 		}

@@ -16,6 +16,8 @@ public class OrderVo {
 	private String orderListId;
 	private Date pay_date;
 	private Date payDate;
+	private int orderState;
+	private Date orderDate;
 	
 	@Override
 	public String toString() {
