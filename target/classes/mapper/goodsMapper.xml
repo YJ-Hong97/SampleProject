@@ -33,6 +33,17 @@
 	<result column="goods_small_code" property="goodsSmallCode"/>
 	<result column="type_name" property="typeName"/>
 </resultMap>
+<resultMap id="order" type="com.sample.myapp.goods.OrderVo">
+	<result column="order_id" property="orderId"/>
+	<result column="user_id" property="userId"/>
+	<result column="price" property="price"/>
+	<result column="payment" property="payment"/>
+	<result column="delivery" property="delivery"/>
+	<result column="order_list_id" property="orderListId"/>
+	<result column="pay_date" property="payDate"/>
+	<result column="order_state" property="orderState"/>
+	<result column="order_date" property="orderDate"/>
+</resultMap>
 <select id="goodsSelectAll" parameterType="HashMap" resultMap="goods">
 	select * from goods
 	<choose>
@@ -44,7 +55,7 @@
 	</otherwise>
 	</choose>
 	<if test = "searchKeyword!='' and searchKeyword!=null">
-		AND goods_name like "%"||#{searchKeyword}||"%"
+		AND goods_name like CONCAT('%',#{searchKeyword},'%')
 	</if>
 	order by goods_date
 	limit #{size} offset #{start}
@@ -60,7 +71,7 @@
 	</otherwise>
 	</choose>
 	<if test= "searchKeyword !='' and searchKeyword!=null">
-		AND goods_name like "%"||#{searchKeyword}||"%"
+		AND goods_name like CONCAT('%',#{searchKeyword},'%')
 	</if>
 </select>
 <select id="goodsTypeSelectAll" resultMap="goodsType">
@@ -150,6 +161,58 @@
                     </trim>
 	limit #{size} offset #{start}
 </select>
-
-
+<select id ="selectSmallType" resultMap="goodsSmallType">
+	select * from goods_small_type 
+</select>
+<select id="selectSmallTypebyType" parameterType="java.lang.Integer" resultMap="goodsSmallType">
+	select * from goods_small_type where goods_code = #{goodsType}
+</select>
+<select id="selectOrder" resultMap="order">
+	select * from tbl_order 
+	<choose>
+		<when test="payment==null">
+			where 1=1
+		</when>
+		<otherwise>
+			where payment = #{payment}
+		</otherwise>
+	</choose>
+	<if test="delivery!=null">
+		AND delivery = #{delivery}
+	</if>
+	<if test="orderState!=null">
+		AND order_state = #{orderState}
+	</if>
+	<if test="start!=null and end!=null"> 
+		<![CDATA[ AND order_date >= #{start} AND order_date <= #{end} ]]>
+	</if>
+	<if test="month!=null and month!=''">
+		AND order_date like CONCAT('%',#{month},'%')
+	</if>
+	order by order_date
+	limit #{limit} offset #{offset}
+</select>
+<select id="selectOrderCount" resultType="java.lang.Integer">
+	select count(*) from tbl_order 
+	<choose>
+		<when test="payment==null">
+			where 1=1
+		</when>
+		<otherwise>
+			where payment = #{payment}
+		</otherwise>
+	</choose>
+	<if test="delivery!=null">
+		AND delivery = #{delivery}
+	</if>
+	<if test="orderState!=null">
+		AND order_state = #{orderState}
+	</if>
+	<if test="start!=null and end!=null"> 
+		<![CDATA[ AND order_date >= #{start} AND order_date <= #{end} ]]>
+	</if>
+	<if test="month!=null">
+		AND order_date like CONCAT('%',#{month},'%')
+	</if>
+</select>
 </mapper>

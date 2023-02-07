@@ -414,7 +414,7 @@ html, body{
 			<div class="half">
 			<input type="hidden" name="goodsId" value="${goods.goodsId }">
 			<div class="line"><label><span class="required">&#42;</span>상품 이름</label><input type="text" name="goodsName" class="input" value="${goods.goodsName }"><span><button type="button" class="checkName">중복확인</button></span></div>
-			<div class="line"><label><span class="required">&#42;</span>상품 종류</label><select name="goodsType" class="input">
+			<div class="line"><label><span class="required">&#42;</span>상품 종류</label><select name="goodsType" class="input" onchange = "fn_changeType(event)">
 				<c:forEach items="${typeList }" var="type">
 					<c:if test="${goods.goodsType== type.goodsCode}">
 						<option value="${type.goodsCode }" selected>${type.typeName}</option>
@@ -424,6 +424,15 @@ html, body{
 					</c:if>
 				</c:forEach>
 			</select></div>
+			<div id ="smallType">
+			<div class="line"><label><span class="required">&#42;</span>상품 소분류</label><select name="goodsSmallType" class="input">
+				<c:forEach items="${smallTypes }" var="stype">
+					<c:if test="${stype.goodsCode==goods.goodsType }">
+						<option value ="${stype.goodsSmallCode }">${stype.typeName }</option>
+					</c:if>
+				</c:forEach>
+			</select></div>
+			</div>
 			<div class="line"><label><span class="required">&#42;</span>상품 가격</label><input type="text" name="goodsPrice" class="input" value="${goods.goodsPrice }"></div>
 			<div class="line"><label><span class="required">&#42;</span>상품 색상</label><input type="text" name="goodsColor" class="input" value="${goods.goodsColor }"></div>
 			<div class="line"><label><span class="required">&#42;</span>상품 사이즈</label><input type="text" name="goodsSize" class="input" value="${goods.goodsSize }"></div>
@@ -614,7 +623,6 @@ html, body{
 		}else{
 			$("#active1").attr("checked","true");
 		}
-		
 	}
 	
 	function fn_insertImage(event){
@@ -968,6 +976,29 @@ html, body{
 		while(parent.firstChild)  {
 		    parent.removeChild(parent.firstChild);
 		  }
+	}
+	function fn_changeType(event){
+		let type = event.target.value;
+		$.ajax({
+			url:"/manager/goods/goodsSmallType?goodsType="+type,
+			type:"get",
+			success:function(response){
+				let smallTypes = response;
+				let input = `<div class="line"><label><span class="required">&#42;</span>상품 소분류</label><select name="goodsSmallType" class="input">`;
+				let smallType = [[${goods.goodsSmallType}]];
+				
+				for(let i = 0;i<response.length; i++){
+					if(response[i].goodsSmallType==smallType[0]){
+						input += `<option value=`+response[i].goodsSmallCode+` selected>`+response[i].typeName+`</option>`;
+					}else{
+						input += `<option value=`+response[i].goodsSmallCode+`>`+response[i].typeName+`</option>`;
+					}
+					
+				}
+				input+=`</select></div>`;
+			$("#smallType").html(input);
+			}
+		});
 	}
 </script>
 </body>

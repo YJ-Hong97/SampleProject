@@ -5,6 +5,7 @@ import java.awt.Font;
 
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,15 +16,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.sample.myapp.PageVO;
 import com.sample.myapp.goods.EmojiVo;
 import com.sample.myapp.goods.GoodsDAO;
+import com.sample.myapp.goods.GoodsSmallType;
 import com.sample.myapp.goods.GoodsTypeVo;
 import com.sample.myapp.goods.GoodsVo;
+import com.sample.myapp.goods.OrderVo;
 
 @RequestMapping("/manager")
 @Controller
@@ -57,7 +64,7 @@ public class ManagerController {
 		List<GoodsVo> goodsList = goodsDAO.selectAll(map);
 		
 		List<GoodsTypeVo> typeList = goodsDAO.selectAllType();
-		
+
 		model.addAttribute("typeList",typeList);
 		model.addAttribute("goodsList", goodsList);
 		model.addAttribute("page", page);
@@ -70,6 +77,7 @@ public class ManagerController {
 	@RequestMapping(value = "/goods/insert", method = RequestMethod.GET)
 	public String insertGoods(Model model, PageVO page) {
 		List<GoodsTypeVo> typeList = goodsDAO.selectAllType();
+		List<GoodsSmallType> smallTypes = goodsDAO.selectSmallType();
 
 		/* 폰트 가져오기 */
 		GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -81,7 +89,8 @@ public class ManagerController {
 		List<EmojiVo> emojis = goodsDAO.selectAllEmojis(page);
 		
 		GoodsVo goodsVo = new GoodsVo();
-		
+
+		model.addAttribute("smallTypes",smallTypes);
 		model.addAttribute("goods",goodsVo);
 		model.addAttribute("page", page);
 		model.addAttribute("emojis", emojis);
@@ -116,7 +125,10 @@ public class ManagerController {
 	public String detailGoods(int goodsId,Model model) {
 		GoodsVo goodsVo = goodsDAO.selectGoods(goodsId);
 		String[] dbGoodsImages = goodsVo.getDbGoodsImage().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(",");
-		
+		List<GoodsTypeVo> typeList = goodsDAO.selectAllType();
+		List<GoodsSmallType> smallTypes = goodsDAO.selectSmallType();
+		model.addAttribute("smallTypes",smallTypes);
+		model.addAttribute("typeList",typeList);
 		model.addAttribute("dbGoodsImages",dbGoodsImages);
 		model.addAttribute("goods",goodsVo);
 		return "/admin/insertGoods";
@@ -126,5 +138,38 @@ public class ManagerController {
 	public String deleteGoods(int goodsId) {
 		goodsDAO.deleteGoods(goodsId);
 		return "redirect:/manager/goods";
+	}
+	/*소분류 가져오기*/
+	@ResponseBody
+	@RequestMapping("/goods/goodsSmallType")
+	public List<GoodsSmallType> goodsSmallType(int goodsType) {
+		List<GoodsSmallType> smallTypes = goodsDAO.selectSmallTypebyType(goodsType);
+		return smallTypes;
+	}
+	/*주문 페이지로 이동*/
+	@RequestMapping("/order")
+	public String order(Model model,Integer payment,Integer delivery,Integer orderState,Date start,Date end,String month,PageVO pageVO) {
+		
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("payment", payment);
+		map.put("delivery", delivery);
+		map.put("orderState", orderState);
+		map.put("start",start);
+		map.put("end",end);
+		map.put("month", month);
+		
+		int count = goodsDAO.selectOrderCount(map);
+		pageVO.setPageList(count);
+		pageVO.setSize(10);
+		map.put("limit", pageVO.getSize());
+		map.put("offset", pageVO.getStart());
+		
+		List<OrderVo> orders = goodsDAO.selectOrder(map);
+		
+		model.addAttribute("count",count);
+		model.addAttribute("page",pageVO);
+		model.addAttribute("orders",orders);
+		return "/admin/order";
 	}
 }

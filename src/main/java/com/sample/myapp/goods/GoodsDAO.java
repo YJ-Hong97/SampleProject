@@ -82,22 +82,25 @@ public class GoodsDAO {
 					s3GoodsImages.add("shirt/"+multipartFile.getOriginalFilename());
 					break;
 				case 3:
+					dbimageStrings.add(s3Service.uploadFile(multipartFile, "outer"));
+					s3GoodsImages.add("outer/"+multipartFile.getOriginalFilename());
+				case 4:
 					dbimageStrings.add(s3Service.uploadFile(multipartFile, "bottom"));
 					s3GoodsImages.add("bottom/"+multipartFile.getOriginalFilename());
 					break;
-				case 4:
+				case 5:
 					dbimageStrings.add(s3Service.uploadFile(multipartFile, "skirt"));
 					s3GoodsImages.add( "skirt/"+multipartFile.getOriginalFilename());
 					break;
-				case 5:
+				case 6:
 					dbimageStrings.add(s3Service.uploadFile(multipartFile, "bag"));
 					s3GoodsImages.add("bag/"+multipartFile.getOriginalFilename());
 					break;
-				case 6:
+				case 7:
 					dbimageStrings.add(s3Service.uploadFile(multipartFile, "shoes"));
 					s3GoodsImages.add("shoes/"+multipartFile.getOriginalFilename());
 					break;
-				case 7:
+				case 8:
 					dbimageStrings.add(s3Service.uploadFile(multipartFile, "acc"));
 					s3GoodsImages.add("acc/"+multipartFile.getOriginalFilename());
 					break;
@@ -180,5 +183,16 @@ public class GoodsDAO {
 	public List<GoodsVo> selectOrderBy(Map<String, Object> map) {
 		return session.selectList("goodsMapper.goodsSelecOrderBy", map);
 	}
-	
+	public List<GoodsSmallType> selectSmallType(){
+		return session.selectList("goodsMapper.selectSmallType");
+	}
+	public List<GoodsSmallType> selectSmallTypebyType(int goodsType){
+		return session.selectList("goodsMapper.selectSmallTypebyType",goodsType);
+	}
+	public List<OrderVo> selectOrder(Map<String, Object> map){
+		return session.selectList("goodsMapper.selectOrder",map);
+	}
+	public int selectOrderCount(Map<String,Object> map) {
+		return session.selectOne("goodsMapper.selectOrderCount",map);
+	}
 }
