@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
      pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
  <!DOCTYPE html>
  <html>
@@ -78,13 +78,10 @@
  	}
  	.insertWrap{
  	display:inline-block;
- 		width:117px;
- 		height:100%;
- 		background:#D9D9D9;
- 		padding:0;
- 		margin:0;
- 		vertical-align:top;
- 		float:right;
+ 		display: inline-block;
+	    text-align: center;
+	    font-size: 15px;
+	    float:right;
  	}
  	.insertWrap button{
  		
@@ -126,11 +123,39 @@
  		text-align:center;
  		margin-top:20px;
  	}
+ 	.image{
+ 		width:100px;
+ 		height:100px;
+ 		display:flex;
+ 		flex-direction:row;
+ 	}
+ 	#header_navi {
+ 	width:1200px;
+ 		margin-left:auto;
+ 		margin-right:auto;
+ 		margin-top:30px;
+ 	}
+ 	#header_navi > li {
+        display: inline-block;
+        position: relative;
+        margin : 30px;
+      }
+     #header_navi > li > a {
+        display:block; position:relative; padding-bottom:30px;
+       
+      }
+      #header_navi > li > a > img {
+        width:50px; height:50px;
+      }
+      #header_navi > li > a > span {
+        position:absolute; bottom:0; left:50%; color:#666; line-height:1.462em; white-space:nowrap; transform:translate(-50%, 0);
+      
+      }
  </style>
  <body>
  <%@ include file="/WEB-INF/views/component/mypageSidebar.jsp" %>
  <div class="goodsWrap">
- <%@ include file="/WEB-INF/views/component/adminHeader.jsp" %>
+ <%@ include file="/WEB-INF/views/component/header.jsp" %>
  <div class="boxWrap">
  	<div class = Main category>
  				<tr>
@@ -157,14 +182,48 @@
  			</c:forEach>
  	</div>
  	<div class="buttonWrap">
-
  		<div>
  		Total : ${count}
  		</div>
  		<div class="insertWrap">
- 			<button type="button">상품 등록</button>
- 		</div>
+ 			<table>
+  			<tr>
+  				<th><button class="btn"
+         type="button" onclick="getGoods_sort('${page.page}','${goods.goodsType}','goods_best')">인기순</button></th>
+  				<th><button class="btn"
+         type="button" onclick="getGoods_sort('${page.page}','${goods.goodsType}','goods_date')">신상품순</th>
+  				<th><button class="btn"
+         type="button" onclick="getGoods_sort('${page.page}','${goods.goodsType}','goods_price_down')">낮은가격순</th>
+  				<th><button class="btn"
+         type="button" onclick="getGoods_sort('${page.page}','${goods.goodsType}','goods_price_up')">높은가격순</th>
+  				<th><button class="btn"
+         type="button" onclick="getGoods_sort('${page.page}','${goods.goodsType}','goods_icon')">icon</th>
+  			</tr>
+  		</table>
+  		</div>
  	</div>
+ 	
+ 	<ul id="header_navi">
+ 		<c:forEach items="${goodsList}" var="goods">
+ 			<c:forEach items="${goods.dbGoodsImage}" var="list" varStatus="i">
+ 					<c:choose>
+ 						
+  							<c:when test="${i.count ==1}">
+    					<li>
+      						<a href="#" alt=""><img src=${fn:replace(fn:replace(list, '[', ''), ']', '')} style="width:300px; height:400px; margin:10px;" alt="">
+      						<span>
+      						${i.count}
+      						${goods.goodsName}<br>
+      			    		${goods.goodsPrice}원 
+      						</span>
+      						</a>
+    					</li>
+    					</c:when>
+					</c:choose>
+					</c:forEach> 
+					
+ 		</c:forEach>
+ 	</ul>
  	<div class="listWrap">
  		<table>
  			<tr>
@@ -193,37 +252,67 @@
  						<c:when test="${goods.goodsType==8 }"><td>acc</td></c:when>
  						<c:otherwise><td>미등록 코드</td></c:otherwise>
  					</c:choose>
- 					<td ><button type="button">상세보기</button></td>
+ 					<c:forEach items="${goods.dbGoodsImage}" var="list" varStatus="i">
+ 					
+ 					<c:choose>
+ 						 <c:when test="${empty fn:replace(fn:replace(list, '[', ''), ']', '')}">
+  						</c:when>
+  						<c:otherwise>
+    					<td>
+      						<img src=${fn:replace(fn:replace(list, '[', ''), ']', '')} width="100" height="100" alt="">
+    					</td>
+  						</c:otherwise>
+					</c:choose>
+					</c:forEach> 
  				</tr>
  			</c:forEach>
  		</table>
  	</div>
  	<div class="nav">
- 		<a class="prev" onClick="prevPage('${page.page-1}')">&#60;</a>
+ 		<a class="prev" onClick="prevPage('${page.page-1}','${goods.goodsType}','${orderBy}')">&#60;</a>
  		<c:forEach items="${page.pageList }" var="page">
  			<a>${page }</a>
  		</c:forEach>
- 		<a class="next" onClick="nextPage('${page.page+1}','${count }')">&#62;</a>
+ 		<a class="next" onClick="nextPage('${page.page+1}','${count }','${goods.goodsType}','${orderBy}')">&#62;</a>
  	</div>
  </div>
  </div>
  <%@ include file="/WEB-INF/views/component/adminFooter.jsp" %>
  <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
- <script>
- 	function prevPage(page){
- 		if(page==-1){
- 			location.href="http://localhost:9090/manager/goods?page=0";
- 		}else{
- 			location.href="http://localhost:9090/manager/goods?page="+page;
- 		}
- 	}
- 	function nextPage(page,count){
- 		if(Math.floor(count/10)<page){
- 			location.href="http://localhost:9090/manager/goods?page="+Math.floor(count/10);
- 		}else{
- 			location.href="http://localhost:9090/manager/goods?page="+page;
- 		}
- 	}
+<script>
+ let query = window.location.search;
+let param = new URLSearchParams(query);
+var goodsType = param.get('goodsType');
+if(goodsType==null){
+	goodsType = -1;
+}
+	
+
+
+	function fn_changeType(type){
+		goodsType = type;
+		location.href=`<%request.getContextPath();%>?page=0&goodsType=`+goodsType;
+	}
+	function prevPage(page,goodsType,orderBy){
+		if(page==-1){
+			location.href=`<%request.getContextPath();%>?page=`+page+"&goodsType="+goodsType+"&orderBy="+orderBy;
+		}else{
+			location.href=`<%request.getContextPath();%>?page=`+page+"&goodsType="+goodsType+"&orderBy="+orderBy;
+		}
+	}
+	function nextPage(page,count,goodsType,orderBy){
+		if(Math.floor(count/10)<page){
+			location.href=`<%request.getContextPath();%>?page=`+Math.floor(count/10)+"&goodsType="+goodsType+"&orderBy="+orderBy;
+		}else{
+			location.href=`<%request.getContextPath();%>?page=`+page+"&goodsType="+goodsType+"&orderBy="+orderBy;
+		}
+	}
+  	
+  	function getGoods_sort(page,goodsType,orderBy) {
+  		location.href=`<%request.getContextPath();%>?page=`+page+`&goodsType=`+goodsType+`&orderBy=`+orderBy;
+  		}
+  		
+ 
  </script>
  </body>
  </html>

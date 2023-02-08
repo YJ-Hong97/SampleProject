@@ -145,7 +145,7 @@
 	select * from goods
 	<choose>
 		<when test = "goodsType==null or goodsType == -1">
-		where goods_type = 0
+		where 1=1
 	</when>
 	<otherwise>
 		where goods_type = #{goodsType}
