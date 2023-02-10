@@ -130,7 +130,7 @@
  		flex-direction:row;
  	}
  	#header_navi {
- 	width:1200px;
+ 	width:1600px;
  		margin-left:auto;
  		margin-right:auto;
  		margin-top:30px;
@@ -138,7 +138,6 @@
  	#header_navi > li {
         display: inline-block;
         position: relative;
-        margin : 30px;
       }
      #header_navi > li > a {
         display:block; position:relative; padding-bottom:30px;
@@ -151,6 +150,35 @@
         position:absolute; bottom:0; left:50%; color:#666; line-height:1.462em; white-space:nowrap; transform:translate(-50%, 0);
       
       }
+   
+   .lb-wrap {
+  margin: 10px auto;
+  position: relative;
+}
+.lb-wrap img {
+  width: 100%;
+  vertical-align: middle;
+}
+.lb-button {
+ 
+  border-radius: 10px;
+  background-color: #40AFFF;
+  text-align: center;
+  position: absolute;
+  top: 5%;
+  left: 90%;
+  transform: translate(-50%, -50%);
+}
+.lb-button_love {
+ 
+  border-radius: 10px;
+  background-color: #FF0000;
+  text-align: center;
+  position: absolute;
+  top: 5%;
+  left: 90%;
+  transform: translate(-50%, -50%);
+}
  </style>
  <body>
  <%@ include file="/WEB-INF/views/component/mypageSidebar.jsp" %>
@@ -204,25 +232,41 @@
  	</div>
  	
  	<ul id="header_navi">
- 		<c:forEach items="${goodsList}" var="goods">
- 			<c:forEach items="${goods.dbGoodsImage}" var="list" varStatus="i">
+ 			<c:forEach items="${mainImage}" var="list" varStatus="i">
+ 				<c:forEach items="${list}" var="good" varStatus="j">
+ 			
  					<c:choose>
  						
-  							<c:when test="${i.count ==1}">
+  							<c:when test="${j.count ==1 && list.ImageList[0] != null && list.ImageList[0] != '' && list.ImageList[0] != 'null'}">
     					<li>
-      						<a href="#" alt=""><img src=${fn:replace(fn:replace(list, '[', ''), ']', '')} style="width:300px; height:400px; margin:10px;" alt="">
+    						
+					<div class="lb-wrap">
+					<c:choose>
+					<c:when test="${list.goodsId == loveList}">
+					<button class="lb-button_love" type="button" onclick="fn_loveit(event)">❤</button>
+					</c:when>
+					<c:otherwise>
+    						<button class="lb-button" type="button" onclick="fn_loveit(event)">❤</button>
+    					</c:otherwise>
+					</c:choose>
+						<a href="#" alt=""><img src=${fn:replace(fn:replace(list.ImageList[0], '[', ''), ']', '')}  style="width:300px; height:400px; margin:10px;" alt="" class="lb-image">
+      						
+      						</div>
       						<span>
-      						${i.count}
-      						${goods.goodsName}<br>
-      			    		${goods.goodsPrice}원 
+      						${list.goodsName}<br>
+      			    		${list.goodsPrice}원 <br>
+      						
       						</span>
       						</a>
     					</li>
     					</c:when>
+    					<c:otherwise>
+    						
+    					</c:otherwise>
 					</c:choose>
-					</c:forEach> 
+				</c:forEach> 
+			</c:forEach> 
 					
- 		</c:forEach>
  	</ul>
  	<div class="listWrap">
  		<table>
@@ -286,30 +330,52 @@ var goodsType = param.get('goodsType');
 if(goodsType==null){
 	goodsType = -1;
 }
-	
 
-
+function fn_loveit(event){
+		  alert("하이");
+		 let type = event.target.value;
+		$.ajax({
+			url:"/manager/goods/goodsSmallType?goodsType="+type,
+			type:"get",
+			success:function(response){
+				let smallTypes = response;
+				let input = `<div class="line"><label><span class="required">&#42;</span>상품 소분류</label><select name="goodsSmallType" class="input">`;
+				let smallType = [[${goods.goodsSmallType}]];
+				
+				for(let i = 0;i<response.length; i++){
+					if(response[i].goodsSmallType==smallType[0]){
+						input += `<option value=`+response[i].goodsSmallCode+` selected>`+response[i].typeName+`</option>`;
+					}else{
+						input += `<option value=`+response[i].goodsSmallCode+`>`+response[i].typeName+`</option>`;
+					}
+					
+				}
+				input+=`</select></div>`;
+			$("#smallType").html(input);
+			}
+		});
+	}
 	function fn_changeType(type){
 		goodsType = type;
-		location.href=`<%request.getContextPath();%>?page=0&goodsType=`+goodsType;
+		location.href=`<%request.getContextPath();%>?pageNum=0&goodsType=`+goodsType;
 	}
-	function prevPage(page,goodsType,orderBy){
-		if(page==-1){
-			location.href=`<%request.getContextPath();%>?page=`+page+"&goodsType="+goodsType+"&orderBy="+orderBy;
+	function prevPage(pageNum,goodsType,orderBy){
+		if(pageNum==-1){
+			location.href=`<%request.getContextPath();%>?pageNum=`+pageNum+"&goodsType="+goodsType+"&orderBy="+orderBy;
 		}else{
-			location.href=`<%request.getContextPath();%>?page=`+page+"&goodsType="+goodsType+"&orderBy="+orderBy;
+			location.href=`<%request.getContextPath();%>?pageNum=`+pageNum+"&goodsType="+goodsType+"&orderBy="+orderBy;
 		}
 	}
-	function nextPage(page,count,goodsType,orderBy){
-		if(Math.floor(count/10)<page){
-			location.href=`<%request.getContextPath();%>?page=`+Math.floor(count/10)+"&goodsType="+goodsType+"&orderBy="+orderBy;
+	function nextPage(pageNum,count,goodsType,orderBy){
+		if(Math.floor(count/10)<pageNum){
+			location.href=`<%request.getContextPath();%>?pageNum=`+Math.floor(count/10)+"&goodsType="+goodsType+"&orderBy="+orderBy;
 		}else{
-			location.href=`<%request.getContextPath();%>?page=`+page+"&goodsType="+goodsType+"&orderBy="+orderBy;
+			location.href=`<%request.getContextPath();%>?pageNum=`+pageNum+"&goodsType="+goodsType+"&orderBy="+orderBy;
 		}
 	}
   	
-  	function getGoods_sort(page,goodsType,orderBy) {
-  		location.href=`<%request.getContextPath();%>?page=`+page+`&goodsType=`+goodsType+`&orderBy=`+orderBy;
+  	function getGoods_sort(pageNum,goodsType,orderBy) {
+  		location.href=`<%request.getContextPath();%>?pageNum=`+pageNum+`&goodsType=`+goodsType+`&orderBy=`+orderBy;
   		}
   		
  
