@@ -60,7 +60,7 @@ public class GoodsCategory_Controller {
 	}
 	
 	@RequestMapping("/goodsList_byhi")
- 	public String goods_orderBy(PageVO page,Model model,@RequestParam(required = false, defaultValue = "-1")String userid, @RequestParam(required = false, defaultValue = "1")Integer pageNum, @RequestParam(required = false, defaultValue = "-1")Integer goodsType, @RequestParam(required = false, defaultValue = "goods_date desc") String orderBy){
+ 	public String goods_orderBy(PageVO page,Model model,@RequestParam(required = false, defaultValue = "-1")String userid, @RequestParam(required = false, defaultValue = "0")Integer pageNum, @RequestParam(required = false, defaultValue = "-1")Integer goodsType, @RequestParam(required = false, defaultValue = "goods_date desc") String orderBy){
 		Map<String, Object> map = new HashMap<>();
 		map.put("goodsType", goodsType);
 		map.put("searchKeyword", null);
