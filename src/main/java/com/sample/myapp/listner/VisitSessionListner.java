@@ -1,29 +1,39 @@
 package com.sample.myapp.listner;
 
+import javax.servlet.annotation.WebListener;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 
+@WebListener
 public class VisitSessionListner implements HttpSessionListener{
-	@Autowired
-	VisitDao visitDao;
+	
 	@Override
 	public void sessionCreated(HttpSessionEvent se) {
-		if(se.getSession().isNew()) {
-			execute(se);
-		}
+		 HttpSession session = se.getSession();
+         WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(session.getServletContext());
+         //등록되어있는 빈을 사용할수 있도록 설정해준다
+         HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+         //request를 파라미터에 넣지 않고도 사용할수 있도록 설정
+         VisitDao visitDao = new VisitDao(wac);
+         VisitVo vo = new VisitVo();
+         vo.setVisitIp(req.getRemoteAddr());
+         vo.setVisitAgent(req.getHeader("User-Agent"));//브라우저 정보
+         vo.setVisitRefer(req.getHeader("referer"));//접속 전 사이트 정보
+         System.out.println(vo);
+         visitDao.insertVisit(vo);       
 	}
 
-	private void execute(HttpSessionEvent se) {
-		// TODO Auto-generated method stub
-		if(visitDao.selectVisit()==null) {
-			visitDao.insertVisit();
-		}else {
-			visitDao.updateVisit();
-		}
-	}
+	
 
 	@Override
 	public void sessionDestroyed(HttpSessionEvent se) {

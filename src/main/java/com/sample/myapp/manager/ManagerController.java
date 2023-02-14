@@ -31,6 +31,8 @@ import com.sample.myapp.goods.GoodsSmallType;
 import com.sample.myapp.goods.GoodsTypeVo;
 import com.sample.myapp.goods.GoodsVo;
 import com.sample.myapp.goods.OrderVo;
+import com.sample.myapp.listner.VisitDao;
+import com.sample.myapp.listner.VisitToday;
 
 @RequestMapping("/manager")
 @Controller
@@ -38,6 +40,8 @@ public class ManagerController {
 
 	@Autowired
 	GoodsDAO goodsDAO;
+	@Autowired
+	VisitDao visitDao;
 
 	/* 관리자 페이지 이동 */
 	@RequestMapping("/")
@@ -171,5 +175,22 @@ public class ManagerController {
 		model.addAttribute("page",pageVO);
 		model.addAttribute("orders",orders);
 		return "/admin/order";
+	}
+	/*방문자 페이지로 이동*/
+	@RequestMapping("/visit")
+	public String visit(Model model) {
+		Map<String, Integer> map = visitDao.today();
+		Map<Date, Integer> total = visitDao.selectVisitAll();
+		int max = 0;
+		for( Date key : total.keySet() ){
+			if(max<total.get(key)) {
+				max = total.get(key);
+			}
+		}
+		
+		model.addAttribute("max",max);
+		model.addAttribute("today",map);
+		model.addAttribute("total",total);
+		return "/admin/visit";
 	}
 }
