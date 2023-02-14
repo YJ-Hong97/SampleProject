@@ -197,6 +197,9 @@ if(goodsType==null){
 	goodsType = -1;
 }
 var searchKeyword = param.get('searchKeyword');
+if(searchKeyword==null){
+	searchKeyword = "";
+}
 $("#searchKeyword").val(searchKeyword);
 
 

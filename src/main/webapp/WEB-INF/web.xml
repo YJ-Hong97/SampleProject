@@ -17,10 +17,13 @@
 
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
+		<listner-class>
+			com.sample.myapp.listner.VisitSessionListner
+		</listner-class>
 		<listener-class>org.springframework.web.context.ContextLoaderListener
 		</listener-class>
 	</listener>
-
+	
 	<!-- Processes application requests -->
 	<servlet>
 		<servlet-name>appServlet</servlet-name>

@@ -44,7 +44,7 @@
 			<a><span>관리자</span></a>
 		</div>
 		<div class="menu">
-			<a><span>주문</span></a>
+			<a href="/manager/order"><span>주문</span></a>
 		</div>
 		<div class="menu">
 			<a href="/manager/goods"><span>상품</span></a>
@@ -57,6 +57,9 @@
 		</div>
 		<div class="menu">
 			<a><span>문의</span></a>
+		</div>
+		<div class="menu">
+			<a href="/manager/visit"><span>방문자</span></a>
 		</div>
 		<div class="menu">
 			<a><span>홈페이지</span></a>

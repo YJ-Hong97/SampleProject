@@ -221,25 +221,42 @@ html, body{
 <script>
 let query = window.location.search;
 let param = new URLSearchParams(query);
-var payment = param.get('payment');
-var delivery = param.get('delivery');
-var orderState = param.get('orderState');
-var start = param.get('start');
-var end = param.get('end');
-var today = new Date();   
-
+/*기타 파라미터 지정*/
+var payment = "";
+if(param.get("payment")!=null){
+	payment=param.get("payment");
+}
+var delivery = "";
+if(param.get("delivery")!=null){
+	delivery=param.get("delivery");
+}
+var orderState = "";
+if(param.get("orderState")!=null){
+	orderState=param.get("orderState");
+}
+var start = "";
+if(param.get("start")!=null){
+	start = param.get("start");
+}
+var end = "";
+if(param.get("end")!=null){
+	end=param.get("end");
+}
+ 
+/*month지정*/
+var today = new Date();  
 var year = today.getFullYear(); // 년도
 var month = today.getMonth() + 1;  // 월
 month = month.toString().padStart(2,"0");
-var cMonth = null;
-var pMonth = null;
-if(param.get('month')!=month){
+var cMonth = "";
+var pMonth = "";
+if(param.get('month')!=month&&param.get("month")!=null){
 	pMonth = param.get('month');
 }else{
 	cMonth = param.get('month');
 }
 window.onload = function(){
-	if(payment==0){
+	if(payment==0&&payment!=""){
 		document.querySelector(".topWrap").childNodes[3].classList.add("on");
 	}else if(payment==1){
 		document.querySelector(".topWrap").childNodes[5].classList.add("on");
@@ -272,34 +289,45 @@ window.onload = function(){
 		let parent = event.target.parentNode;
 		parent.classList.add("on");
 		
+		let url = "";
+		if(cMonth!=""&&cMonth!=null){
+			url+= "/manager/order?month="+cMonth;
+		}else if(pMonth!=""&&pMonth!=null){
+			url+= "/manager/order?month="+pMonth;
+		}else if(start!=""){
+			url +=  "/manager/order?start="+start+"&end="+end;
+		}else{
+			url += "/manager/order?";
+		}
+		
 		if(type=="전체주문"){
-			location.href = "/manager/order";
+			location.href = url;
 		}else if(type=="입금대기"){
-			location.href = "/manager/order?payment=0";
+			location.href = url+"&payment="+0;
 			
 		}else if(type=="입금확인"){
-			location.href = "/manager/order?payment=1";
+			location.href = url+"&payment="+1;
 			
 		}else if(type=="배송완료"){
-			location.href = "/manager/order?delivery=3";
+			location.href =  url+"&delivery="+3;
 			
 		}else if(type=="구매확정"){
-			location.href = "/manager/order?orderState=7";
+			location.href = url+"&orderState="+7;
 			
 		}else if(type=="취소요청"){
-			location.href = "/manager/order?orderState=1";
+			location.href = url+"&orderState="+1;
 			
 		}else if(type=="교환요청"){
-			location.href = "/manager/order?orderState=2";
+			location.href = url+"&orderState="+2;
 			
 		}else if(type=="환불완료"){
-			location.href = "/manager/order?orderState=6";
+			location.href = url+"&orderState="+6;
 			
 		}else if(type=="교환완료"){
-			location.href = "/manager/order?orderState=5";
+			location.href = url+"&orderState="+5;
 			
 		}else if(type=="단순취소"){
-			location.href = "/manager/order?orderState=4";
+			location.href = url+"&orderState="+4;
 			
 		}else if(type=="삭제목록"){
 			
@@ -313,16 +341,7 @@ window.onload = function(){
 			alert("시작일과 종료일을 입력해주세요.");
 		}else{
 			
-			var url="/manager/order?start="+start+"&end="+end;
-			if(payment!=null){
-				url+="&payment="+payment;
-			}
-			if(delivery!=null){
-				url+="&delivery="+delivery;
-			}
-			if(orderState!=null){
-				url+="&orderState="+orderState;
-			}
+			let url="/manager/order?start="+start+"&end="+end+"&payment="+payment+"&delivery="+delivery+"&orderState="+orderState;
 			location.href = url;
 		}
 	}
@@ -331,111 +350,72 @@ window.onload = function(){
 		$("#end").attr("min",min);
 	}
 	function fn_clickCMonth(event){
-		cMonth = year+"-"+(month-1).toString().padStart(2,"0");
-		var url="/manager/order?month="+cMonth;
-		if(payment!=null){
-			url+="&payment="+payment;
-		}
-		if(delivery!=null){
-			url+="&delivery="+delivery;
-		}
-		if(orderState!=null){
-			url+="&orderState="+orderState;
-		}
+		cMonth = year+"-"+(month).toString().padStart(2,"0");
+		let url="/manager/order?month="+cMonth+"&payment="+payment+"&delivery="+delivery+"&orderState="+orderState;
 		location.href = url;
 	}
 	function fn_clickPMonth(event){
-		pMonth = year+"-"+(month-1);
-		var url="/manager/order?month="+pMonth;
-		if(payment!=null){
-			url+="&payment="+payment;
-		}
-		if(delivery!=null){
-			url+="&delivery="+delivery;
-		}
-		if(orderState!=null){
-			url+="&orderState="+orderState;
-		}
+		pMonth = year+"-"+(month-1).toString().padStart(2,"0");
+		let url="/manager/order?month="+pMonth+"&payment="+payment+"&delivery="+delivery+"&orderState="+orderState;
 		location.href = url;
 	}
 	function fn_clickAllMonth(event){
 		month = "";
-		var url="/manager/order?month="+month;
-		if(payment!=null){
-			url+="&payment="+payment;
-		}
-		if(delivery!=null){
-			url+="&delivery="+delivery;
-		}
-		if(orderState!=null){
-			url+="&orderState="+orderState;
-		}
+		let url="/manager/order?month="+month+"&payment="+payment+"&delivery="+delivery+"&orderState="+orderState;
 		location.href = url;
 	}
 	function fn_page(page){
-		let url = "/manager/order?";
-		if(start!=""&&start!=null&&end!=""&&end!=null){
-			url += "&start="+start+"&end="+end;
-		}
-		if(cMonth!=null){
-			url +="&month="+cMonth;
-		}
-		if(payment!=null){
-			url+="&payment="+payment;
-		}
-		if(delivery!=null){
-			url+="&delivery="+delivery;
-		}
-		if(orderState!=null){
-			url+="&orderState="+orderState;
-		}
-		location.href = url+"&page="+page;
 		
+		if(start!=""&&end!=""){
+			let url="/manager/order?start="+start+"&end="+end+"&payment="+payment+"&delivery="+delivery+"&orderState="+orderState+"&page="+page;
+			location.href = url;
+		}else if(cMonth!=""&&cMonth!=null){
+			let url="/manager/order?month="+cMonth+"&payment="+payment+"&delivery="+delivery+"&orderState="+orderState+"&page="+page;
+			location.href = url;
+		}else if(pMonth!=""&&pMonth!=null){
+			let url="/manager/order?month="+pMonth+"&payment="+payment+"&delivery="+delivery+"&orderState="+orderState+"&page="+page;
+			location.href = url;
+		}else{
+			let url="/manager/order?payment="+payment+"&delivery="+delivery+"&orderState="+orderState+"&page="+page;
+			location.href = url;
+		}
 	}
 	function prevPage(page){
 		if(page<0){
 			page = 0;
 		}
-		let url = "/manager/order?";
-		if(start!=""&&start!=null&&end!=""&&end!=null){
-			url += "&start="+start+"&end="+end;
+		if(start!=""&&end!=""){
+			let url="/manager/order?start="+start+"&end="+end+"&payment="+payment+"&delivery="+delivery+"&orderState="+orderState+"&page="+page;
+			location.href = url;
+		}else if(cMonth!=""&&cMonth!=null){
+			let url="/manager/order?month="+cMonth+"&payment="+payment+"&delivery="+delivery+"&orderState="+orderState+"&page="+page;
+			location.href = url;
+		}else if(pMonth!=""&&pMonth!=null){
+			let url="/manager/order?month="+pMonth+"&payment="+payment+"&delivery="+delivery+"&orderState="+orderState+"&page="+page;
+			location.href = url;
+		}else{
+			let url="/manager/order?payment="+payment+"&delivery="+delivery+"&orderState="+orderState+"&page="+page;
+			location.href = url;
 		}
-		if(cMonth!=null){
-			url +="&month="+cMonth;
-		}
-		if(payment!=null){
-			url+="&payment="+payment;
-		}
-		if(delivery!=null){
-			url+="&delivery="+delivery;
-		}
-		if(orderState!=null){
-			url+="&orderState="+orderState;
-		}
-		location.href = url+"&page="+page;
 	}
 	function nextPage(page){
 		let count = [[${count}]];
 		if(page>Math.ceil(count/10)-1){
 			page = Math.ceil(count/10)-1;
 		}
-		let url = "/manager/order?";
-		if(start!=""&&start!=null&&end!=""&&end!=null){
-			url += "&start="+start+"&end="+end;
+		if(start!=""&&end!=""){
+			let url="/manager/order?start="+start+"&end="+end+"&payment="+payment+"&delivery="+delivery+"&orderState="+orderState+"&page="+page;
+			location.href = url;
+		}else if(cMonth!=""&&cMonth!=null){
+			let url="/manager/order?month="+cMonth+"&payment="+payment+"&delivery="+delivery+"&orderState="+orderState+"&page="+page;
+			location.href = url;
+		}else if(cMonth!=""&&pMonth!=null){
+			let url="/manager/order?month="+pMonth+"&payment="+payment+"&delivery="+delivery+"&orderState="+orderState+"&page="+page;
+			location.href = url;
+		}else{
+			let url="/manager/order?payment="+payment+"&delivery="+delivery+"&orderState="+orderState+"&page="+page;
+			location.href = url;
 		}
-		if(cMonth!=null){
-			url +="&month="+cMonth;
-		}
-		if(payment!=null){
-			url+="&payment="+payment;
-		}
-		if(delivery!=null){
-			url+="&delivery="+delivery;
-		}
-		if(orderState!=null){
-			url+="&orderState="+orderState;
-		}
-		location.href = url+"&page="+page;
 	}
 </script>
 </body>
