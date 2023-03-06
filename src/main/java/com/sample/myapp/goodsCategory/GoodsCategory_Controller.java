@@ -64,7 +64,6 @@ public class GoodsCategory_Controller {
 		Map<String, Object> map = new HashMap<>();
 		map.put("goodsType", goodsType);
 		map.put("searchKeyword", null);
-		
 		int count = goodsDAO.totalCount(map);
 		page.setPageList(count);
 		page.setPage(pageNum);
@@ -74,6 +73,8 @@ public class GoodsCategory_Controller {
 	
 		List<LoveVO> loveList = new ArrayList<>();
 		List<GoodsVo> goodsList = goodsDAO.selectOrderBy(map);
+		List<String> flag = new ArrayList<String>();
+		
 		if(userid.equals("-1")) {
 			loveList = loveDAO.selectLoveUser("1");
 		}else {
@@ -83,6 +84,19 @@ public class GoodsCategory_Controller {
 		for(int b=0; b<a; b++) {
 			System.out.println(goodsList.get(b).getGoodsId());
 		}
+		for(int i=0; i<goodsList.size(); i++) {
+			for(int j=0; j<loveList.size(); j++) {
+			if(goodsList.get(i).getGoodsId()==loveList.get(j).getGoods_id()) {
+				flag.add("true");
+				break;
+			}
+			}
+			if(flag.size()==i)
+			flag.add("false");
+		}
+		
+		
+
 		
 		ArrayList<HashMap<String, Object>> mainImage=new ArrayList<HashMap<String,Object>>();
 		for(int i=0; i<a; i++) {
@@ -114,6 +128,7 @@ public class GoodsCategory_Controller {
 		for(int i=0; i<mainImage.size(); i++) {
 			System.out.println(mainImage.get(i).get("goodsName"));
 		}
+		System.out.println(loveList.toString());
 		model.addAttribute("mainImage", mainImage);
  		model.addAttribute("goodsList",goodsList);
  		model.addAttribute("page",page);
@@ -121,7 +136,7 @@ public class GoodsCategory_Controller {
  		model.addAttribute("mainCategory", 1);
  		model.addAttribute("orderBy", orderBy);
  		model.addAttribute("goodsType", goodsType);
- 		model.addAttribute("loveList",loveList.get(0).getGoods_id());
+ 		model.addAttribute("flag",flag);
  		return "user/goodsCategory_byhi";
  	}
 }

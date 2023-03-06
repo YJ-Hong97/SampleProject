@@ -11,7 +11,7 @@ public class LoveService {
 	@Autowired
 	LoveDAO loveDAO;
 	public void insertLove(LoveVO love) {
-		loveDAO.inserLove(love);
+		loveDAO.insertLove(love);
 	}
 	
 	public List<LoveVO> selectLoveAll(LoveVO love) {

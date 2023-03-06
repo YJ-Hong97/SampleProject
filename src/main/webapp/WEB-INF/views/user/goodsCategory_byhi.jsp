@@ -130,7 +130,7 @@
  		flex-direction:row;
  	}
  	#header_navi {
- 	width:1600px;
+ 	width:100%;
  		margin-left:auto;
  		margin-right:auto;
  		margin-top:30px;
@@ -242,11 +242,12 @@
     						
 					<div class="lb-wrap">
 					<c:choose>
-					<c:when test="${list.goodsId == loveList}">
-					<button class="lb-button_love" type="button" onclick="fn_loveit(event)">❤</button>
+					<c:when test="${flag[i.index] == true}">
+					<button class="lb-button_love lovebutton" type="button" >❤</button>
+				
 					</c:when>
 					<c:otherwise>
-    						<button class="lb-button" type="button" onclick="fn_loveit(event)">❤</button>
+    						<button class="lb-button lovebutton" type="button" >❤</button>
     					</c:otherwise>
 					</c:choose>
 						<a href="#" alt=""><img src=${fn:replace(fn:replace(list.ImageList[0], '[', ''), ']', '')}  style="width:300px; height:400px; margin:10px;" alt="" class="lb-image">
@@ -255,7 +256,6 @@
       						<span>
       						${list.goodsName}<br>
       			    		${list.goodsPrice}원 <br>
-      						
       						</span>
       						</a>
     					</li>
@@ -264,6 +264,7 @@
     						
     					</c:otherwise>
 					</c:choose>
+				
 				</c:forEach> 
 			</c:forEach> 
 					
@@ -323,6 +324,7 @@
  </div>
  <%@ include file="/WEB-INF/views/component/adminFooter.jsp" %>
  <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script>
  let query = window.location.search;
 let param = new URLSearchParams(query);
@@ -331,30 +333,6 @@ if(goodsType==null){
 	goodsType = -1;
 }
 
-function fn_loveit(event){
-		  alert("하이");
-		 let type = event.target.value;
-		$.ajax({
-			url:"/manager/goods/goodsSmallType?goodsType="+type,
-			type:"get",
-			success:function(response){
-				let smallTypes = response;
-				let input = `<div class="line"><label><span class="required">&#42;</span>상품 소분류</label><select name="goodsSmallType" class="input">`;
-				let smallType = [[${goods.goodsSmallType}]];
-				
-				for(let i = 0;i<response.length; i++){
-					if(response[i].goodsSmallType==smallType[0]){
-						input += `<option value=`+response[i].goodsSmallCode+` selected>`+response[i].typeName+`</option>`;
-					}else{
-						input += `<option value=`+response[i].goodsSmallCode+`>`+response[i].typeName+`</option>`;
-					}
-					
-				}
-				input+=`</select></div>`;
-			$("#smallType").html(input);
-			}
-		});
-	}
 	function fn_changeType(type){
 		goodsType = type;
 		location.href=`<%request.getContextPath();%>?pageNum=0&goodsType=`+goodsType;
@@ -377,7 +355,23 @@ function fn_loveit(event){
   	function getGoods_sort(pageNum,goodsType,orderBy) {
   		location.href=`<%request.getContextPath();%>?pageNum=`+pageNum+`&goodsType=`+goodsType+`&orderBy=`+orderBy;
   		}
-  		
+  	
+  		 
+ 					 $(".lovebutton").click(function() {
+	   					
+	    				 if ($(this).hasClass("lb-button_love")) {
+	      					 $(this).removeClass('lb-button_love')
+	      					 $(this).addClass('lb-button')
+	   					 } else {
+	        				 $(this).removeClass('lb-button')
+	        				 $(this).addClass('lb-button_love')
+	     				 }
+
+  					 })  
+				
+		
+		
+	
  
  </script>
  </body>

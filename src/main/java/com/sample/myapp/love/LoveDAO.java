@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public class LoveDAO {
 	@Autowired
 	SqlSession session;
-	public void inserLove(LoveVO love) {
+	public void insertLove(LoveVO love) {
 		session.insert("loveMapper.loveInsert",love);
 	}
 	
