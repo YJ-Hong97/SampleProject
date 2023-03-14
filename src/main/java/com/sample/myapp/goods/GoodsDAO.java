@@ -195,4 +195,7 @@ public class GoodsDAO {
 	public int selectOrderCount(Map<String,Object> map) {
 		return session.selectOne("goodsMapper.selectOrderCount",map);
 	}
+	public List<GoodsVo> selectNewGoods(){
+		return session.selectList("goodsMapper.selectNewGoods");
+	}
 }
