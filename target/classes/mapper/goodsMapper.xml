@@ -215,4 +215,9 @@
 		AND order_date like CONCAT('%',#{month},'%')
 	</if>
 </select>
+<select id="selectNewGoods" resultMap="goods">
+	select * from goods 
+	order by goods_date desc
+	limit 4 offset 0
+</select>
 </mapper>
