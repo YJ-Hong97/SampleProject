@@ -19,6 +19,7 @@
 	<result column="goods_active" property="goodsActive"/>
 	<result column="s3_goods_image" property="s3GoodsImage"/>
 	<result column="goods_small_type" property="goodsSmallType"/>
+	<result column="goods_detail" property="goodsDetail"/>
 </resultMap>
 <resultMap id="emoji" type="com.sample.myapp.goods.EmojiVo">
 	<result column="emojis_code" property="emojis_code"/>
