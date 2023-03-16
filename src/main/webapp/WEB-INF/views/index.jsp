@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+   
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +13,7 @@
 	body, html{
 		width:100%;
 		height:100%;
+		padding-top:55px;
 	}
 	.imageWrap{
 		position:relative;
@@ -165,10 +167,10 @@
 		<c:forEach items="${goodsList }" var="goods" varStatus="status">
 			<div class="goodsItem${status.index } goodsItem" >
 				<c:forEach items="${goods.arrayImage}" var="image">
-					<a><img src="${image }" class="goodsImage"></a>
+					<a href="/goods/detail?goodsId=${goods.goodsId }"><img src="${image }" class="goodsImage"></a>
 				</c:forEach>
 				<button value="${goods.goodsId }" class="heart" onclick="clickHeart(event)"></button>
-				<p class="goodsName">${goods.goodsName }</p>
+				<a href="/goods/detail?goodsId=${goods.goodsId }"><p class="goodsName">${goods.goodsName }</p></a>
 				<p class="goodsPrice">
 					<c:if test ="${goods.goodsSale!=0 }">
 						<span>${goods.goodsPrice-(goods.goodsSale*goods.goodsPrice) }원 </span>
