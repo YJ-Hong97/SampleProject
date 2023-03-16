@@ -4,9 +4,10 @@ package com.sample.myapp.goods;
 
 import java.sql.Date;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
+@Data
 @Getter
 @Setter
 public class GoodsVo {
@@ -28,7 +29,7 @@ public class GoodsVo {
 	private int goodsBest;
 	private int goodsActive;
 	private int goodsSmallType;
-	
+	private String goodsDetail;
 	
 	public int getGoodsSmallType() {
 		return goodsSmallType;

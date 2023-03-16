@@ -8,13 +8,19 @@
 <style>
 	
 	.headerWrap{
+		position:fixed;
+		left:0;
+		top:0;
+		z-index:6;
+		background:white;
 		width: 100%;
 		height: 55px;
 		line-height:55px;
-		margin-left:21px;
+		margin-bottom:1px;
 	}
 	.logo{
 		/* LOGO */
+		margin-left:21px;
 		width: 64px;
 		height: 28px;
 
@@ -60,7 +66,7 @@
 <body>
 <div class="headerWrap">
 	<ul class="leftWrap">
-		<li class="logo">LOGO</li>
+		<li class="logo"><a href="/">LOGO</a></li>
 		<li>Top</li>
 		<li>Knit</li>
 		<li>Shirts</li>
