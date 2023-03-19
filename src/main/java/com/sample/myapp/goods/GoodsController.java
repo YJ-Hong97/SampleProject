@@ -28,6 +28,14 @@ public class GoodsController {
 		for(int j = 0;j<sizes.length;j++) {
 			sizeList.add(sizes[j]);
 		}
+		
+		SizeVo sizeVo = goodsDAO.selectSize(goodsId);
+		SizeImgVo sizeImgVo = goodsDAO.selectSizeImg();
+		CheckVo checkVo = goodsDAO.selectCheck(goodsId);
+
+		model.addAttribute("check",checkVo);
+		model.addAttribute("size",sizeVo);
+		model.addAttribute("sizeImg",sizeImgVo);
 		model.addAttribute("sizes",sizeList);
 		model.addAttribute("colors",colorList);
 		model.addAttribute("goods",goodsVo);

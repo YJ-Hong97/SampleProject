@@ -42,7 +42,6 @@ public class HomeController {
 		for(int i =0;i<goodsList.size();i++) {
 			goodsList.get(i).setArrayImage(goodsList.get(i).getDbGoodsImage().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
 		}
-
 		model.addAttribute("goodsList",goodsList);
 		model.addAttribute("adsList",adsList);
 		return "index";

@@ -14,6 +14,7 @@
 		width:100%;
 		height:100%;
 		margin:0;
+		position:relative;
 	}
 	.detailHead{
 		width:100%;
@@ -158,6 +159,7 @@
 </style>
 <body>
 <%@ include file="/WEB-INF/views/component/homeHeader.jsp" %>
+<%@ include file="/WEB-INF/views/component/mySize.jsp" %>
 <div class="detailHead">
 <div class="imageWrap">
 	<div class="bigImage">
@@ -209,7 +211,10 @@
 				<span><button onclick="fn_clickSize(`${size}`,event)">${size }</button></span>
 			</c:forEach>
 		</p>
-		<button id="mySize">나의 사이즈 보기</button>
+		<c:if test = "${goods.goodsType!=7&&$goods.goodsType!=8 &&$goods.goodsType!=9 }">
+		<button id="mySize" onclick="fn_clickMySize(event)">나의 사이즈 보기</button>
+		</c:if>
+		
 		<div class="selectBox">
 		
 			<p class="totalP"></p>
@@ -372,6 +377,14 @@ function fn_changePrice(attrName,event){
 	+total+"원";
 	p.innerHTML = input;
 }
+function fn_clickMySize(event){
+	
+	$(".bodyWrap").css("display","block");
+}
+$(".closeSize").click(function(){
+	
+	$(".bodyWrap").css("display","none");
+});
 </script>
 </body>
 </html>
