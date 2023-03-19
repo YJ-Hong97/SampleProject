@@ -16,7 +16,7 @@
 		z-index:7;
 		background:#D9D9D9;
 		background-color: rgba( 255, 255, 255, 0.5 );
-		display:block;
+		display:none;
 	}
 	.mySizeWrap{
 		width:80%;
