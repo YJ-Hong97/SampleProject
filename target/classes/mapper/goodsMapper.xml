@@ -45,6 +45,34 @@
 	<result column="order_state" property="orderState"/>
 	<result column="order_date" property="orderDate"/>
 </resultMap>
+<resultMap id="size" type="com.sample.myapp.goods.SizeVo">
+	<result column="goods_id" property="goodsId"/>
+	<result column="total_length" property="totalLength"/>
+	<result column="shoulder" property="shoulder"/>
+	<result column="chest" property="chest"/>
+	<result column="arm" property="arm"/>
+	<result column="arm_section" property="armSection"/>
+	<result column="armhole" property="armhole"/>
+	<result column="waist" property="waist"/>
+	<result column="rise" property="rise"/>
+	<result column="heap" property="heap"/>
+	<result column="thigh" property="thigh"/>
+	<result column="hem" property="hem"/>
+</resultMap>
+<resultMap id="check" type="com.sample.myapp.goods.CheckVo">
+	<result column="goods_id" property="goodsId"/>
+	<result column="cleaning" property="cleaning"/>
+	<result column="lining" property="lining"/>
+	<result column="thickness" property="thickness"/>
+	<result column="through" property="through"/>
+	<result column="flexibility" property="flexibility"/>
+	<result column="fit" property="fit"/>
+</resultMap>
+<resultMap id="sizeImg" type="com.sample.myapp.goods.SizeImgVo">
+	<result column="top" property="top"/>
+	<result column="bottom" property="bottom"/>
+	<result column="skirt" property="skirt"/>
+</resultMap>
 <select id="goodsSelectAll" parameterType="HashMap" resultMap="goods">
 	select * from goods
 	<choose>
@@ -220,5 +248,14 @@
 	select * from goods 
 	order by goods_date desc
 	limit 4 offset 0
+</select>
+<select id="selectSize" resultMap="size" parameterType="java.lang.Integer">
+	select * from tbl_size where goods_id = #{goodsId}
+</select>
+<select id="selectSizeImg" resultMap = "sizeImg">
+	select * from tbl_sizeimg
+</select>
+<select id="selectCheck" parameterType="java.lang.Integer" resultMap="check">
+	select * from tbl_check where goods_id = #{goodsId}
 </select>
 </mapper>

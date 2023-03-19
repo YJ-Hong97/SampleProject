@@ -198,4 +198,13 @@ public class GoodsDAO {
 	public List<GoodsVo> selectNewGoods(){
 		return session.selectList("goodsMapper.selectNewGoods");
 	}
+	public SizeVo selectSize(int goodsId) {
+		return session.selectOne("goodsMapper.selectSize",goodsId);
+	}
+	public SizeImgVo selectSizeImg() {
+		return session.selectOne("goodsMapper.selectSizeImg");
+	}
+	public CheckVo selectCheck(int goodsId) {
+		return session.selectOne("goodsMapper.selectCheck",goodsId);
+	}
 }
