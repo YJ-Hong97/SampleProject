@@ -34,20 +34,19 @@ public class GoodsCategory_Controller {
 
 	/* 상품 관리 페이지 이동 */
 	@RequestMapping("/goodsList_byhi2")
-	public String goods(PageVO page, Model model,Integer goodsType) {
+	public String goods(PageVO page, Model model,Integer goodsType,@RequestParam(required = false, defaultValue = "0")Integer pageNum) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("goodsType", goodsType);
 		map.put("searchKeyword", null);
-		
 		int count = goodsDAO.totalCount(map);
 		page.setPageList(count);
-		
-		Map<String, Object> map2 = new HashMap<>();
+		page.setPage(pageNum);
 		map.put("start",page.getStart());
 		map.put("size", page.getSize());
+		
 		map.put("goodsType", goodsType);
 		
-		List<GoodsVo> goodsList = goodsDAO.selectAll(map2);
+		List<GoodsVo> goodsList = goodsDAO.selectAll(map);
 		
 		List<GoodsTypeVo> typeList = goodsDAO.selectAllType();
 		
