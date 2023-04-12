@@ -163,13 +163,13 @@
 <div class="detailHead">
 <div class="imageWrap">
 	<div class="bigImage">
-		<c:forEach items="${goods.arrayImage }" var="image" varStatus="status">
+		<c:forEach items="${goods.imageUrls }" var="image" varStatus="status">
 			<img src="${image }" class="invisible">
 		</c:forEach>
 	</div>
 	<div class="smallImage">
 		<ul>
-			<c:forEach items="${goods.arrayImage }" var="image" varStatus="status">
+			<c:forEach items="${goods.imageUrls }" var="image" varStatus="status">
 				<li><img src="${image }" onclick="fn_changeBigImage(${status.index},event)"></li>
 			</c:forEach>
 		</ul>
@@ -201,13 +201,13 @@
 			${goods.goodsPrice*0.01}원
 		</span></p>
 		<p><label>색상</label>
-			<c:forEach items="${goods.goodsColor.split(',') }" var="color">
+			<c:forEach items="${goods.goodsColor}" var="color">
 				<span><button onclick="fn_clickColor(`${color}`,event)">${color }</button></span>
 			</c:forEach>
 		</p>
 		<p>
 			<label>사이즈</label>
-			<c:forEach items="${goods.goodsSize.split(',') }" var="size">
+			<c:forEach items="${goods.goodsSize}" var="size">
 				<span><button onclick="fn_clickSize(`${size}`,event)">${size }</button></span>
 			</c:forEach>
 		</p>
@@ -232,7 +232,7 @@
 <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
 <script th:inline="javascript">
 var goodsName = `${goods.goodsName}`;
-var last = [[${fn:length(goods.arrayImage)}]]-1;
+var last = [[${fn:length(goods.imageUrls)}]]-1;
 var index = 0;
 var before = last;
 bigSlide();

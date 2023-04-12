@@ -1,6 +1,7 @@
 package com.sample.myapp.goods;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,37 +9,25 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/goods")
 @Controller
 public class GoodsController {
 	@Autowired
 	private GoodsDAO goodsDAO;
-	@RequestMapping("/detail")
-	public String detail(Model model,int goodsId) {
-		GoodsVo goodsVo = goodsDAO.selectGoods(goodsId);
-		goodsVo.setArrayImage(goodsVo.getDbGoodsImage().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
-		String[] colors = goodsVo.getGoodsColor().split(",");
-		String[] sizes = goodsVo.getGoodsSize().split(",");
-		List<String> colorList = new ArrayList<>();
-		List<String> sizeList = new ArrayList<>();
-		for(int i = 0;i<colors.length;i++) {
-			colorList.add(colors[i]);
-		}
-		for(int j = 0;j<sizes.length;j++) {
-			sizeList.add(sizes[j]);
-		}
-		
-		SizeVo sizeVo = goodsDAO.selectSize(goodsId);
-		SizeImgVo sizeImgVo = goodsDAO.selectSizeImg();
-		CheckVo checkVo = goodsDAO.selectCheck(goodsId);
+	
 
-		model.addAttribute("check",checkVo);
-		model.addAttribute("size",sizeVo);
-		model.addAttribute("sizeImg",sizeImgVo);
-		model.addAttribute("sizes",sizeList);
-		model.addAttribute("colors",colorList);
-		model.addAttribute("goods",goodsVo);
-		return "/goods/detail";
+	/*상품 상세 페이지 이동*/
+	@RequestMapping("/detail")
+	public String goodsDetail(int goodsId,Model model) {
+		GoodsStep1 index = goodsDAO.selectGoodsIndex(goodsId);
+		index.setImageUrls(index.getDbImages().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
+		index.setGoodsColor(index.getDbGoodsColor().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
+		index.setGoodsSize(index.getDbGoodsSize().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
+		model.addAttribute("goods",index);
+		return "goods/detail";
 	}
 }

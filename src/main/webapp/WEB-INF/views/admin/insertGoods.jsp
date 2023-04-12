@@ -59,6 +59,7 @@ html, body{
 		flex-direction:row;
 		align-items: center;
 		margin:5px;
+		position:relative;
 	}
 	.checkName{
 		width:80px;
@@ -401,7 +402,46 @@ html, body{
 	.thumbnailBox{
 		display:inline-block;
 	}
-	
+	.colorBar{
+		width:100%;
+		margin-left:5px;
+		background:white;
+		border-radius:3px;
+		
+	}
+	.colorBar p{
+		width:100%;
+		margin:5px;
+	}
+	.colorBar span{
+		border-radius:5px;
+		padding:2px;
+		cursor:pointer;
+		line-height:25px;
+	}
+	.goodsColorDiv{
+		display:inline-block;
+		width:243.5px;
+		flex-grow:1;
+		height:25px;
+		line-height:25px;
+		border:0;
+		background:white;
+	}
+	.goodsColorDiv div{
+		display:inline-block;
+		border-radius:3px;
+	}
+	.goodsColorDiv div button{
+		background:inherit;
+		border:0;
+		vertical-align:medium;
+	}
+	.goodsColorDiv div span{
+		background:inherit;
+		border:0;
+		vertical-align:medium;
+	}
 </style>
 <body>
 <%@ include file="/WEB-INF/views/component/adminSidebar.jsp" %>
@@ -413,7 +453,7 @@ html, body{
 		<form class="frmGoods" method="post" action="/manager/goods/insert" enctype="multipart/form-data">
 			<div class="half">
 			<input type="hidden" name="goodsId" value="${goods.goodsId }">
-			<div class="line"><label><span class="required">&#42;</span>상품 이름</label><input type="text" name="goodsName" class="input" value="${goods.goodsName }"><span><button type="button" class="checkName">중복확인</button></span></div>
+			<div class="line"><label><span class="required">&#42;</span>상품 이름</label><input type="text" name="goodsName" class="input" value="${goods.goodsName }"><span><button type="button" class="checkName" onclick="fn_checkName(event)">중복확인</button></span></div>
 			<div class="line"><label><span class="required">&#42;</span>상품 종류</label><select name="goodsType" class="input" onchange = "fn_changeType(event)">
 				<c:forEach items="${typeList }" var="type">
 					<c:if test="${goods.goodsType== type.goodsCode}">
@@ -434,7 +474,10 @@ html, body{
 			</select></div>
 			</div>
 			<div class="line"><label><span class="required">&#42;</span>상품 가격</label><input type="text" name="goodsPrice" class="input" value="${goods.goodsPrice }"></div>
-			<div class="line"><label><span class="required">&#42;</span>상품 색상</label><input type="text" name="goodsColor" class="input" value="${goods.goodsColor }"></div>
+			<div class="line"><label><span class="required">&#42;</span>상품 색상</label><div contenteditable  class="goodsColorDiv" onkeyup="fn_searchColor(event)"></div></div>
+			<div class="colorBar">
+				
+			</div>
 			<div class="line"><label><span class="required">&#42;</span>상품 사이즈</label><input type="text" name="goodsSize" class="input" value="${goods.goodsSize }"></div>
 			<div class="line"><label><span class="required">&#42;</span>상품 할인 여부</label><input type="number" name="goodsSale" class="input" min="0" max="100" value="${goods.goodsSale }"></div>
 			<label id="readMe">할인 없을 시 0 또는 비워둠, 할인율에서 '%'를 제외하고 기입</label>
@@ -605,10 +648,15 @@ html, body{
 	</div>
 </div>
 </div>
+<%@ include file="/WEB-INF/views/component/colorModal.jsp" %>
 <%@ include file="/WEB-INF/views/component/adminFooter.jsp" %>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="/resources/js/insertGoods.js"></script>
 <script th:inline="javascript">
+var backgroundColor = ["#ffffdf","#f8ffdf","#efefe8","#efdfdf","#d8cfdf","#cfcfff"];
+var backIndex = 0;
+
+
 	window.onload= function(){
 		let best = [[${goods.goodsBest}]];
 		let active = [[${goods.goodsActive}]];
@@ -999,6 +1047,103 @@ html, body{
 			$("#smallType").html(input);
 			}
 		});
+	}
+	function fn_checkName(event){
+		
+		let goodsName= event.target.parentNode.parentNode.childNodes[1].value;
+		$.ajax({
+			url:"/goods/checkName?goodsName="+goodsName,
+			method:"get",
+			success:function(response){
+				if(response=="success"){
+					alert("사용가능한 상품 이름입니다.");
+				}else{
+					alert("사용불가능한 상품 이름입니다.");
+					event.target.parentNode.parentNode.childNodes[1].value = "";
+					event.target.parentNode.parentNode.childNodes[1].focus();
+				}
+			}
+		});
+	}
+	function fn_searchColor(event){
+		let keyword = "";
+		event.target.childNodes.forEach(function(el,i){
+			if(i==event.target.childNodes.length-1){
+				if(el.data!=undefined){
+					keyword = el.data;
+				}else{
+					keyword = el.innerText;
+				}
+			}
+		})
+		
+		$.ajax({
+			url:"/goods/searchColor?keyword="+keyword,
+			method:"get",
+			success:function(response){
+				let input = "";
+					if(response.length==0){
+						input +=`<p><span>생성</span><span style="background:`+backgroundColor[backIndex]+`;" onclick="fn_insertColor(event)">`+keyword+`</span></p><hr>`;
+						backIndex++;
+						if(backIndex>backgroundColor.length){
+							backIndex = 0;
+						}
+					}else{
+						response.forEach(function(el,i){
+							input += `<p><span style="background:`+backgroundColor[backIndex]+`;" onclick="fn_clickResultColor(event,`+`${el.colorCode}`+`)">`+el.colorName+`</span></p>`;
+							backIndex++;
+							if(backIndex>backgroundColor.length){
+								backIndex = 0;
+							}
+						});
+					}
+					
+				
+				$(".colorBar").html(input);
+			}
+			
+		});
+	}
+	function fn_insertColor(event){
+		let color = event.target.innerText;
+		$(".colorName").text(color);
+		$(".colorWrap").css("display","block");
+		
+	}
+	function fn_colorSubmit(){
+		let colorName = $(".colorName").text();
+		let colorCode = encodeURIComponent($(".colorCode").val())+"" ;
+		console.log(colorCode)
+		$.ajax({
+			
+			url:"/goods/insertColor?colorName="+colorName+"&colorCode="+colorCode,
+			method:"get",
+			success:function(){
+				$(".colorWrap").css("display","none");
+			}
+		});
+		backIndex -=1;
+		let input = `<div style="background:`+backgroundColor[backIndex]+`"><button>X</button><button value="`+colorCode+`" >`+colorName+`</button></div>`
+		
+		$(".goodsColorDiv").append(input);
+	}
+	function fn_clickResultColor(event,colorCode){
+		let colorName = event.target.innerText;
+		backIndex -=1;
+		let input = `<div style="background:`+backgroundColor[backIndex]+`" contenteditable="false"><button onclick="fn_deleteColor(event)">X</button><span value="`+colorCode+`" >`+colorName+`</span></div>`
+		let div = document.createElement("div");
+		$(".goodsColorDiv").children().each(function(i,el){
+			if(el.tagName=="DIV"){
+				div.append(el);
+			}
+		});
+		$(".goodsColorDiv").text("");
+		$(".goodsColorDiv").html(div.innerHTML);
+		$(".goodsColorDiv").append(input);
+		$(".goodsColorDiv").children().eq(-1);
+		let span = document.createElement("span");
+		$(".goodsColorDiv").append(span);
+		span.focus();
 	}
 </script>
 </body>

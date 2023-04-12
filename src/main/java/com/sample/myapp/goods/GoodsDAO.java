@@ -25,7 +25,7 @@ public class GoodsDAO {
 	private S3Service s3Service;
 	
 
-	public List<GoodsVo> selectAll(Map<String, Object> map) {
+	public List<GoodsStep1> selectAll(Map<String, Object> map) {
 		return session.selectList("goodsMapper.goodsSelectAll", map);
 	}
 
@@ -45,80 +45,114 @@ public class GoodsDAO {
 		return session.selectOne("goodsMapper.emojisCount");
 	}
 
-	public void insertGoods(GoodsVo goodsVo, HttpServletRequest request) throws IOException {
-		
-			
-		MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
-		List<MultipartFile> list = multipartHttpServletRequest.getFiles("image");
-		
-		
-		List<String> dbimageStrings = new ArrayList<>();
-		List<String> s3GoodsImages = new ArrayList<>();
-		List<String> remainImages = null;
-		List<String> remainS3 = null;
-		if(goodsVo.getDbGoodsImage()!=null) {
-			remainImages =Arrays.asList(goodsVo.getDbGoodsImage().replaceAll("\\[", "").replaceAll("\\]","").trim().split(","));
-			remainS3 = Arrays.asList(goodsVo.getS3GoodsImage().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
-		}
-		
-				
-		MultipartFile multipartFile = null;
-		
-		for(int i = 0; i<list.size(); i++) {
-			multipartFile = list.get(i);
-			System.out.println(multipartFile.getOriginalFilename());
+	public void insertGoods(GoodsStep1 goodsVo) throws IOException {
+		if(goodsVo.getImageUrls()!=null) {
+			updateGoods(goodsVo);
+		}else {
+			MultipartFile[] images = goodsVo.getGoodsImage();
+			String[] strImages = new String[images.length];
+			for(int i = 0;i<images.length;i++) {
+				MultipartFile file = images[i];
 				switch (goodsVo.getGoodsType()) {
 				case 0:
-					dbimageStrings.add(s3Service.uploadFile(multipartFile, "top"));
-					s3GoodsImages.add("top/"+multipartFile.getOriginalFilename());
-					
+					strImages[i] = s3Service.uploadFile(file, "top");
 					break;
 				case 1:
-					dbimageStrings.add(s3Service.uploadFile(multipartFile, "knit"));
-					s3GoodsImages.add("knit/"+multipartFile.getOriginalFilename());
+					strImages[i] =s3Service.uploadFile(file, "shirts");
 					break;
 				case 2:
-					dbimageStrings.add(s3Service.uploadFile(multipartFile, "shirt"));
-					s3GoodsImages.add("shirt/"+multipartFile.getOriginalFilename());
+					strImages[i] =s3Service.uploadFile(file, "knit");
 					break;
 				case 3:
-					dbimageStrings.add(s3Service.uploadFile(multipartFile, "outer"));
-					s3GoodsImages.add("outer/"+multipartFile.getOriginalFilename());
+					strImages[i] =s3Service.uploadFile(file, "outer");
 				case 4:
-					dbimageStrings.add(s3Service.uploadFile(multipartFile, "bottom"));
-					s3GoodsImages.add("bottom/"+multipartFile.getOriginalFilename());
+					strImages[i] =s3Service.uploadFile(file, "bottom");
 					break;
 				case 5:
-					dbimageStrings.add(s3Service.uploadFile(multipartFile, "skirt"));
-					s3GoodsImages.add( "skirt/"+multipartFile.getOriginalFilename());
+					strImages[i] =s3Service.uploadFile(file, "skirt");
 					break;
 				case 6:
-					dbimageStrings.add(s3Service.uploadFile(multipartFile, "bag"));
-					s3GoodsImages.add("bag/"+multipartFile.getOriginalFilename());
+					strImages[i] =s3Service.uploadFile(file, "bag");
 					break;
 				case 7:
-					dbimageStrings.add(s3Service.uploadFile(multipartFile, "shoes"));
-					s3GoodsImages.add("shoes/"+multipartFile.getOriginalFilename());
+					strImages[i] =s3Service.uploadFile(file, "acc");
 					break;
 				case 8:
-					dbimageStrings.add(s3Service.uploadFile(multipartFile, "acc"));
-					s3GoodsImages.add("acc/"+multipartFile.getOriginalFilename());
+					strImages[i] =s3Service.uploadFile(file, "shoes");
 					break;
 				
 				default:
 					break;
 				
+				}
 			}
+			goodsVo.setDbImages(Arrays.toString(strImages));		
+			goodsVo.setDbGoodsColor(Arrays.toString(goodsVo.getGoodsColor()));
+			goodsVo.setDbGoodsSize(Arrays.toString(goodsVo.getGoodsSize()));
+			goodsVo.setGoodsHTML("");
+			session.insert("goodsMapper.goodsInsert", goodsVo);
 		}
-		if(remainImages!=null) {
-			for(int i = 0; i<remainImages.size();i++) {
-				dbimageStrings.add(remainImages.get(i));
-				s3GoodsImages.add(remainS3.get(i));
-			}
-		}
+		
+	}
 
-		goodsVo.setDbGoodsImage(dbimageStrings.toString());
-		goodsVo.setS3GoodsImage(s3GoodsImages.toString());
+	private void updateGoods(GoodsStep1 goodsVo) {
+		GoodsStep1 beforeGoods = selectGoodsIndex(goodsVo.getGoodsIndexId());
+		beforeGoods.setImageUrls(beforeGoods.getDbImages().replaceAll("\\[", "").replaceAll("\\]","").trim().split(","));
+		
+		for(int i = 0;i<beforeGoods.getImageUrls().length;i++) {
+			int count = 0;
+			for(int j = 0;j<goodsVo.getImageUrls().length;j++) {
+				if(beforeGoods.getImageUrls()[i].equals(goodsVo.getImageUrls()[j])) {
+					count++;
+				}
+			}
+			if(count==0) {
+				s3Service.deleteFile(beforeGoods.getImageUrls()[i]);
+			}
+		}
+		MultipartFile[] images = goodsVo.getGoodsImage();
+		String[] strImages = new String[images.length+goodsVo.getImageUrls().length];
+		for(int i = 0;i<images.length;i++) {
+			MultipartFile file = images[i];
+			switch (goodsVo.getGoodsType()) {
+			case 0:
+				strImages[i] = s3Service.uploadFile(file, "top");
+				break;
+			case 1:
+				strImages[i] =s3Service.uploadFile(file, "shirts");
+				break;
+			case 2:
+				strImages[i] =s3Service.uploadFile(file, "knit");
+				break;
+			case 3:
+				strImages[i] =s3Service.uploadFile(file, "outer");
+			case 4:
+				strImages[i] =s3Service.uploadFile(file, "bottom");
+				break;
+			case 5:
+				strImages[i] =s3Service.uploadFile(file, "skirt");
+				break;
+			case 6:
+				strImages[i] =s3Service.uploadFile(file, "bag");
+				break;
+			case 7:
+				strImages[i] =s3Service.uploadFile(file, "acc");
+				break;
+			case 8:
+				strImages[i] =s3Service.uploadFile(file, "shoes");
+				break;
+			
+			default:
+				break;
+			
+			}
+		}
+		for(int i = goodsVo.getGoodsImage().length;i<goodsVo.getGoodsImage().length+goodsVo.getImageUrls().length;i++) {
+			strImages[i] = goodsVo.getImageUrls()[i-goodsVo.getGoodsImage().length];
+		}
+		goodsVo.setDbImages(Arrays.toString(strImages));		
+		goodsVo.setDbGoodsColor(Arrays.toString(goodsVo.getGoodsColor()));
+		goodsVo.setDbGoodsSize(Arrays.toString(goodsVo.getGoodsSize()));
 		session.insert("goodsMapper.goodsInsert", goodsVo);
 	}
 
@@ -129,56 +163,9 @@ public class GoodsDAO {
 		return session.selectOne("goodsMapper.selectOneGoods",goodsId);
 	}
 
-	public void updateGoods(GoodsVo goodsVo,HttpServletRequest request) throws IOException {
-		GoodsVo beforeGoodsVo = selectGoods(goodsVo.getGoodsId());
-		String[] beforeGoodsImages = beforeGoodsVo.getDbGoodsImage().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(",");
-		String[] beforeS3Images = beforeGoodsVo.getS3GoodsImage().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(",");
-		
-		List<String> remainImages = new ArrayList<>();
-		List<String> remainS3 = new ArrayList<>();
-		
-		if(goodsVo.getArrayImage()!=null) {
-			
-			for(int i = 0; i<beforeGoodsImages.length; i++) {
-				int count = 0;
-				for(int j = 0 ;j<goodsVo.getArrayImage().length;j++) {
-					if(goodsVo.getArrayImage()[j].equals(beforeGoodsImages[i])) {
-						count++;
-						remainImages.add(beforeGoodsImages[i]);
-						remainS3.add(beforeS3Images[i]);
-					}
-				}
-				if(count==0) {
-					System.out.println(beforeS3Images[i]);
-					s3Service.deleteFile(beforeS3Images[i].trim());
-				}
-			}
-		}else {
-			for(int i = 0; i<beforeGoodsImages.length; i++) {
-				s3Service.deleteFile(beforeS3Images[i].trim());
-			}
-		}
-		
-		if(remainImages.size()>0) {
-			goodsVo.setDbGoodsImage(remainImages.toString());
-			goodsVo.setS3GoodsImage(remainS3.toString());
-			
-		}
-		insertGoods(goodsVo, request);
-				
-				
+	public List<GoodsVo> selectGoodsVo(int goodsIndexId){
+		return session.selectList("goodsMapper.selectGoodsVo",goodsIndexId);
 	}
-	public void deleteGoods(int goodsId) {
-		GoodsVo goodsVo = selectGoods(goodsId);
-		if(goodsVo.getS3GoodsImage() != null) {
-			String[] s3images = goodsVo.getS3GoodsImage().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(",");
-			for(int i= 0;i<s3images.length; i++) {
-				s3Service.deleteFile(s3images[i]);
-			}
-		}
-		session.delete("goodsMapper.deleteGoods",goodsId);
-	}
-	
 	
 	public List<GoodsVo> selectOrderBy(Map<String, Object> map) {
 		return session.selectList("goodsMapper.goodsSelecOrderBy", map);
@@ -195,7 +182,8 @@ public class GoodsDAO {
 	public int selectOrderCount(Map<String,Object> map) {
 		return session.selectOne("goodsMapper.selectOrderCount",map);
 	}
-	public List<GoodsVo> selectNewGoods(){
+	/*메인페이지 신규 상품 리스트*/
+	public List<GoodsStep1> selectNewGoods(){
 		return session.selectList("goodsMapper.selectNewGoods");
 	}
 	public SizeVo selectSize(int goodsId) {
@@ -206,5 +194,26 @@ public class GoodsDAO {
 	}
 	public CheckVo selectCheck(int goodsId) {
 		return session.selectOne("goodsMapper.selectCheck",goodsId);
+	}
+	public String selectGoodsName(String goodsName) {
+		return session.selectOne("goodsMapper.selectGoodsName",goodsName);
+	}
+	public List<ColorVo> searchColor(String keyword) {
+		return session.selectList("goodsMapper.searchColor",keyword);
+	}
+	public void insertColor(ColorVo color) {
+		session.insert("goodsMapper.insertColor",color);
+	}
+	public List<GoodsSmallType> selectSmallType(int goodsCode){
+		return session.selectList("goodsMapper.selectSmallType",goodsCode);
+	}
+	public Integer selectGoodsIndexId(String goodsName) {
+		return session.selectOne("goodsMapper.selectGoodsIndexId",goodsName);
+	}
+	public GoodsStep1 selectGoodsIndex(int goodsIndexId) {
+		return session.selectOne("goodsMapper.selectGoodsIndex",goodsIndexId);
+	}
+	public void insertGoodsStock(GoodsVo goodsVo) {
+		session.insert("goodsMapper.insertGoodsStock",goodsVo);
 	}
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.sample.myapp.goods.GoodsDAO;
+import com.sample.myapp.goods.GoodsStep1;
 import com.sample.myapp.goods.GoodsVo;
 
 /**
@@ -38,9 +39,9 @@ public class HomeController {
 	public String home(Locale locale, Model model,HttpServletRequest request) {
 		
 		List<AdsVo> adsList = homeDao.selectAds();
-		List<GoodsVo> goodsList = goodsDAO.selectNewGoods();
-		for(int i =0;i<goodsList.size();i++) {
-			goodsList.get(i).setArrayImage(goodsList.get(i).getDbGoodsImage().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
+		List<GoodsStep1> goodsList = goodsDAO.selectNewGoods();
+		for(int i = 0;i<goodsList.size();i++) {
+			goodsList.get(i).setImageUrls(goodsList.get(i).getDbImages().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
 		}
 		model.addAttribute("goodsList",goodsList);
 		model.addAttribute("adsList",adsList);
