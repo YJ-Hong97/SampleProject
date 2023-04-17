@@ -166,11 +166,11 @@
 	<div class="goodsWrap">
 		<c:forEach items="${goodsList }" var="goods" varStatus="status">
 			<div class="goodsItem${status.index } goodsItem" >
-				<c:forEach items="${goods.arrayImage}" var="image">
-					<a href="/goods/detail?goodsId=${goods.goodsId }"><img src="${image }" class="goodsImage"></a>
+				<c:forEach items="${goods.imageUrls}" var="image">
+					<a href="/goods/detail?goodsId=${goods.goodsIndexId }"><img src="${image }" class="goodsImage"></a>
 				</c:forEach>
-				<button value="${goods.goodsId }" class="heart" onclick="clickHeart(event)"></button>
-				<a href="/goods/detail?goodsId=${goods.goodsId }"><p class="goodsName">${goods.goodsName }</p></a>
+				<button value="${goods.goodsIndexId }" class="heart" onclick="clickHeart(event)"></button>
+				<a href="/goods/detail?goodsId=${goods.goodsIndexId }"><p class="goodsName">${goods.goodsName }</p></a>
 				<p class="goodsPrice">
 					<c:if test ="${goods.goodsSale!=0 }">
 						<span>${goods.goodsPrice-(goods.goodsSale*goods.goodsPrice) }원 </span>
@@ -240,7 +240,7 @@
 	var goods3Last = 0;
 	<c:forEach items="${goodsList}" var="goods" varStatus="status">
 		goods${status.index}Last = 0;
-			<c:forEach items = "${goods.arrayImage}" var = "image">
+			<c:forEach items = "${goods.imageUrls}" var = "image">
 				goods${status.index}Last++;
 			</c:forEach>
 	</c:forEach>

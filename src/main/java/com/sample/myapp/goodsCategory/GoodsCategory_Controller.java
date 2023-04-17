@@ -11,12 +11,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.sample.myapp.PageVO;
-import com.sample.myapp.goods.GoodsDAO;
-import com.sample.myapp.goods.GoodsTypeVo;
-import com.sample.myapp.goods.GoodsVo;
-import com.sample.myapp.love.LoveDAO;
-import com.sample.myapp.love.LoveVO;
+import src.main.java.com.sample.myapp.PageVO;
+import src.main.java.com.sample.myapp.goods.GoodsDAO;
+import src.main.java.com.sample.myapp.goods.GoodsStep1;
+import src.main.java.com.sample.myapp.goods.GoodsTypeVo;
+import src.main.java.com.sample.myapp.goods.GoodsVo;
+import src.main.java.com.sample.myapp.love.LoveDAO;
+import src.main.java.com.sample.myapp.love.LoveVO;
 @RequestMapping("/user")
 @Controller
 public class GoodsCategory_Controller {
@@ -46,7 +47,8 @@ public class GoodsCategory_Controller {
 		
 		map.put("goodsType", goodsType);
 		
-		List<GoodsVo> goodsList = goodsDAO.selectAll(map);
+
+		List<GoodsStep1> goodsList = goodsDAO.selectAll(map);
 		
 		List<GoodsTypeVo> typeList = goodsDAO.selectAllType();
 		
@@ -81,7 +83,7 @@ public class GoodsCategory_Controller {
 		}
 		int a = goodsList.size();
 		for(int b=0; b<a; b++) {
-			System.out.println(goodsList.get(b).getGoodsId());
+		//	System.out.println(goodsList.get(b).getGoodsId());
 		}
 		for(int i=0; i<goodsList.size(); i++) {
 			for(int j=0; j<loveList.size(); j++) {
@@ -105,14 +107,16 @@ public class GoodsCategory_Controller {
 			String name = null;
 			int price = 0;
 			int goodsid = 0;
-			if(goodsList.get(i).getDbGoodsImage() == null || goodsList.get(i).getDbGoodsImage().isEmpty()) {
+			
+			GoodsStep1 goods = goodsDAO.selectGoodsIndex(goodsList.get(i).getGoodsIndexId());
+			if(goods.getDbImages() == null || goods.getDbImages().isEmpty()) {
 				continue;
 			}else {
-				String[] arr=(((goodsList.get(i).getDbGoodsImage().replace("[","")).replace("]","")).split(","));
+				String[] arr=(((goods.getDbImages().replace("[","")).replace("]","")).split(","));
 				for(int j=0; j<arr.length; j++) {
 					imageList.add(arr[j]);
-					name= goodsList.get(i).getGoodsName();
-					price=goodsList.get(i).getGoodsPrice();
+					name= goods.getGoodsName();
+					price=goods.getGoodsPrice();
 					goodsid = goodsList.get(i).getGoodsId();
 				}
 			}

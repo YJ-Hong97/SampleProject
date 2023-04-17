@@ -3,23 +3,26 @@
 <mapper namespace="goodsMapper">
 <resultMap id="goods" type="com.sample.myapp.goods.GoodsVo">
 	<result column="goods_id" property="goodsId"/>
-	<result column="goods_type" property="goodsType"/>
-	<result column="goods_name" property="goodsName"/>
-	<result column="goods_price" property="goodsPrice"/>	
+	<result column="goods_index_id" property="goodsIndexId"/>
 	<result column="goods_color" property="goodsColor"/>
 	<result column="goods_size" property="goodsSize"/>
-	<result column="goods_option_1" property="goodsOption1"/>
-	<result column="goods_option_2" property="goodsOption2"/>
-	<result column="goods_option_3" property="goodsOption3"/>
-	<result column="goods_image" property="dbGoodsImage"/>
-	<result column="goods_date" property="goodsDate"/>
-	<result column="goods_html" property="goodsHTML"/>
-	<result column="goods_sale" property="goodsSale"/>
-	<result column="goods_best" property="goodsBest"/>
-	<result column="goods_active" property="goodsActive"/>
-	<result column="s3_goods_image" property="s3GoodsImage"/>
+	<result column="stock" property="stock"/>
+</resultMap>
+<resultMap id="goodsStep1" type="com.sample.myapp.goods.GoodsStep1">
+	<result column="goods_index_id" property="goodsIndexId"/>
+	<result column="goods_type" property="goodsType"/>
 	<result column="goods_small_type" property="goodsSmallType"/>
+	<result column="goods_name" property="goodsName"/>
+	<result column="goods_price" property="goodsPrice"/>
+	<result column="goods_image" property="dbImages"/>
+	<result column="goods_date" property="goodsDate"/>  
+	<result column="goods_best" property="goodsBest"/>
+	<result column="goods_sale" property="goodsSale"/>
+	<result column="goods_active" property="goodsActive"/>
 	<result column="goods_detail" property="goodsDetail"/>
+	<result column="goods_html" property="goodsHTML"/>
+	<result column="goods_color" property="dbGoodsColor"/>
+	<result column="goods_size" property="dbGoodsSize"/>
 </resultMap>
 <resultMap id="emoji" type="com.sample.myapp.goods.EmojiVo">
 	<result column="emojis_code" property="emojis_code"/>
@@ -73,8 +76,18 @@
 	<result column="bottom" property="bottom"/>
 	<result column="skirt" property="skirt"/>
 </resultMap>
-<select id="goodsSelectAll" parameterType="HashMap" resultMap="goods">
-	select * from goods
+<resultMap id="color" type="com.sample.myapp.goods.ColorVo">
+	<result column="color_name" property="colorName"/>
+	<result column="color_code" property="colorCode"/>
+</resultMap>
+<select id ="selectGoodsIndexId" parameterType="java.lang.String" resultType="java.lang.Integer">
+	select goods_index_id from goods_index where goods_name = #{goodsName}
+</select>
+<select id="selectGoodsIndex" parameterType="java.lang.Integer" resultMap="goodsStep1">
+	select * from goods_index where goods_index_id = #{goodsIndexId}
+</select>
+<select id="goodsSelectAll" parameterType="HashMap" resultMap="goodsStep1">
+	select * from goods_index
 	<choose>
 		<when test = "goodsType==null or goodsType == -1">
 		where 1= 1
@@ -90,7 +103,7 @@
 	limit #{size} offset #{start}
 </select>
 <select id="goodsTotal" parameterType="HashMap" resultType="java.lang.Integer">
-	select count(goods_id) from goods 
+	select count(goods_index_id) from goods_index 
 	<choose>
 		<when test = "goodsType==null or goodsType == -1">
 		where 1= 1
@@ -113,48 +126,57 @@
 <select id="emojisCount" resultType="java.lang.Integer">
 	select count(*) from emojis
 </select>
-<insert id="goodsInsert" parameterType="com.sample.myapp.goods.GoodsVo">
-	<if test = "goodsId == 0">
-		insert into goods values(
-		(select IFNULL(max(a.goods_id),0)+1 from goods a),
+<insert id="goodsInsert" parameterType="com.sample.myapp.goods.GoodsStep1">
+	<if test = "goodsIndexId == null">
+		insert into goods_index(
+			goods_index_id,
+			goods_type,
+			goods_small_type,
+			goods_name,
+			goods_price,
+			goods_image,
+			goods_date,
+			goods_sale,
+			goods_best,
+			goods_active,
+			goods_detail,
+			goods_color,
+			goods_size,
+			goods_html
+		) values(
+		(select IFNULL(max(a.goods_index_id)+1,0) from goods_index a),
 		#{goodsType},
+		#{goodsSmallType},
 		#{goodsName},
 		#{goodsPrice},
-		#{goodsColor},
-		#{goodsSize},
-		#{goodsOption1},
-		#{goodsOption2},
-		#{goodsOption3},
-		#{dbGoodsImage},
+		#{dbImages},
 		SYSDATE(),
-		#{goodsHTML},
 		#{goodsSale},
 		#{goodsBest},
 		#{goodsActive},
-		#{s3GoodsImage},
-		#{goodsSmallType}
+		#{goodsDetail},
+		#{dbGoodsColor},
+		#{dbGoodsSize},
+		#{goodsHTML}
 	)
 	</if>
-	<if test = "goodsId != 0">
-		update goods set 
+	<if test = "goodsIndexId != null">
+		update goods_index set 
 			goods_type = #{goodsType},
 			goods_name = #{goodsName},
 			goods_price = #{goodsPrice},
-			goods_color = #{goodsColor},
-			goods_size = #{goodsSize},
-			goods_option_1 = #{goodsOption1},
-			goods_option_2 = #{goodsOption2},
-			goods_option_3 = #{goodsOption3},
-			goods_image = #{dbGoodsImage},
+			goods_color = #{dbGoodsColor},
+			goods_size = #{dbGoodsSize},
 			goods_date = SYSDATE(),
 			goods_html = #{goodsHTML},
 			goods_sale = #{goodsSale},
 			goods_best = #{goodsBest},
 			goods_active = #{goodsActive},
-			s3_goods_image = #{s3GoodsImage},
-			goods_small_type = #{goodsSmallType}
+			goods_small_type = #{goodsSmallType},
+			goods_detail = #{goodsDetail},
+			goods_image = #{dbImages}
 		
-		where goods_id = #{goodsId}
+		where goods_index_id = #{goodsIndexId}
 	</if>
 </insert>
 <select id="goodsOption" resultType="STRING">
@@ -190,9 +212,7 @@
                     </trim>
 	limit #{size} offset #{start}
 </select>
-<select id ="selectSmallType" resultMap="goodsSmallType">
-	select * from goods_small_type 
-</select>
+
 <select id="selectSmallTypebyType" parameterType="java.lang.Integer" resultMap="goodsSmallType">
 	select * from goods_small_type where goods_code = #{goodsType}
 </select>
@@ -244,8 +264,8 @@
 		AND order_date like CONCAT('%',#{month},'%')
 	</if>
 </select>
-<select id="selectNewGoods" resultMap="goods">
-	select * from goods 
+<select id="selectNewGoods" resultMap="goodsStep1">
+	select * from goods_index
 	order by goods_date desc
 	limit 4 offset 0
 </select>
@@ -257,5 +277,32 @@
 </select>
 <select id="selectCheck" parameterType="java.lang.Integer" resultMap="check">
 	select * from tbl_check where goods_id = #{goodsId}
+</select>
+<select id="selectGoodsName" parameterType="java.lang.String" resultType="java.lang.String">
+	select goods_name from goods where goods_name=#{goodsName}
+</select>
+<select id="searchColor" parameterType="java.lang.String" resultMap="color">
+	select * from tbl_color where color_name like #{keyword}||'%'
+</select>
+<insert id="insertColor" parameterType="com.sample.myapp.goods.ColorVo">
+	insert into tbl_color values(
+		#{colorName},
+		#{colorCode}
+	)
+</insert>
+<select id="selectSmallType" parameterType="java.lang.Integer" resultMap="goodsSmallType">
+	select * from goods_small_type where goods_code = #{goodsCode}
+</select>
+<insert id="insertGoodsStock" parameterType="com.sample.myapp.goods.GoodsVo">
+	insert into goods values(
+		(select IFNULL(max(a.goods_id),0)+1 from goods a),
+		#{goodsColor},
+		#{goodsSize},
+		#{stock},
+		#{goodsIndexId}
+	)
+</insert>
+<select id="selectGoodsVo" parameterType="java.lang.Integer" resultMap="goods">
+	select * from goods where goods_index_id = #{goodsIndexId}
 </select>
 </mapper>

@@ -171,8 +171,8 @@
 						<c:when test="${goods.goodsType==9 }"><td>acc</td></c:when>
 						<c:otherwise><td>미등록 코드</td></c:otherwise>
 					</c:choose>
-					<td ><button type="button" onclick="fn_detailGoods(${goods.goodsId})">상세보기</button></td>
-					<td><button type="button" onclick="fn_deleteGoods(${goods.goodsId})">X</button></td>
+					<td ><button type="button" onclick="fn_detailGoods(${goods.goodsIndexId})">상세보기</button></td>
+					<td><button type="button" onclick="fn_deleteGoods(${goods.goodsIndexId})">X</button></td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -229,7 +229,7 @@ $("#searchKeyword").val(searchKeyword);
 		}
 	}
 	function fn_detailGoods(goodsId){
-		location.href = "/manager/goods/detail?goodsId="+goodsId;
+		location.href = "/manager/goods/insert?goodsId="+goodsId;
 	}
 	function fn_deleteGoods(goodsId){
 		if(window.confirm("정말 삭제하시겠습니까?")){

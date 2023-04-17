@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,9 +26,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sample.myapp.PageVO;
+import com.sample.myapp.goods.ColorVo;
 import com.sample.myapp.goods.EmojiVo;
 import com.sample.myapp.goods.GoodsDAO;
 import com.sample.myapp.goods.GoodsSmallType;
+import com.sample.myapp.goods.GoodsStep1;
 import com.sample.myapp.goods.GoodsTypeVo;
 import com.sample.myapp.goods.GoodsVo;
 import com.sample.myapp.goods.OrderVo;
@@ -65,7 +68,7 @@ public class ManagerController {
 		map.put("start",page.getStart());
 		map.put("size", page.getSize());
 
-		List<GoodsVo> goodsList = goodsDAO.selectAll(map);
+		List<GoodsStep1> goodsList = goodsDAO.selectAll(map);
 		
 		List<GoodsTypeVo> typeList = goodsDAO.selectAllType();
 
@@ -79,75 +82,97 @@ public class ManagerController {
 
 	/* 상품 등록 페이지 이동 */
 	@RequestMapping(value = "/goods/insert", method = RequestMethod.GET)
-	public String insertGoods(Model model, PageVO page) {
+	public String insertGoods(Model model,Integer goodsId) {
 		List<GoodsTypeVo> typeList = goodsDAO.selectAllType();
 		List<GoodsSmallType> smallTypes = goodsDAO.selectSmallType();
-
-		/* 폰트 가져오기 */
-		GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		Font[] fonts = e.getAllFonts();
-		/* 이모지 */
-		int count = goodsDAO.countEmojis();
-		page.setSize(50);
-		page.setPageList(count);
-		List<EmojiVo> emojis = goodsDAO.selectAllEmojis(page);
 		
-		GoodsVo goodsVo = new GoodsVo();
-
-		model.addAttribute("smallTypes",smallTypes);
-		model.addAttribute("goods",goodsVo);
-		model.addAttribute("page", page);
-		model.addAttribute("emojis", emojis);
-		model.addAttribute("typeList", typeList);
-		model.addAttribute("fonts", fonts);
-		return "admin/insertGoods";
-	}
-
-	@ResponseBody
-	@RequestMapping(value = "/goods/emojiPage", method = RequestMethod.GET, headers = "Accept=*/*", produces = "application/json; charset=utf-8")
-	public List<EmojiVo> emojiPage(PageVO page) {
-
-		int count = goodsDAO.countEmojis();
-		page.setSize(50);
-		page.setPageList(count);
-		List<EmojiVo> emojis = goodsDAO.selectAllEmojis(page);
-		return emojis;
-	}
-
-	@RequestMapping(value = "/goods/insert", method = RequestMethod.POST)
-	public String insertGoods(@ModelAttribute GoodsVo goodsVo,HttpServletRequest request) throws IOException {
-		if(goodsVo.getGoodsId()!=0) {
-			goodsDAO.updateGoods(goodsVo, request);
-		}else {
-			goodsDAO.insertGoods(goodsVo,request);
+		if(goodsId!=null) {
+			GoodsStep1 goods = goodsDAO.selectGoodsIndex(goodsId);
+			goods.setGoodsColor(goods.getDbGoodsColor().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
+			goods.setGoodsSize(goods.getDbGoodsSize().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
+			goods.setImageUrls(goods.getDbImages().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
+			model.addAttribute("goods",goods);
 		}
 		
-		return "redirect:/manager/goods";
-	}
-	/*상품 상세 페이지로 이동*/
-	@RequestMapping(value = "/goods/detail",method = RequestMethod.GET)
-	public String detailGoods(int goodsId,Model model) {
-		GoodsVo goodsVo = goodsDAO.selectGoods(goodsId);
-		String[] dbGoodsImages = goodsVo.getDbGoodsImage().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(",");
-		List<GoodsTypeVo> typeList = goodsDAO.selectAllType();
-		List<GoodsSmallType> smallTypes = goodsDAO.selectSmallType();
 		model.addAttribute("smallTypes",smallTypes);
-		model.addAttribute("typeList",typeList);
-		model.addAttribute("dbGoodsImages",dbGoodsImages);
-		model.addAttribute("goods",goodsVo);
-		return "/admin/insertGoods";
+		model.addAttribute("typeList", typeList);
+		return "admin/newInsert";
 	}
-	/*상품삭제*/
-	@RequestMapping("/goods/delete")
-	public String deleteGoods(int goodsId) {
-		goodsDAO.deleteGoods(goodsId);
+
+	@ResponseBody
+	@RequestMapping("/goods/checkName")
+	public String checkName(String goodsName) {
+		String name = goodsDAO.selectGoodsName(goodsName);
+		if(name!=null) {
+			return "fail";
+		}else {
+			return "success";
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping("/goods/searchColor")
+	public List<ColorVo> searchColor(String keyword){
+		return goodsDAO.searchColor(keyword);
+	}
+	@ResponseBody
+	@RequestMapping("/goods/insertColor")
+	public void insertColor(String colorName,String colorCode) {
+		ColorVo colorVo = new ColorVo();
+		colorVo.setColorCode(colorCode);
+		colorVo.setColorName(colorName);
+		goodsDAO.insertColor(colorVo);
+	}
+	/*상품 입력 1단계*/
+	@ResponseBody
+	@RequestMapping(value = "/goods/insertGoods",method = RequestMethod.POST)
+	public List<GoodsVo> insertGoodsStep1(GoodsStep1 goods) throws IOException {
+		System.out.println(goods);
+		goodsDAO.insertGoods(goods);
+		int goodsIndexId = goodsDAO.selectGoodsIndexId(goods.getGoodsName());
+		List<GoodsVo> goodsList = goodsDAO.selectGoodsVo(goodsIndexId);
+		if(goodsList==null||goodsList.size()==0) {
+			goodsList = new ArrayList<>();
+			for(int i = 0;i<goods.getGoodsColor().length;i++) {
+				for(int j = 0;j<goods.getGoodsSize().length;j++) {
+					GoodsVo goodsVo =new GoodsVo();
+					goodsVo.setGoodsColor(goods.getGoodsColor()[i]);
+					goodsVo.setGoodsSize(goods.getGoodsSize()[j]);
+					goodsVo.setGoodsIndexId(goodsIndexId);
+					
+					goodsList.add(goodsVo);
+				
+				}
+			}
+		}
+		
+		return goodsList;
+	}
+	/*상품 입력 2단계*/
+	@RequestMapping("/goods/insertGoodsStep2")
+	public String insertGoodsStep2(GoodsVo goods,Model model) {
+		System.out.println(goods);
+		GoodsStep1 index = goodsDAO.selectGoodsIndex(goods.getGoodsList().get(0).getGoodsIndexId());
+		model.addAttribute("index",index);
+		model.addAttribute("goodsList",goods.getGoodsList());
+		return "/admin/newInsert2";
+	}
+	/*상품 저장 최종*/
+	@RequestMapping("/goods/saveGoods")
+	public String saveGoods(GoodsVo goods) {
+		ArrayList<GoodsVo> goodsList = goods.getGoodsList();
+		for(int i =0;i<goodsList.size();i++) {
+			GoodsVo goodsVo = goodsList.get(i);
+			goodsDAO.insertGoodsStock(goodsVo);
+		}
 		return "redirect:/manager/goods";
 	}
+	
 	/*소분류 가져오기*/
 	@ResponseBody
-	@RequestMapping("/goods/goodsSmallType")
-	public List<GoodsSmallType> goodsSmallType(int goodsType) {
-		List<GoodsSmallType> smallTypes = goodsDAO.selectSmallTypebyType(goodsType);
+	@RequestMapping("/smallType")
+	public List<GoodsSmallType> goodsSmallType(int goodsCode) {
+		List<GoodsSmallType> smallTypes = goodsDAO.selectSmallType(goodsCode);
 		return smallTypes;
 	}
 	/*주문 페이지로 이동*/
@@ -193,4 +218,5 @@ public class ManagerController {
 		model.addAttribute("total",total);
 		return "/admin/visit";
 	}
+	
 }
