@@ -111,44 +111,50 @@ public class GoodsDAO {
 			}
 		}
 		MultipartFile[] images = goodsVo.getGoodsImage();
-		String[] strImages = new String[images.length+goodsVo.getImageUrls().length];
-		for(int i = 0;i<images.length;i++) {
-			MultipartFile file = images[i];
-			switch (goodsVo.getGoodsType()) {
-			case 0:
-				strImages[i] = s3Service.uploadFile(file, "top");
-				break;
-			case 1:
-				strImages[i] =s3Service.uploadFile(file, "shirts");
-				break;
-			case 2:
-				strImages[i] =s3Service.uploadFile(file, "knit");
-				break;
-			case 3:
-				strImages[i] =s3Service.uploadFile(file, "outer");
-			case 4:
-				strImages[i] =s3Service.uploadFile(file, "bottom");
-				break;
-			case 5:
-				strImages[i] =s3Service.uploadFile(file, "skirt");
-				break;
-			case 6:
-				strImages[i] =s3Service.uploadFile(file, "bag");
-				break;
-			case 7:
-				strImages[i] =s3Service.uploadFile(file, "acc");
-				break;
-			case 8:
-				strImages[i] =s3Service.uploadFile(file, "shoes");
-				break;
-			
-			default:
-				break;
-			
+		String[] strImages = new String[goodsVo.getImageUrls().length];
+		int max = 0;
+		if(images!=null) {
+			strImages = new String[images.length+goodsVo.getImageUrls().length];
+			max = images.length;
+			for(int i = 0;i<images.length;i++) {
+				MultipartFile file = images[i];
+				switch (goodsVo.getGoodsType()) {
+				case 0:
+					strImages[i] = s3Service.uploadFile(file, "top");
+					break;
+				case 1:
+					strImages[i] =s3Service.uploadFile(file, "shirts");
+					break;
+				case 2:
+					strImages[i] =s3Service.uploadFile(file, "knit");
+					break;
+				case 3:
+					strImages[i] =s3Service.uploadFile(file, "outer");
+				case 4:
+					strImages[i] =s3Service.uploadFile(file, "bottom");
+					break;
+				case 5:
+					strImages[i] =s3Service.uploadFile(file, "skirt");
+					break;
+				case 6:
+					strImages[i] =s3Service.uploadFile(file, "bag");
+					break;
+				case 7:
+					strImages[i] =s3Service.uploadFile(file, "acc");
+					break;
+				case 8:
+					strImages[i] =s3Service.uploadFile(file, "shoes");
+					break;
+				
+				default:
+					break;
+				
+				}
 			}
 		}
-		for(int i = goodsVo.getGoodsImage().length;i<goodsVo.getGoodsImage().length+goodsVo.getImageUrls().length;i++) {
-			strImages[i] = goodsVo.getImageUrls()[i-goodsVo.getGoodsImage().length];
+		
+		for(int i = max;i<max+goodsVo.getImageUrls().length;i++) {
+			strImages[i] = goodsVo.getImageUrls()[i-max];
 		}
 		goodsVo.setDbImages(Arrays.toString(strImages));		
 		goodsVo.setDbGoodsColor(Arrays.toString(goodsVo.getGoodsColor()));

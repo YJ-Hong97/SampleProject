@@ -205,22 +205,31 @@ body,html{
 			<input type="text" placeholder="입력" class="goodsPrice" value="${goods.goodsPrice }">
 		</div>
 		<div class="line colorLine">
+			<c:forEach items="${goods.goodsColor }" var="color">
+					<input type="hidden" name="goodsColor" value="${color}">
+				</c:forEach>
 			<label>상품 색상</label>
 			<div contenteditable="true" class="goodsColorDiv" onkeyup="fn_changeColor(event)" onkeydown="fn_enterColor(event)">
 				<c:forEach items="${goods.goodsColor }" var="color">
 					<div><button>X</button><span>${color }</span></div>
 				</c:forEach>
 			</div>
-			<div class="colorBar"></div>
+			<div class="colorBar">
+			</div>
 		</div>
 		<div class="line sizeLine">
+						<c:forEach items="${goods.goodsSize }" var="size">
+					<input type="hidden" name="goodsSize" value="${size }">
+				</c:forEach>
+		
 			<label>상품 사이즈</label>
 			<div contenteditable="true" class="goodsSizeDiv" onkeyup="fn_changeSize(event)" onkeydown="fn_enterSize(event)">
 			<c:forEach items="${goods.goodsSize }" var="size">
 					<div><button>X</button><span>${size }</span></div>
 				</c:forEach>
 			</div>
-			<div class="sizeBar"></div>
+			<div class="sizeBar">
+			</div>
 		</div>
 		<div class="line">
 			<label>상품 할인</label>
