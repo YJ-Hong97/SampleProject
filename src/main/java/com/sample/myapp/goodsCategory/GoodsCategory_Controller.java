@@ -11,13 +11,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import src.main.java.com.sample.myapp.PageVO;
-import src.main.java.com.sample.myapp.goods.GoodsDAO;
-import src.main.java.com.sample.myapp.goods.GoodsStep1;
-import src.main.java.com.sample.myapp.goods.GoodsTypeVo;
-import src.main.java.com.sample.myapp.goods.GoodsVo;
-import src.main.java.com.sample.myapp.love.LoveDAO;
-import src.main.java.com.sample.myapp.love.LoveVO;
+import com.sample.myapp.PageVO;
+import com.sample.myapp.goods.GoodsDAO;
+import com.sample.myapp.goods.GoodsStep1;
+import com.sample.myapp.goods.GoodsTypeVo;
+import com.sample.myapp.goods.GoodsVo;
+import com.sample.myapp.love.LoveDAO;
+import com.sample.myapp.love.LoveVO;
+
 @RequestMapping("/user")
 @Controller
 public class GoodsCategory_Controller {
