@@ -191,7 +191,7 @@
 	<div class="goodsInfo">
 		<p><label>판매가</label><span>
 			<c:if test="${goods.goodsSale!=0 }">
-				<span class="separate">${goods.goodsPrice }</span><span class="goodsPrice">${goods.goodsPrice-(goods.goodsSale*goods.goodsPrice) }</span>
+				<span class="separate">${goods.goodsPrice }</span><span class="goodsPrice">${goods.goodsPrice-((goods.goodsSale/100)*goods.goodsPrice) }</span>
 			</c:if>
 			<c:if test="${goods.goodsSale==0 }">
 				<span class="goodsPrice">${goods.goodsPrice }</span>
