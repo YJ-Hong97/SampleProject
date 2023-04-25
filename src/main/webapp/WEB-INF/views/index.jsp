@@ -173,7 +173,7 @@
 				<a href="/goods/detail?goodsId=${goods.goodsIndexId }"><p class="goodsName">${goods.goodsName }</p></a>
 				<p class="goodsPrice">
 					<c:if test ="${goods.goodsSale!=0 }">
-						<span>${goods.goodsPrice-(goods.goodsSale*goods.goodsPrice) }원 </span>
+						<span>${goods.goodsPrice-((goods.goodsSale/100)*goods.goodsPrice) }원 </span>
 						<span class="sale">${goods.goodsSale }% </span>
 						<span class="beforeSale">${goods.goodsPrice }원</span>
 					</c:if>
