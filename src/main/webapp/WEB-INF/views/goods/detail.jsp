@@ -163,14 +163,14 @@
 <div class="detailHead">
 <div class="imageWrap">
 	<div class="bigImage">
-		<c:forEach items="${goods.imageUrls }" var="image" varStatus="status">
-			<img src="${image }" class="invisible">
+		<c:forEach items="${goods.dbImages }" var="image" varStatus="status">
+			<img src="${fn:replace(fn:replace(image, '[', ''), ']', '')}" class="invisible">
 		</c:forEach>
 	</div>
 	<div class="smallImage">
 		<ul>
-			<c:forEach items="${goods.imageUrls }" var="image" varStatus="status">
-				<li><img src="${image }" onclick="fn_changeBigImage(${status.index},event)"></li>
+			<c:forEach items="${goods.dbImages }" var="image" varStatus="status">
+				<li><img src="${fn:replace(fn:replace(image, '[', ''), ']', '')}" onclick="fn_changeBigImage(${status.index},event)"></li>
 			</c:forEach>
 		</ul>
 	</div>
@@ -232,7 +232,8 @@
 <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
 <script th:inline="javascript">
 var goodsName = `${goods.goodsName}`;
-var last = [[${fn:length(goods.imageUrls)}]]-1;
+<c:set var="images" value="${fn:split(goods.dbImages, ',')}"/>
+var last = [[${fn:length(images)}]]-1;
 var index = 0;
 var before = last;
 bigSlide();
@@ -244,7 +245,7 @@ function bigSlide(){
 	$(".smallImage").children().children().eq(index).children().addClass("redBorder");
 	before= index;
 	index++;
-	if(index>last){
+	if(index> last){
 		index = 0;
 		before = last;
 	}
