@@ -63,6 +63,7 @@ public class ManagerController {
 		map.put("searchKeyword", searchKeyword);
 		
 		int count = goodsDAO.totalCount(map);
+		System.out.println(count+"}}}}}}}}}}}");
 		page.setPageList(count);
 		
 		map.put("start",page.getStart());
