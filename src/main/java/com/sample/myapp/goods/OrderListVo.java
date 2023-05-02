@@ -17,13 +17,12 @@ public class OrderListVo {
 	private String option;
 	private String userId;
 	private Date orderDate;
-	
-	
+
 	@Override
 	public String toString() {
 		return "OrderListVo [orderListId=" + orderListId + ", goodsId=" + goodsId + ", goodsCount=" + goodsCount
 				+ ", price=" + price + ", goodsSize=" + goodsSize + ", color=" + color + ", option=" + option
 				+ ", userId=" + userId + ", orderDate=" + orderDate + "]";
 	}
-	
+
 }

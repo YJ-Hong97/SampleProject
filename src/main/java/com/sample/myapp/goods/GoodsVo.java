@@ -1,13 +1,11 @@
 package com.sample.myapp.goods;
 
-
-
-
 import java.util.ArrayList;
 
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+
 @Data
 @Getter
 @Setter
@@ -18,7 +16,8 @@ public class GoodsVo {
 	private String goodsSize;
 	private int stock;
 	private ArrayList<GoodsVo> goodsList;
+
 	public GoodsVo() {
-		
+
 	}
 }

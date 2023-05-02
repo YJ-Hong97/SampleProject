@@ -21,5 +21,5 @@ public class UserVo {
 	private String userPhone;
 	private int manager;
 	private int activate;
-	
+
 }

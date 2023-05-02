@@ -10,7 +10,8 @@ import org.springframework.stereotype.Repository;
 public class HomeDao {
 	@Autowired
 	private SqlSession session;
-	public List<AdsVo> selectAds(){
+
+	public List<AdsVo> selectAds() {
 		return session.selectList("homeMapper.selectAds");
 	}
 }

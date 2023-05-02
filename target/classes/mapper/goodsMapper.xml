@@ -63,7 +63,7 @@
 	<result column="hem" property="hem"/>
 </resultMap>
 <resultMap id="check" type="com.sample.myapp.goods.CheckVo">
-	<result column="goods_id" property="goodsId"/>
+	<result column="goods_id" property="goodsIndexId"/>
 	<result column="cleaning" property="cleaning"/>
 	<result column="lining" property="lining"/>
 	<result column="thickness" property="thickness"/>
@@ -305,4 +305,16 @@
 <select id="selectGoodsVo" parameterType="java.lang.Integer" resultMap="goods">
 	select * from goods where goods_index_id = #{goodsIndexId}
 </select>
+<insert id="insertCheck" parameterType="com.sample.myapp.goods.CheckVo">
+	insert into tbl_check values(
+		#{goodsIndexId},
+		#{cleaning},
+		#{lining},
+		#{thickness},
+		#{through},
+		#{flexibility},
+		#{fit}
+		
+	);
+</insert>
 </mapper>

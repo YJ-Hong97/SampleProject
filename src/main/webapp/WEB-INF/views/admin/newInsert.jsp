@@ -29,7 +29,6 @@ body,html{
 	}
 	.formWrap{
 		width:661px;
-		height:637px;
 		background:white;
 		margin: 20px auto;
 		margin-left:auto;
@@ -172,6 +171,48 @@ body,html{
 	.submit{
 		float:right;
 	}
+	.table{
+		width:456px;
+		margin:20px auto;
+		font-size:15px;
+		line-height:21px;
+	}
+	.table td{
+		width:100px;
+		height:30px;
+		text-align:center;
+		position:relative;
+		border:1px solid black;
+	}
+	.table th{
+	width:100px;
+		height:30px;
+		text-align:center;
+		position:relative;
+		border:1px solid black;
+		background:#DDDD;
+	}
+	input[type="radio"]{
+		position:absolute;
+		left:0;
+		top:0;
+		width:100%;
+		height:100%;
+		visibility:hidden;	 	
+		vertical-align:middle;
+		
+	}
+	input[type="radio"]+span{
+		display:inline-block;
+		width:100%;
+		height:100%;
+		cursor:pointer;
+		
+	}
+	input[type="radio"]:checked+span{
+		 background-color: #113a6b;
+        color: #ffffff;
+	}
 </style>
 <body>
 <%@ include file="/WEB-INF/views/component/adminSidebar.jsp" %>
@@ -260,6 +301,52 @@ body,html{
 					</div>
 				</c:forEach>
 			</div>
+		<div class="table">
+			<p>체크포인트</p>
+			<table class="check">
+				<tr>
+					<th>세탁방법</th>
+					<td><input type="radio" name="cleaning" value="0"><span class="buttonSpan">드라이클리닝</span></td>
+					<td><input type="radio" name="cleaning" value="1"><span class="buttonSpan">단독세탁</span></td>
+					<td><input type="radio" name="cleaning" value="2"><span class="buttonSpan">일반세탁</span></td>
+					<td><input type="radio" name="cleaning" value="3"><span class="buttonSpan">손세탁</span></td>
+				</tr>
+				<tr>
+					<th>안감</th>
+					<td><input type="radio" name="lining" value="0"><span class="buttonSpan">있음</span></td>
+					<td><input type="radio" name="lining" value="1"><span class="buttonSpan">없음</span></td>
+					<td><input type="radio" name="lining" value="2"><span class="buttonSpan">기모</span></td>
+					<td><input type="radio" name="lining" value="3"><span class="buttonSpan">양털</span></td>
+				</tr>
+				<tr>
+					<th>두께</th>
+					<td><input type="radio" name="thickness" value="0"><span class="buttonSpan">도톰함</span></td>
+					<td><input type="radio" name="thickness" value="1"><span class="buttonSpan">보통</span></td>
+					<td><input type="radio" name="thickness" value="2"><span class="buttonSpan">없음</span></td>
+					<td>-</td>
+				</tr>
+				<tr>
+					<th>비침</th>
+					<td><input type="radio" name="through" value="0"><span class="buttonSpan">비침</span></td>
+					<td><input type="radio" name="through" value="1"><span class="buttonSpan">약간</span></td>
+					<td><input type="radio" name="through" value="2"><span class="buttonSpan">없음</span></td>
+					<td><input type="radio" name="through" value="3"><span class="buttonSpan">밝은색만</span></td>
+				</tr>
+				<tr>
+					<th>신축성</th>
+					<td><input type="radio" name="flexibility" value="0"><span class="buttonSpan">좋음</span></td>
+					<td><input type="radio" name="flexibility" value="1"><span class="buttonSpan">약간</span></td>
+					<td><input type="radio" name="flexibility" value="2"><span class="buttonSpan">없음</span></td>
+					<td><input type="radio" name="flexibility" value="3"><span class="buttonSpan">허리밴딩</span></td>
+				</tr>
+				<tr>
+					<th>핏</th>
+					<td><input type="radio" name="fit" value="0"><span class="buttonSpan">크게 나왔어요</span></td>
+					<td><input type="radio" name="fit" value="1"><span class="buttonSpan">정사이즈</span></td>
+					<td><input type="radio" name="fit" value="2"><span class="buttonSpan">작게 나왔어요</span></td>
+					<td>-</td>
+				</tr>
+			</table>
 	</div>
 	<div class="line">
 		<button class="submit">다음</button>
@@ -271,6 +358,35 @@ body,html{
 <script th:inline="javascript">
 let goodsBest = [[${goods.goodsBest}]];
 let goodsActive=[[${goods.goodsActive}]];
+
+var cleaning  = [[${check.cleaning}]];
+var lining = [[${check.lining}]];
+var thickness = [[${check.thickness}]];
+var through = [[${check.through}]];
+var flexibility=[[${check.flexibility}]];
+var fit = [[${check.fit}]];
+
+if(cleaning!="null"){
+	$(".check").children(0).children().eq(0).each(function(i,e){
+		console.log(e)
+		e.childNodes[cleaning].setAttribute("checked","checked");
+	})
+	$(".check").children().eq(1).each(function(i,e){
+		e.children().eq(lining).attr("checked","checked");
+	})
+	$(".check").children().eq(2).each(function(i,e){
+		e.children().eq(thickness).attr("checked","checked");
+	})
+	$(".check").children().eq(3).each(function(i,e){
+		e.children().eq(through).attr("checked","checked");
+	})
+	$(".check").children().eq(4).each(function(i,e){
+		e.children().eq(flexibility).attr("checked","checked");
+	})
+	$(".check").children().eq(5).each(function(i,e){
+		e.children().eq(fit).attr("checked","checked");
+	})
+}
 if(goodsBest!="null"){
 	if(goodsBest==0){
 		$(".notBest").attr("checked","true");
@@ -620,6 +736,12 @@ $.ajax({
 		}
 		let goodsIndexId = $("input[name=goodsIndexId]").val();
 		let goodsDetail = $(".goodsDetail").val();
+		let cleaning = $("input[name=cleaning]").val();
+		let lining = $("input[name=lining]").val();
+		let thickness = $("input[name=thickness]").val();
+		let through = $("input[name=through]").val();
+		let flexibility = $("input[name=flexibility]").val();
+		let fit = $("input[name=fit]").val();
 		var form = new FormData();
 		form.append("goodsName",goodsName);
 		form.append("goodsType",goodsType);
@@ -630,6 +752,12 @@ $.ajax({
 		form.append("goodsSale",goodsSale);
 		form.append("goodsBest",goodsBest);
 		form.append("goodsActive",goodsActive);
+		form.append("cleanging",cleaning);
+		form.append("lining",lining);
+		form.append("thickness",thickness);
+		form.append("through",through);
+		form.append("flexibility",flexibility);
+		form.append("fit",fit);
 		$(".thumbnail input").each(function(i,el){
 			if(el.getAttribute("type")=="hidden"){
 				let imageUrls = el.value;
@@ -686,6 +814,9 @@ $.ajax({
 			$(".sizeBar").children().children().eq(1).click();
 		}
 	}
+	$(".buttonSpan").click(function(){
+		$(this).prev().attr("checked","checked");
+	});
 </script>
 </body>
 </html>

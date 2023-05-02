@@ -17,47 +17,49 @@ public class UserController {
 	UserService userService;
 
 	/* 회원가입 페이지 이동 */
-	@RequestMapping(value = "/signup",method = RequestMethod.GET)
+	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String signup() {
 		return "user/signUp";
 	}
 
 	/* 회원 가입 */
 	@ResponseBody
-	@RequestMapping(value = "/signup",method = RequestMethod.POST)
+	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public String signupPOST(UserVo user) {
 		userService.insertUser(user);
 		return "success";
 	}
-	
+
 	@ResponseBody
-	@RequestMapping(value="/checkId", method=RequestMethod.POST)
-	public String checkId(@RequestParam("userId")String userId) {
+	@RequestMapping(value = "/checkId", method = RequestMethod.POST)
+	public String checkId(@RequestParam("userId") String userId) {
 		return userService.checkId(userId);
-		
+
 	}
-	
-	@RequestMapping(value="/login",method=RequestMethod.GET)
+
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
 		return "user/login";
 	}
+
 	@ResponseBody
-	@RequestMapping(value="/login",method=RequestMethod.POST)
-	public String login(UserVo user,HttpSession session) {
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String login(UserVo user, HttpSession session) {
 		UserVo loginUser = userService.login(user);
-		if(loginUser!=null&&loginUser.getActivate()==1) {
-			if(loginUser.getManager()==1) {
+		if (loginUser != null && loginUser.getActivate() == 1) {
+			if (loginUser.getManager() == 1) {
 				session.setAttribute("manager", loginUser);
 				return "manager";
-			}else {
+			} else {
 				session.setAttribute("user", loginUser);
 				return "success";
 			}
-		}else {
+		} else {
 			return "fail";
 		}
 	}
-	/*마이페이지로 이동*/
+
+	/* 마이페이지로 이동 */
 	@RequestMapping(value = "/mypage")
 	public String mypage(UserVo user) {
 		return "/user/mypage";

@@ -1,11 +1,11 @@
 package com.sample.myapp.goods;
 
-
 import java.sql.Date;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
+
 @Data
 public class GoodsStep1 {
 	private Integer goodsIndexId;

@@ -16,6 +16,5 @@ public class LoveVO {
 	private int love_id;
 	private String user_id;
 	private int goods_id;
-	
-	
+
 }

@@ -1,9 +1,7 @@
 package com.sample.myapp;
 
-
-
-
 import java.util.List;
+
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,23 +27,24 @@ public class HomeController {
 	private HomeDao homeDao;
 	@Autowired
 	private GoodsDAO goodsDAO;
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
+
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model,HttpServletRequest request) {
-		
+	public String home(Locale locale, Model model, HttpServletRequest request) {
+
 		List<AdsVo> adsList = homeDao.selectAds();
 		List<GoodsStep1> goodsList = goodsDAO.selectNewGoods();
-		for(int i = 0;i<goodsList.size();i++) {
-			goodsList.get(i).setImageUrls(goodsList.get(i).getDbImages().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
+		for (int i = 0; i < goodsList.size(); i++) {
+			goodsList.get(i).setImageUrls(
+					goodsList.get(i).getDbImages().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
 		}
-		model.addAttribute("goodsList",goodsList);
-		model.addAttribute("adsList",adsList);
+		model.addAttribute("goodsList", goodsList);
+		model.addAttribute("adsList", adsList);
 		return "index";
 	}
-	
+
 }
