@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="/resources/css/common.css" rel="stylesheet" type="text/css">
+<link href="../resources/css/common.css" rel="stylesheet" type="text/css">
 <title>Detail</title>
 </head>
 <style>
@@ -90,7 +90,7 @@
 		text-decoration-color :red;
 	}
 	.goodsInfo label{
-		width: 34px;
+		width: 40px;
 		height: 15px;
 		display:inline-block;
 		font-style: normal;
@@ -191,7 +191,7 @@
 	<div class="goodsInfo">
 		<p><label>판매가</label><span>
 			<c:if test="${goods.goodsSale!=0 }">
-				<span class="separate">${goods.goodsPrice }</span><span class="goodsPrice">${goods.goodsPrice-((goods.goodsSale/100)*goods.goodsPrice) }</span>
+				<span class="separate">${goods.goodsPrice }</span><span class="goodsPrice"> ${goods.goodsPrice-((goods.goodsSale/100)*goods.goodsPrice) }</span>
 			</c:if>
 			<c:if test="${goods.goodsSale==0 }">
 				<span class="goodsPrice">${goods.goodsPrice }</span>
