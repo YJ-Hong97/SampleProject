@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <link href="../resources/css/common.css" rel="stylesheet" type="text/css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Detail</title>
+<title>카테고리별 상품 페이지 </title>
 </head>
 <style>
 
