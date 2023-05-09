@@ -268,10 +268,10 @@
       		14,400원
       		</div>
       		
-      		<div style="width: 100px;">
-      			<button class="d">국내배송상품(1)</button>
-				<button class="d">해외배송상품(0)</button>
-				<button class="d">해외배송상품(0)</button>
+      		<div style="width:110px;">
+      			<button class="d">주문하기</button>
+				<button class="d">관심상품등록</button>
+				<button class="d">삭제</button>
       		</div>
 		</div>
 		
@@ -295,13 +295,13 @@
 		<div class="main"> 
 			<div class="left"> 
 				선택상품을 
-				<button class="d">국내배송상품(1)</button>
-				<button class="d">해외배송상품(0)</button>
+				<button class="d">삭제</button>
+				<button class="d">해외배송상품 장바구니로 이동</button>
 			</div>
 			
 			<div class="right"> 
-				<button class="d">국내배송상품(1)</button>
-				<button class="d">해외배송상품(0)</button>
+				<button class="d">장바구니 비우기</button>
+				<button class="d">견적서 출력</button>
 			</div>
 		</div>
 		
@@ -332,15 +332,14 @@
 		</div>
 
 		<div class="main order"> 
-			<button>국내배송상품(1)</button>
-			<button>해외배송상품(0)</button>
-			<button>해외배송상품(0)</button>
+			<button>전체상품주문</button>
+			<button>선택상품주문</button>
+			<button>쇼핑계속하기</button>
 		</div>
 		
-		<div class="main order"> 
-			<button>국내배송상품(1)</button>
-			<button>해외배송상품(0)</button>
-			<button>해외배송상품(0)</button>
+		<div class="main order" style=""> 
+			<button>kakao pay 구매</button>
+			<button>naver pay 구매</button>
 		</div>
 		
 		<div class="main" style="border-right: 1px solid #DCDCDC; border-left: 1px solid #DCDCDC; border-top: 1px solid #DCDCDC; margin-top: 30px;"> 
@@ -543,5 +542,6 @@ $(".closeSize").click(function(){
 	$(".bodyWrap").css("display","none");
 });
 </script>
+<div id="scrollbottom"></div>
 </body>
 </html>
