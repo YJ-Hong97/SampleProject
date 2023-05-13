@@ -241,5 +241,23 @@ public class GoodsDAO {
 	public void insertCheck(CheckVo checkVo) {
 		session.insert("goodsMapper.insertCheck",checkVo);
 	}
-	
+
+	public void insertDetailSize(SizeVo sizeVo) {
+		session.insert("goodsMapper.insertSize",sizeVo);
+	}
+
+	public List<SizeVo> selectSizeList(Integer goodsIndexId) {
+		return session.selectList("goodsMapper.selectSizeList",goodsIndexId);
+	}
+
+	public void updateSize(SizeVo sizeVo) {
+		session.update("goodsMapper.updateSize",sizeVo);
+	}
+
+	public void updateCheck(CheckVo checkVo) {
+		session.update("goodsMapper.updateCheck",checkVo);
+	}
+	public String selectColor(String color) {
+		return session.selectOne("goodsMapper.selectColor",color);
+	}
 }

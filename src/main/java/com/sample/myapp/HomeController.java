@@ -1,5 +1,6 @@
 package com.sample.myapp;
 
+import java.util.Arrays;
 import java.util.List;
 
 import java.util.Locale;
@@ -41,6 +42,14 @@ public class HomeController {
 		for (int i = 0; i < goodsList.size(); i++) {
 			goodsList.get(i).setImageUrls(
 					goodsList.get(i).getDbImages().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
+			goodsList.get(i).setGoodsColor(goodsList.get(i).getDbGoodsColor().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
+		
+			String[] colors = goodsList.get(i).getGoodsColor();
+			for(int j = 0;j<colors.length;j++) {
+			String color= goodsDAO.selectColor(colors[j].trim());
+			colors[j] = color;
+			}
+			goodsList.get(i).setGoodsColor(colors);
 		}
 		model.addAttribute("goodsList", goodsList);
 		model.addAttribute("adsList", adsList);

@@ -157,8 +157,10 @@
 				</div>
 				<div>
 					<p class="mySizeTitle">Size Info</p>
+					<c:forEach items="${sizes }" var="size">
 					<div class="sizeTableWrap">
-						<c:if test="${size.totalLength!=0 }">
+							<p>${size.sizeName }</p>
+						<c:if test="${size.totalLength!=null }">
 							<div class="sizeTable">
 								<label>
 									총장
@@ -168,7 +170,7 @@
 								</label>
 							</div>
 						</c:if>
-						<c:if test="${size.shoulder!=0 }">
+						<c:if test="${size.shoulder!=null }">
 							<div class="sizeTable">
 								<label>
 									어깨단면
@@ -178,7 +180,7 @@
 								</label>
 							</div>
 						</c:if>
-						<c:if test="${size.chest!=0 }">
+						<c:if test="${size.chest!=null }">
 							<div class="sizeTable">
 								<label>
 									가슴단면
@@ -188,7 +190,7 @@
 								</label>
 							</div>
 						</c:if>
-						<c:if test="${size.arm!=0 }">
+						<c:if test="${size.arm!=null}">
 							<div class="sizeTable">
 								<label>
 									팔 길이
@@ -198,7 +200,7 @@
 								</label>
 							</div>
 						</c:if>
-						<c:if test="${size.armSection!=0 }">
+						<c:if test="${size.armSection!=null }">
 							<div class="sizeTable">
 								<label>
 									팔단면
@@ -208,7 +210,7 @@
 								</label>
 							</div>
 						</c:if>
-						<c:if test="${size.armhole!=0 }">
+						<c:if test="${size.armhole!=null }">
 							<div class="sizeTable">
 								<label>
 									암홀
@@ -218,7 +220,7 @@
 								</label>
 							</div>
 						</c:if>
-						<c:if test="${size.waist!=0 }">
+						<c:if test="${size.waist!=null }">
 							<div class="sizeTable">
 								<label>
 									허리
@@ -228,7 +230,7 @@
 								</label>
 							</div>
 						</c:if>
-						<c:if test="${size.rise!=0 }">
+						<c:if test="${size.rise!=null }">
 							<div class="sizeTable">
 								<label>
 									밑위
@@ -238,7 +240,7 @@
 								</label>
 							</div>
 						</c:if>
-						<c:if test="${size.heap!=0 }">
+						<c:if test="${size.heap!=null }">
 							<div class="sizeTable">
 								<label>
 									힙
@@ -248,7 +250,7 @@
 								</label>
 							</div>
 						</c:if>
-						<c:if test="${size.thigh!=0 }">
+						<c:if test="${size.thigh!=null }">
 							<div class="sizeTable">
 								<label>
 									허벅지
@@ -258,7 +260,7 @@
 								</label>
 							</div>
 						</c:if>
-						<c:if test="${size.hem!=0 }">
+						<c:if test="${size.hem!=null }">
 							<div class="sizeTable">
 								<label>
 									밑단
@@ -269,6 +271,8 @@
 							</div>
 						</c:if>
 					</div>
+					</c:forEach>
+					
 					<p class="info">단위: cm</p>
 					<div class="info">
 						<p>※ 사이즈 재는 법은 위치에 따라 1~3cm 정도의 오차가 있을 수 있습니다.<br>

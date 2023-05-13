@@ -34,6 +34,8 @@ import com.sample.myapp.goods.GoodsStep1;
 import com.sample.myapp.goods.GoodsTypeVo;
 import com.sample.myapp.goods.GoodsVo;
 import com.sample.myapp.goods.OrderVo;
+import com.sample.myapp.goods.SizeImgVo;
+import com.sample.myapp.goods.SizeVo;
 import com.sample.myapp.listner.VisitDao;
 import com.sample.myapp.listner.VisitToday;
 
@@ -62,6 +64,7 @@ public class ManagerController {
 		map.put("searchKeyword", searchKeyword);
 
 		int count = goodsDAO.totalCount(map);
+		System.out.println(count+"}}}}}}}}}}}");
 		page.setPageList(count);
 
 		map.put("start", page.getStart());
@@ -93,6 +96,9 @@ public class ManagerController {
 			model.addAttribute("goods", goods);
 			CheckVo check = goodsDAO.selectCheck(goodsId);
 			model.addAttribute("check",check);
+			List<SizeVo> sizes = goodsDAO.selectSizeList(goodsId);
+			model.addAttribute("sizes",sizes);
+			System.out.println(sizes);
 		}
 
 		model.addAttribute("smallTypes", smallTypes);
@@ -129,10 +135,33 @@ public class ManagerController {
 	/* 상품 입력 1단계 */
 	@ResponseBody
 	@RequestMapping(value = "/goods/insertGoods", method = RequestMethod.POST)
-	public List<GoodsVo> insertGoodsStep1(GoodsStep1 goods,CheckVo checkVo) throws IOException {
+	public List<GoodsVo> insertGoodsStep1(GoodsStep1 goods,CheckVo checkVo,SizeVo sizeVo) throws IOException {
 		System.out.println(goods);
-		goodsDAO.insertGoods(goods);
-		int goodsIndexId = goodsDAO.selectGoodsIndexId(goods.getGoodsName());
+		System.out.println(checkVo);
+		System.out.println(sizeVo);
+		Integer goodsIndexId = goods.getGoodsIndexId();
+		if(goods.getGoodsIndexId()==null) {
+			goodsDAO.insertGoods(goods);
+			goodsIndexId = goodsDAO.selectGoodsIndexId(goods.getGoodsName());
+			for(int i =0;i<sizeVo.getSizeVos().size();i++) {
+				sizeVo.getSizeVos().get(i).setGoodsId(goodsIndexId);
+				goodsDAO.insertDetailSize(sizeVo.getSizeVos().get(i));
+				System.out.println(sizeVo);
+			}
+			checkVo.setGoodsIndexId(goodsIndexId);
+			goodsDAO.insertCheck(checkVo);
+		}else {
+			goodsDAO.insertGoods(goods);
+			goodsIndexId = goods.getGoodsIndexId();
+			for(int i =0;i<sizeVo.getSizeVos().size();i++) {
+				sizeVo.getSizeVos().get(i).setGoodsId(goodsIndexId);
+				goodsDAO.updateSize(sizeVo.getSizeVos().get(i));
+				System.out.println(sizeVo);
+			}
+			checkVo.setGoodsIndexId(goodsIndexId);
+			goodsDAO.updateCheck(checkVo);
+			
+		}
 		List<GoodsVo> goodsList = goodsDAO.selectGoodsVo(goodsIndexId);
 		if (goodsList == null || goodsList.size() == 0) {
 			goodsList = new ArrayList<>();
@@ -142,14 +171,13 @@ public class ManagerController {
 					goodsVo.setGoodsColor(goods.getGoodsColor()[i]);
 					goodsVo.setGoodsSize(goods.getGoodsSize()[j]);
 					goodsVo.setGoodsIndexId(goodsIndexId);
-
+					
 					goodsList.add(goodsVo);
-
+					
 				}
 			}
 		}
-		checkVo.setGoodsIndexId(goodsIndexId);
-		goodsDAO.insertCheck(checkVo);
+		
 
 		return goodsList;
 	}

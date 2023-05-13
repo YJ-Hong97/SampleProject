@@ -15,6 +15,7 @@ public class GoodsVo {
 	private String goodsColor;
 	private String goodsSize;
 	private int stock;
+	private int goodsType;
 	private ArrayList<GoodsVo> goodsList;
 
 	public GoodsVo() {

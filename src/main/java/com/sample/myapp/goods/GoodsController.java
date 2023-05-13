@@ -2,6 +2,8 @@ package com.sample.myapp.goods;
 
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,12 @@ public class GoodsController {
 		index.setImageUrls(index.getDbImages().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
 		index.setGoodsColor(index.getDbGoodsColor().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
 		index.setGoodsSize(index.getDbGoodsSize().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
+		CheckVo check = goodsDAO.selectCheck(index.getGoodsIndexId());
+		List<SizeVo> sizeVos = goodsDAO.selectSizeList(index.getGoodsIndexId());
+		SizeImgVo sizeImgVo = goodsDAO.selectSizeImg();
+		model.addAttribute("sizeImg",sizeImgVo);
+		model.addAttribute("sizes",sizeVos);
+		model.addAttribute("check",check);
 		model.addAttribute("goods", index);
 		return "goods/detail";
 	}
