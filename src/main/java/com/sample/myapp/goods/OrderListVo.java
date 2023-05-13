@@ -24,5 +24,4 @@ public class OrderListVo {
 	private int exchange;
 	private int refund;
 	private int cancel;
-	
 }

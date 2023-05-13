@@ -176,6 +176,7 @@ public class GoodsDAO {
 	public List<GoodsStep1> selectOrderBy(Map<String, Object> map) {
 		return session.selectList("goodsMapper.goodsSelecOrderBy", map);
 	}
+	
 	public List<GoodsSmallType> selectSmallType(){
 		return session.selectList("goodsMapper.selectSmallType");
 	}

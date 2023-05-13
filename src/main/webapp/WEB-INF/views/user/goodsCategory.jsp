@@ -184,13 +184,13 @@
 		  				<th><button class="custom-btn btn-1"
 		         type="button" onclick="getGoods_sort('${page.page}','${goodsType}','goods_best')">인기순</button></th>
 		  				<th><button class="custom-btn btn-1"
-		         type="button" onclick="getGoods_sort('${page.page}','${goodsType}','goods_date')">신상품순</th>
+		         type="button" onclick="getGoods_sort('${page.page}','${goodsType}','goods_date')">신상품순</button></th>
 		  				<th><button class="custom-btn btn-1"
-		         type="button" onclick="getGoods_sort('${page.page}','${goodsType}','goods_price_down')">낮은가격순</th>
+		         type="button" onclick="getGoods_sort('${page.page}','${goodsType}','goods_price_down')">낮은가격순</button></th>
 		  				<th><button class="custom-btn btn-1"
-		         type="button" onclick="getGoods_sort('${page.page}','${goodsType}','goods_price_up')">높은가격순</th>
+		         type="button" onclick="getGoods_sort('${page.page}','${goodsType}','goods_price_up')">높은가격순</button></th>
 		  				<th><button class="custom-btn btn-1"
-		         type="button" onclick="getGoods_sort('${page.page}','${goodsType}','goods_icon')">icon</th>
+		         type="button" onclick="getGoods_sort('${page.page}','${goodsType}','goods_icon')">icon</button></th>
 		  			</tr>
 		  		</table>
   			</div>
@@ -202,6 +202,7 @@
   			 <div class="right_area">
 				  <a href="javascript:;" class="icon heart">
 				     <img src="https://cdn-icons-png.flaticon.com/512/812/812327.png" alt="찜하기" value="${list.goodsId}">
+				     <input type="hidden" name = "${list.goodsId}" value="${list.goodsId}">
 				  </a>
 			</div>
   			   <a href="detail?goodsId=${list.goodsId}" class="product">
@@ -234,6 +235,7 @@
     <footer><%@ include file="/WEB-INF/views/component/homeFooter.jsp" %></footer>
 <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
 <script th:inline="javascript">
+
 $(function(){
     var $likeBtn =$('.icon.heart');
 
@@ -244,7 +246,10 @@ $(function(){
            $(this).find('img').attr({
               'src': 'https://cdn-icons-png.flaticon.com/512/803/803087.png',
                alt:'찜하기 완료'
+               
                 });
+            
+       
           
           
          }else{
