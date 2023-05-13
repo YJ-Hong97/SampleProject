@@ -32,13 +32,14 @@ public class GoodsCategory_Controller {
 	@RequestMapping("/")
 	public String home() {
 
-		return "home";
+		return "index";
 	}
 
 	/* 상품 관리 페이지 이동 */
 	@RequestMapping("/goodsList_byhi2")
-	public String goods(PageVO page, Model model, Integer goodsType,
-			@RequestParam(required = false, defaultValue = "0") Integer pageNum) {
+
+	public String goods(PageVO page,Model model,@RequestParam(required = false, defaultValue = "-1")String userid, @RequestParam(required = false, defaultValue = "0")Integer pageNum, @RequestParam(required = false, defaultValue = "-1")Integer goodsType, @RequestParam(required = false, defaultValue = "goods_date desc") String orderBy){
+
 		Map<String, Object> map = new HashMap<>();
 		map.put("goodsType", goodsType);
 		map.put("searchKeyword", null);
@@ -48,17 +49,77 @@ public class GoodsCategory_Controller {
 		map.put("start", page.getStart());
 		map.put("size", page.getSize());
 
-		map.put("goodsType", goodsType);
+		map.put("orderBy", orderBy);
+	
+		List<LoveVO> loveList = new ArrayList<>();
+		List<GoodsVo> goodsList = goodsDAO.selectOrderBy(map);
+		List<String> flag = new ArrayList<String>();
+		
+		if(userid.equals("-1")) {
+			loveList = loveDAO.selectLoveUser("1");
+		}else {
+			loveList = loveDAO.selectLoveUser(userid);
+		}
+		int a = goodsList.size();
+		for(int b=0; b<a; b++) {
+		//	System.out.println(goodsList.get(b).getGoodsId());
+		}
+		for(int i=0; i<goodsList.size(); i++) {
+			for(int j=0; j<loveList.size(); j++) {
+			if(goodsList.get(i).getGoodsId()==loveList.get(j).getGoods_id()) {
+				flag.add("true");
+				break;
+			}
+			}
+			if(flag.size()==i)
+			flag.add("false");
+		}
+		
+		
 
-		List<GoodsStep1> goodsList = goodsDAO.selectAll(map);
-
-		List<GoodsTypeVo> typeList = goodsDAO.selectAllType();
-
-		model.addAttribute("typeList", typeList);
-		model.addAttribute("goodsList", goodsList);
-		model.addAttribute("page", page);
-		model.addAttribute("count", count);
-		return "user/goodsCategory";
+		
+		ArrayList<HashMap<String, Object>> mainImage=new ArrayList<HashMap<String,Object>>();
+		for(int i=0; i<a; i++) {
+			Map<String,Object> dbImage=new HashMap<String, Object>();
+			
+			List<String> imageList = new ArrayList<String>();
+			String name = null;
+			int price = 0;
+			int goodsid = 0;
+			
+			GoodsStep1 goods = goodsDAO.selectGoodsIndex(goodsList.get(i).getGoodsIndexId());
+			if(goods.getDbImages() == null || goods.getDbImages().isEmpty()) {
+				continue;
+			}else {
+				String[] arr=(((goods.getDbImages().replace("[","")).replace("]","")).split(","));
+				for(int j=0; j<arr.length; j++) {
+					imageList.add(arr[j]);
+					name= goods.getGoodsName();
+					price=goods.getGoodsPrice();
+					goodsid = goodsList.get(i).getGoodsId();
+				}
+			}
+			dbImage.put("ImageList", imageList);
+			dbImage.put("goodsName", name);
+			dbImage.put("goodsPrice", price );
+			dbImage.put("goodsId", goodsid );
+			
+			mainImage.add((HashMap<String, Object>) dbImage);
+			
+		}
+		for(int i=0; i<mainImage.size(); i++) {
+			System.out.println(mainImage.get(i).get("goodsName"));
+		}
+		System.out.println(mainImage.toString());
+		model.addAttribute("mainImage", mainImage);
+ 		model.addAttribute("goodsList",goodsList);
+ 		model.addAttribute("page",page);
+ 		model.addAttribute("count",count);
+ 		model.addAttribute("mainCategory", 1);
+ 		model.addAttribute("orderBy", orderBy);
+ 		model.addAttribute("goodsType", goodsType);
+ 		model.addAttribute("flag",flag);
+ 		return "user/goodsCategory";
 
 	}
 
@@ -136,13 +197,23 @@ public class GoodsCategory_Controller {
 		}
 		System.out.println(loveList.toString());
 		model.addAttribute("mainImage", mainImage);
-		model.addAttribute("goodsList", goodsList);
-		model.addAttribute("page", page);
-		model.addAttribute("count", count);
-		model.addAttribute("mainCategory", 1);
-		model.addAttribute("orderBy", orderBy);
-		model.addAttribute("goodsType", goodsType);
-		model.addAttribute("flag", flag);
-		return "user/goodsCategory_byhi";
+
+ 		model.addAttribute("goodsList",goodsList);
+ 		model.addAttribute("page",page);
+ 		model.addAttribute("count",count);
+ 		model.addAttribute("mainCategory", 1);
+ 		model.addAttribute("orderBy", orderBy);
+ 		model.addAttribute("goodsType", goodsType);
+ 		model.addAttribute("flag",flag);
+ 		return "user/goodsCategory_byhi";
+ 	}
+	
+	//상품상세페이지
+	@RequestMapping("/detail")
+	public String detail(PageVO page,Model model,@RequestParam(required = false, defaultValue = "-1")int goodsId) {
+		GoodsStep1 goods = goodsDAO.selectGoodsIndex(goodsId);
+		System.out.println(goods.toString());
+		model.addAttribute("goods",goods);
+		return "goods/detail";
 	}
 }
