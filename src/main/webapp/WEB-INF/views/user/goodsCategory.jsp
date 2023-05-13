@@ -6,9 +6,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="/resources/css/common.css" rel="stylesheet" type="text/css">
+<link href="../resources/css/common.css" rel="stylesheet" type="text/css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Detail</title>
+<title>카테고리별 상품 페이지 </title>
 </head>
 <style>
 
@@ -109,16 +109,14 @@
     100%{transform:scale(1);}
   }
 	.product-list{
-	    width: 1280px;
+	    width: 1300px;
 	    margin-left: auto;
 	    margin-right: auto;
 	}
-	.products h3{
-	    font-size: 24px;
-	    color: #545454;
-	    margin-top:60px;
-	    margin-bottom: 60px;
-	    text-align: center;
+	.products{
+	    display: inline-flex;
+	    width: 320px;
+	    height: 510px;
 	}
 	
 	.product{
@@ -141,15 +139,40 @@
 	.clearfix{
 	    clear: both;
 	}
+	.nav{
+ 		width:100%;
+ 		text-align:center;
+ 		margin-top:20px;
+ 	}
+ 	
+ 	.top{
+	 	display: inline-flex;
+	    align-items: center;
+	    justify-content: center;
+ 		border-radius:50%;
+ 		border:solid 2px #eaeaea;
+ 		width:calc(100vw * (45 / 1920));
+ 		height: calc(100vw * (45 / 1920));
+ 	}
+ 	.bottom{
+	 	display: inline-flex;
+	    align-items: center;
+	    justify-content: center;
+ 		border-radius:50%;
+ 		border:solid 2px #eaeaea;
+ 		width:calc(100vw * (45 / 1920));
+ 		height: calc(100vw * (45 / 1920));
+ 	}
 </style>
 <body>
     <header><%@ include file="/WEB-INF/views/component/homeHeader.jsp" %></header>
     <main>
-    	<div class="main">
-    		top
-    	</div>
-    	<div class="main">
-    		반팔 | 긴팔 | 맨투맨/후드 | 가디건
+    	
+    	<div class="main">  
+    	
+    		<c:forEach items="${goodsSmallType }" var="type" varStatus="i">
+						${type.typeName }<c:if test="${i.last eq false}"> | </c:if>
+				</c:forEach>
     	</div>
     	<div class="main">
     	<div class="left main">
@@ -159,24 +182,27 @@
 		 			<table>
 		  			<tr>
 		  				<th><button class="custom-btn btn-1"
-		         type="button" onclick="getGoods_sort('${page.page}','${goods.goodsType}','goods_best')">인기순</button></th>
+		         type="button" onclick="getGoods_sort('${page.page}','${goodsType}','goods_best')">인기순</button></th>
 		  				<th><button class="custom-btn btn-1"
-		         type="button" onclick="getGoods_sort('${page.page}','${goods.goodsType}','goods_date')">신상품순</th>
+		         type="button" onclick="getGoods_sort('${page.page}','${goodsType}','goods_date')">신상품순</th>
 		  				<th><button class="custom-btn btn-1"
-		         type="button" onclick="getGoods_sort('${page.page}','${goods.goodsType}','goods_price_down')">낮은가격순</th>
+		         type="button" onclick="getGoods_sort('${page.page}','${goodsType}','goods_price_down')">낮은가격순</th>
 		  				<th><button class="custom-btn btn-1"
-		         type="button" onclick="getGoods_sort('${page.page}','${goods.goodsType}','goods_price_up')">높은가격순</th>
+		         type="button" onclick="getGoods_sort('${page.page}','${goodsType}','goods_price_up')">높은가격순</th>
 		  				<th><button class="custom-btn btn-1"
-		         type="button" onclick="getGoods_sort('${page.page}','${goods.goodsType}','goods_icon')">icon</th>
+		         type="button" onclick="getGoods_sort('${page.page}','${goodsType}','goods_icon')">icon</th>
 		  			</tr>
 		  		</table>
   			</div>
   		</div>
   		<div class="product-list">
-  			<div>
+
+  		<c:forEach items="${mainImage}" var="list" varStatus="i">
+  			<div class = "products" >
+  			
   			 <div class="right_area">
 				  <a href="javascript:;" class="icon heart">
-				     <img src="https://cdn-icons-png.flaticon.com/512/812/812327.png" alt="찜하기" value="${goods.goodsId }">
+				     <img src="https://cdn-icons-png.flaticon.com/512/812/812327.png" alt="찜하기" value="${list.goodsId}">
 				  </a>
 			</div>
   			   <a href="#" class="product">
@@ -273,11 +299,15 @@
             </a>
             <div class="clearfix"></div>
         </div>
-<a class = "top" style="display:scroll;position:fixed;bottom:30px;right:3px;" rel="nofollow"
-href="#" title="Back to Top" style="font-size:2.0em">위로↑</a>
-<br />
-<a style="display:scroll;position:fixed;bottom:10px;right:3px;" rel="nofollow"
-href="#scrollbottom" title="Go to Bottom" style="font-size:2.0em">아래↓</a>
+        <div class="nav">
+ 		<a class="prev" onClick="prevPage('${page.page-1}','${goodsType}','${orderBy}')">&#60;</a>
+ 		<c:forEach items="${page.pageList }" var="page">
+ 			<button onclick="getGoods_sort('${page-1}','${goodsType}','${orderBy}')">${page }</button>
+ 		</c:forEach>
+ 		<a class="next" onClick="nextPage('${page.page+1}','${count }','${goodsType}','${orderBy}')">&#62;</a>
+ 	</div>
+ 	
+<%@ include file="/WEB-INF/views/component/up_down_support.jsp" %>
 
     </main>
     <footer><%@ include file="/WEB-INF/views/component/homeFooter.jsp" %></footer>
@@ -319,6 +349,25 @@ $( document ).ready( function() {
         } );
       } );
 
+	function getGoods_sort(pageNum,goodsType,orderBy) {
+  		location.href=`<%request.getContextPath();%>?pageNum=`+pageNum+`&goodsType=`+goodsType+`&orderBy=`+orderBy;
+  		}
+  		
+	function prevPage(pageNum,goodsType,orderBy){
+		if(pageNum==-1){
+			location.href=`<%request.getContextPath();%>?pageNum=`+0+"&goodsType="+goodsType+"&orderBy="+orderBy;
+		}else{
+			location.href=`<%request.getContextPath();%>?pageNum=`+pageNum+"&goodsType="+goodsType+"&orderBy="+orderBy;
+		}
+	}
+	function nextPage(pageNum,count,goodsType,orderBy){
+		if(Math.floor(count/10)<pageNum){
+			location.href=`<%request.getContextPath();%>?pageNum=`+Math.floor(count/10)+"&goodsType="+goodsType+"&orderBy="+orderBy;
+		}else{
+			location.href=`<%request.getContextPath();%>?pageNum=`+pageNum+"&goodsType="+goodsType+"&orderBy="+orderBy;
+		}
+	}
+  		
 </script>
 <div id="scrollbottom"></div> 
 </body>

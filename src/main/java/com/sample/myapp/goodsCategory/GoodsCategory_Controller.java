@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sample.myapp.PageVO;
 import com.sample.myapp.goods.GoodsDAO;
+import com.sample.myapp.goods.GoodsSmallType;
 import com.sample.myapp.goods.GoodsStep1;
 import com.sample.myapp.goods.GoodsTypeVo;
 import com.sample.myapp.goods.GoodsVo;
@@ -28,7 +29,8 @@ public class GoodsCategory_Controller {
 	@Autowired
 	LoveDAO loveDAO;
 
-	/* 메 페이지 이동 */
+
+	/*메 페이지 이동*/
 	@RequestMapping("/")
 	public String home() {
 
@@ -52,7 +54,7 @@ public class GoodsCategory_Controller {
 		map.put("orderBy", orderBy);
 	
 		List<LoveVO> loveList = new ArrayList<>();
-		List<GoodsVo> goodsList = goodsDAO.selectOrderBy(map);
+		List<GoodsStep1> goodsList = goodsDAO.selectOrderBy(map);
 		List<String> flag = new ArrayList<String>();
 		
 		if(userid.equals("-1")) {
@@ -61,10 +63,10 @@ public class GoodsCategory_Controller {
 			loveList = loveDAO.selectLoveUser(userid);
 		}
 		int a = goodsList.size();
-		for(int b=0; b<a; b++) {
-		//	System.out.println(goodsList.get(b).getGoodsId());
-		}
-		for(int i=0; i<goodsList.size(); i++) {
+		/*for(int b=0; b<a; b++) {
+			System.out.println(">D>D>D>>DD"+goodsList.get(b).toString());
+		}*/
+		/*for(int i=0; i<goodsList.size(); i++) {
 			for(int j=0; j<loveList.size(); j++) {
 			if(goodsList.get(i).getGoodsId()==loveList.get(j).getGoods_id()) {
 				flag.add("true");
@@ -73,12 +75,11 @@ public class GoodsCategory_Controller {
 			}
 			if(flag.size()==i)
 			flag.add("false");
-		}
-		
+		}*/
 		
 
-		
 		ArrayList<HashMap<String, Object>> mainImage=new ArrayList<HashMap<String,Object>>();
+		GoodsStep1 goods = null;
 		for(int i=0; i<a; i++) {
 			Map<String,Object> dbImage=new HashMap<String, Object>();
 			
@@ -87,18 +88,24 @@ public class GoodsCategory_Controller {
 			int price = 0;
 			int goodsid = 0;
 			
-			GoodsStep1 goods = goodsDAO.selectGoodsIndex(goodsList.get(i).getGoodsIndexId());
-			if(goods.getDbImages() == null || goods.getDbImages().isEmpty()) {
+			
+			//System.out.print(goodsList.get(i).getGoodsIndexId());
+			
+			goods = goodsDAO.selectGoodsIndex(goodsList.get(i).getGoodsIndexId());
+			//System.out.print(":D>DDD:D "+goods.toString());
+			String[] arr=(((goods.getDbImages().replace("[","")).replace("]","")).split(","));
+			if(arr[0] == null || arr[0].isEmpty() || arr[0].equals("null")) {
 				continue;
 			}else {
-				String[] arr=(((goods.getDbImages().replace("[","")).replace("]","")).split(","));
+				
 				for(int j=0; j<arr.length; j++) {
 					imageList.add(arr[j]);
 					name= goods.getGoodsName();
 					price=goods.getGoodsPrice();
-					goodsid = goodsList.get(i).getGoodsId();
+					goodsid = goodsList.get(i).getGoodsIndexId();
 				}
 			}
+			
 			dbImage.put("ImageList", imageList);
 			dbImage.put("goodsName", name);
 			dbImage.put("goodsPrice", price );
@@ -111,14 +118,20 @@ public class GoodsCategory_Controller {
 			System.out.println(mainImage.get(i).get("goodsName"));
 		}
 		System.out.println(mainImage.toString());
+		
+		
+		List<GoodsSmallType> goodsSmallType = goodsDAO.selectSmallType(goods.getGoodsSmallType());
+		
 		model.addAttribute("mainImage", mainImage);
  		model.addAttribute("goodsList",goodsList);
  		model.addAttribute("page",page);
  		model.addAttribute("count",count);
  		model.addAttribute("mainCategory", 1);
  		model.addAttribute("orderBy", orderBy);
- 		model.addAttribute("goodsType", goodsType);
+ 		model.addAttribute("goodsType", goods.getGoodsType());
  		model.addAttribute("flag",flag);
+ 		model.addAttribute("goodsSmallType",goodsSmallType);
+
  		return "user/goodsCategory";
 
 	}
@@ -207,6 +220,7 @@ public class GoodsCategory_Controller {
  		model.addAttribute("flag",flag);
  		return "user/goodsCategory_byhi";
  	}
+
 	
 	//상품상세페이지
 	@RequestMapping("/detail")

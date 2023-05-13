@@ -8,7 +8,7 @@
 <style>
 	
 	.headerWrap{
-		position:fixed;
+		position:relative;
 		left:0;
 		top:0;
 		z-index:6;
@@ -79,7 +79,7 @@
 	<ul class="rightWrap">
 		<li>mypage</li>
 		<li>event</li>
-		<li><a class="cart"></a></li>
+		<li><a class="cart" href="${pageContext.request.contextPath}/order/shoppingcart?userId=${userId}"></a></li>
 		<li><a class="searchIcon"></a></li>
 	</ul>
 </div>
