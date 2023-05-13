@@ -8,13 +8,16 @@ import org.springframework.stereotype.Repository;
 public class UserDAO {
 	@Autowired
 	SqlSession session;
+
 	public void insertUser(UserVo user) {
-		session.insert("user.userInsert",user);
+		session.insert("user.userInsert", user);
 	}
+
 	public String checkId(String userId) {
-		return session.selectOne("user.checkId",userId);
+		return session.selectOne("user.checkId", userId);
 	}
+
 	public UserVo selectUser(UserVo user) {
-		return session.selectOne("user.selectUser",user);
+		return session.selectOne("user.selectUser", user);
 	}
 }

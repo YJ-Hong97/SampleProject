@@ -112,9 +112,21 @@
 		background-size:cover;
 		background-repeat:no-repeat;
 	}
-	.goodsName{
+	.goodsColors{
 		width:262px;
 		margin-top:348px;
+		font-size: 15px;
+    	color: #787878;
+    	text-align:left;
+	}
+	.goodsColors li{
+		display:inline-block;
+		width:20px;
+		height:10px;
+		margin-left:1px;
+	}
+	.goodsName{
+		width:262px;
 		font-size: 15px;
     	color: #787878;
     	text-align:left;
@@ -171,7 +183,14 @@
 					<a href="${pageContext.request.contextPath}/goods/detail?goodsId=${goods.goodsIndexId }"><img src="${image }" class="goodsImage"></a>
 				</c:forEach>
 				<button value="${goods.goodsIndexId }" class="heart" onclick="clickHeart(event)"></button>
-				<a href="${pageContext.request.contextPath}/goods/detail?goodsId=${goods.goodsIndexId }"><p class="goodsName">${goods.goodsName }</p></a>
+
+				<ul class="goodsColors">
+				<c:forEach items="${goods.goodsColor }" var="color">
+					<li style="background-color:${color};"></li>
+				</c:forEach>
+				</ul>
+				<a href="/goods/detail?goodsId=${goods.goodsIndexId }"><p class="goodsName">${goods.goodsName }</p></a>
+
 				<p class="goodsPrice">
 					<c:if test ="${goods.goodsSale!=0 }">
 						<span>${goods.goodsPrice-((goods.goodsSale/100)*goods.goodsPrice) }원 </span>

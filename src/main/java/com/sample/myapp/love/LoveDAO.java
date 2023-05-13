@@ -10,16 +10,17 @@ import org.springframework.stereotype.Repository;
 public class LoveDAO {
 	@Autowired
 	SqlSession session;
+
 	public void insertLove(LoveVO love) {
-		session.insert("loveMapper.loveInsert",love);
+		session.insert("loveMapper.loveInsert", love);
 	}
-	
+
 	public List<LoveVO> selectLoveAll(LoveVO love) {
-		return session.selectList("loveMapper.selectLoveAll",love);
+		return session.selectList("loveMapper.selectLoveAll", love);
 	}
-	
+
 	public List<LoveVO> selectLoveUser(String userid) {
-		return session.selectList("loveMapper.selectLoveUser",userid);
+		return session.selectList("loveMapper.selectLoveUser", userid);
 	}
-	
+
 }

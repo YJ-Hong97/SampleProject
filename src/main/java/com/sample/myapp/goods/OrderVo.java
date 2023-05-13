@@ -18,7 +18,7 @@ public class OrderVo {
 	private Date payDate;
 	private int orderState;
 	private Date orderDate;
-	
+
 	@Override
 	public String toString() {
 		return "OrderVo [orderId=" + orderId + ", userId=" + userId + ", price=" + price + ", payment=" + payment
