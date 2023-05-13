@@ -21,5 +21,8 @@ public class OrderListVo {
 	private String goodsOption;
 	private String userId;
 	private Date orderDate;
+	private int exchange;
+	private int refund;
+	private int cancel;
 
 }

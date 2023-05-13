@@ -178,8 +178,9 @@ public class GoodsDAO {
 
 		return session.selectList("goodsMapper.goodsSelecOrderBy", map);
 	}
+	
+	public List<GoodsSmallType> selectSmallType(){
 
-	public List<GoodsSmallType> selectSmallType() {
 		return session.selectList("goodsMapper.selectSmallType");
 	}
 
