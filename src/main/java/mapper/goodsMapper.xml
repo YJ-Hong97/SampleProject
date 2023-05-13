@@ -61,9 +61,10 @@
 	<result column="heap" property="heap"/>
 	<result column="thigh" property="thigh"/>
 	<result column="hem" property="hem"/>
+	<result column="size_name" property="sizeName"/>
 </resultMap>
 <resultMap id="check" type="com.sample.myapp.goods.CheckVo">
-	<result column="goods_id" property="goodsId"/>
+	<result column="goods_id" property="goodsIndexId"/>
 	<result column="cleaning" property="cleaning"/>
 	<result column="lining" property="lining"/>
 	<result column="thickness" property="thickness"/>
@@ -284,6 +285,9 @@
 <select id="searchColor" parameterType="java.lang.String" resultMap="color">
 	select * from tbl_color where color_name like #{keyword}||'%'
 </select>
+<select id="selectColor" parameterType="java.lang.String" resultType="java.lang.String">
+	select color_code from tbl_color where color_name=#{color}
+</select>
 <insert id="insertColor" parameterType="com.sample.myapp.goods.ColorVo">
 	insert into tbl_color values(
 		#{colorName},
@@ -305,4 +309,63 @@
 <select id="selectGoodsVo" parameterType="java.lang.Integer" resultMap="goods">
 	select * from goods where goods_index_id = #{goodsIndexId}
 </select>
+<insert id="insertCheck" parameterType="com.sample.myapp.goods.CheckVo">
+	insert into tbl_check values(
+		#{goodsIndexId},
+		#{cleaning},
+		#{lining},
+		#{thickness},
+		#{through},
+		#{flexibility},
+		#{fit}
+		
+	);
+</insert>
+<insert id="insertSize" parameterType="com.sample.myapp.goods.SizeVo">
+	insert into tbl_size values(
+		#{goodsId},
+		#{totalLength},
+		#{shoulder},
+		#{chest},
+		#{arm},
+		#{armSection},
+		#{armhole},
+		#{waist},
+		#{rise},
+		#{heap},
+		#{thigh},
+		#{hem},
+		#{sizeName}
+	)
+</insert>
+<select id="selectSizeList" parameterType="java.lang.Integer" resultMap="size">
+	select * from tbl_size where goods_id =#{goodsIndexId}
+</select>
+<update id="updateSize" parameterType="com.sample.myapp.goods.SizeVo">
+	update tbl_size set
+		total_length=#{totalLength},
+		shoulder=#{soulder},
+		chest=#{chest},
+		arm=#{arm},
+		armSection=#{arm_section},
+		armhole=#{armhole},
+		waist=#{waist},
+		rise=#{rise},
+		heap=#{heap},
+		thigh=#{thigh},
+		hem=#{hem}
+	
+	where goods_id=#{goodsId} and size_name=#{sizeName}
+</update>
+<update id="updateCheck" parameterType="com.sample.myapp.goods.CheckVo">
+	update tbl_check set
+		cleaning=#{cleaning},
+		lining=#{lining},
+		thickness=#{thickness},
+		through=#{through},
+		flexibility=#{flexibility},
+		fit=#{fit}
+	
+	where goods_id=#{goodsIndexId}
+</update>
 </mapper>

@@ -23,17 +23,15 @@ public class LoveController {
 
 	/* 찜콩 */
 	@ResponseBody
-	@RequestMapping(value = "/loveit",method = RequestMethod.GET)
-	public String LovePOST( HttpServletRequest request,@RequestParam("userid") String userid,@RequestParam("goodsid") int goodsid,
-            Model model) {
-		
+	@RequestMapping(value = "/loveit", method = RequestMethod.GET)
+	public String LovePOST(HttpServletRequest request, @RequestParam("userid") String userid,
+			@RequestParam("goodsid") int goodsid, Model model) {
+
 		LoveVO love = new LoveVO(4, userid, goodsid);
-		
+
 		loveService.insertLove(love);
 		System.out.println(love.toString());
 		return "success";
 	}
-	
-	
-	
+
 }

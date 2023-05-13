@@ -70,6 +70,7 @@ body,html{
 	.submit{
 		float:right;
 	}
+	
 </style>
 <body>
 <%@ include file="/WEB-INF/views/component/adminSidebar.jsp" %>
@@ -89,6 +90,8 @@ body,html{
 		</div>
 		<div class="line">
 			<button type="button" class="submit">저장</button>
+		</div>
+		
 		</div>
 </div>
 </div>
@@ -115,6 +118,7 @@ body,html{
 		</c:forEach>
 		location.href = "/manager/goods/saveGoods?"+encodeURI(input);
 	});
+	
 </script>
 </body>
 </html>

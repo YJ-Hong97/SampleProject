@@ -196,6 +196,7 @@
   			</div>
   		</div>
   		<div class="product-list">
+
   		<c:forEach items="${mainImage}" var="list" varStatus="i">
   			<div class = "products" >
   			
@@ -204,21 +205,99 @@
 				     <img src="https://cdn-icons-png.flaticon.com/512/812/812327.png" alt="찜하기" value="${list.goodsId}">
 				  </a>
 			</div>
-  			   <a href="detail?goodsId=${list.goodsId}" class="product">
-               <img src=${fn:replace(fn:replace(list.ImageList[0], '[', ''), ']', '')}  style="width:300px; height:400px; margin:10px;" alt="" class="lb-image">
-      					
+  			   <a href="#" class="product">
+               <img src="#" width="300" height="400px" >
 				<div class="product-name">
-         	           ${list.goodsName}
+         	           Sunglasses
                 </div>
                 <div class="product-price">
-                    ${list.goodsPrice}원
+                    49,000
                 </div>
                  </a>
             </div>
 			
-            </c:forEach> 
-            <div class="clearfix"></div>
+            <div class="right_area">
+				  <a href="javascript:;" class="icon heart">
+				     <img src="https://cdn-icons-png.flaticon.com/512/812/812327.png" alt="찜하기">
+				  </a>
+			</div>
+            <a href="#" class="product">
+                <img src="https://bakey-api.codeit.kr/files/629/images/sunglasses.jpg" width="300" height="400px">
+                <div class="product-name">
+                    Sunglasses
+                </div>
+                <div class="product-price">
+                    49,000
+                </div>
+            </a>
+
+            <div class="right_area">
+				  <a href="javascript:;" class="icon heart">
+				     <img src="https://cdn-icons-png.flaticon.com/512/812/812327.png" alt="찜하기">
+				  </a>
+			</div>
+            <a href="#" class="product">
+                <img src="https://bakey-api.codeit.kr/files/629/images/sunglasses.jpg" width="300" height="400px">
+                <div class="product-name">
+                    Sunglasses
+                </div>
+                <div class="product-price">
+                    49,000
+                </div>
+            </a>
+
             
+            <a href="#" class="product">
+                <img src="https://bakey-api.codeit.kr/files/629/images/sunglasses.jpg" width="300" height="400px">
+                <div class="product-name">
+                    Sunglasses
+                </div>
+                <div class="product-price">
+                    49,000
+                </div>
+            </a>
+
+            
+            <a href="#" class="product">
+                <img src="https://bakey-api.codeit.kr/files/629/images/sunglasses.jpg" width="300" height="400px">
+                <div class="product-name">
+                    Sunglasses
+                </div>
+                <div class="product-price">
+                    49,000
+                </div>
+            </a>
+
+            <a href="#" class="product">
+                <img src="https://bakey-api.codeit.kr/files/629/images/sunglasses.jpg" width="300" height="400px">
+                <div class="product-name">
+                    Sunglasses
+                </div>
+                <div class="product-price">
+                    49,000
+                </div>
+            </a>
+            
+            <a href="#" class="product">
+                <img src="https://bakey-api.codeit.kr/files/629/images/sunglasses.jpg" width="300" height="400px">
+                <div class="product-name">
+                    Sunglasses
+                </div>
+                <div class="product-price">
+                    49,000
+                </div>
+            </a>
+            
+            <a href="#" class="product">
+                <img src="https://bakey-api.codeit.kr/files/629/images/sunglasses.jpg" width="300" height="400px">
+                <div class="product-name">
+                    Sunglasses
+                </div>
+                <div class="product-price">
+                    49,000
+                </div>          
+            </a>
+            <div class="clearfix"></div>
         </div>
         <div class="nav">
  		<a class="prev" onClick="prevPage('${page.page-1}','${goodsType}','${orderBy}')">&#60;</a>

@@ -2,7 +2,6 @@ package com.sample.myapp.listner;
 
 import lombok.Data;
 
-
 @Data
 public class VisitToday {
 	private int yesterday;

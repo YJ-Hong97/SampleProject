@@ -8,8 +8,7 @@ import lombok.Setter;
 public class GoodsTypeVo {
 	private int goodsCode;
 	private String typeName;
-	
-	
+
 	@Override
 	public String toString() {
 		return "GoodsTypeVo [goodsCode=" + goodsCode + ", typeName=" + typeName + "]";

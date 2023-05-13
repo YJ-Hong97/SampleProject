@@ -29,7 +29,6 @@ body,html{
 	}
 	.formWrap{
 		width:661px;
-		height:637px;
 		background:white;
 		margin: 20px auto;
 		margin-left:auto;
@@ -172,6 +171,66 @@ body,html{
 	.submit{
 		float:right;
 	}
+	.table{
+		width:456px;
+		margin:20px auto;
+		font-size:15px;
+		line-height:21px;
+	}
+	.table td{
+		width:100px;
+		height:30px;
+		text-align:center;
+		position:relative;
+		border:1px solid black;
+	}
+	.table th{
+	width:100px;
+		height:30px;
+		text-align:center;
+		position:relative;
+		border:1px solid black;
+		background:#DDDD;
+	}
+	.radioHidden{
+		position:absolute;
+		left:0;
+		top:0;
+		width:100%;
+		height:100%;
+		visibility:hidden;	 	
+		vertical-align:middle;
+		
+	}
+	.radioHidden+span{
+		display:inline-block;
+		width:100%;
+		height:100%;
+		cursor:pointer;
+		
+	}
+	.radioHidden:checked+span{
+		 background-color: #113a6b;
+        color: #ffffff;
+	}
+	.tblSize{
+		margin-left:auto;
+		margin-right:auto;
+	}
+	.tblSize td{
+		width:50px;
+		border:0.1px solid black;
+	}
+	.tblSize th{
+	width:50px;
+		border:0.1px solid black;
+	}
+	.tblSize input{
+	width:50px;
+		padding:0;
+		margin:0;
+		border:0;
+	}
 </style>
 <body>
 <%@ include file="/WEB-INF/views/component/adminSidebar.jsp" %>
@@ -211,7 +270,7 @@ body,html{
 			<label>상품 색상</label>
 			<div contenteditable="true" class="goodsColorDiv" onkeyup="fn_changeColor(event)" onkeydown="fn_enterColor(event)">
 				<c:forEach items="${goods.goodsColor }" var="color">
-					<div><button>X</button><span>${color }</span></div>
+					<div><button onclick="fn_deleteColor(event)">X</button><span>${color }</span></div>
 				</c:forEach>
 			</div>
 			<div class="colorBar">
@@ -260,7 +319,134 @@ body,html{
 					</div>
 				</c:forEach>
 			</div>
+		<div class="table">
+			<p>체크포인트</p>
+			<table class="check">
+				<tr>
+					<th>세탁방법</th>
+					<td><input type="radio" name="cleaning" value="0" class="radioHidden"><span class="buttonSpan">드라이클리닝</span></td>
+					<td><input type="radio" name="cleaning" value="1" class="radioHidden"><span class="buttonSpan">단독세탁</span></td>
+					<td><input type="radio" name="cleaning" value="2" class="radioHidden"><span class="buttonSpan">일반세탁</span></td>
+					<td><input type="radio" name="cleaning" value="3" class="radioHidden"><span class="buttonSpan">손세탁</span></td>
+				</tr>
+				<tr>
+					<th>안감</th>
+					<td><input type="radio" name="lining" value="0" class="radioHidden"><span class="buttonSpan">있음</span></td>
+					<td><input type="radio" name="lining" value="1" class="radioHidden"><span class="buttonSpan">없음</span></td>
+					<td><input type="radio" name="lining" value="2" class="radioHidden"><span class="buttonSpan">기모</span></td>
+					<td><input type="radio" name="lining" value="3" class="radioHidden"><span class="buttonSpan">양털</span></td>
+				</tr>
+				<tr>
+					<th>두께</th>
+					<td><input type="radio" name="thickness" value="0" class="radioHidden"><span class="buttonSpan">도톰함</span></td>
+					<td><input type="radio" name="thickness" value="1" class="radioHidden"><span class="buttonSpan">보통</span></td>
+					<td><input type="radio" name="thickness" value="2" class="radioHidden"><span class="buttonSpan">없음</span></td>
+					<td>-</td>
+				</tr>
+				<tr>
+					<th>비침</th>
+					<td><input type="radio" name="through" value="0" class="radioHidden"><span class="buttonSpan">비침</span></td>
+					<td><input type="radio" name="through" value="1" class="radioHidden"><span class="buttonSpan">약간</span></td>
+					<td><input type="radio" name="through" value="2" class="radioHidden"><span class="buttonSpan">없음</span></td>
+					<td><input type="radio" name="through" value="3" class="radioHidden"><span class="buttonSpan">밝은색만</span></td>
+				</tr>
+				<tr>
+					<th>신축성</th>
+					<td><input type="radio" name="flexibility" value="0" class="radioHidden"><span class="buttonSpan">좋음</span></td>
+					<td><input type="radio" name="flexibility" value="1" class="radioHidden"><span class="buttonSpan">약간</span></td>
+					<td><input type="radio" name="flexibility" value="2" class="radioHidden"><span class="buttonSpan">없음</span></td>
+					<td><input type="radio" name="flexibility" value="3" class="radioHidden"><span class="buttonSpan">허리밴딩</span></td>
+				</tr>
+				<tr>
+					<th>핏</th>
+					<td><input type="radio" name="fit" value="0" class="radioHidden"><span class="buttonSpan">크게 나왔어요</span></td>
+					<td><input type="radio" name="fit" value="1" class="radioHidden"><span class="buttonSpan">정사이즈</span></td>
+					<td><input type="radio" name="fit" value="2" class="radioHidden"><span class="buttonSpan">작게 나왔어요</span></td>
+					<td>-</td>
+				</tr>
+			</table>
 	</div>
+	<form id="detailSize">
+	<div class="table detailSize">
+		<p>사이즈</p>
+		<c:forEach items="${sizes }" var="size">
+			<table class="tblSize">
+			<thead>
+				<tr>
+					<th class="sizeTitle">${size.sizeName }</th>
+				</tr>
+			</thead>
+			<thead>
+				<tr>
+					<th>총장</th>
+					<th>어깨단면</th>
+					<th>가슴단면</th>
+					<th>팔길이</th>
+					<th>팔단면</th>
+					<th>암홀</th>
+					<th>허리</th>
+					<th>밑위</th>
+					<th>힙</th>
+					<th>허벅지</th>
+					<th>밑단</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input type="text" class="totalLength" value="${size.totalLength }"></td>
+					<td><input type="text" class="shoulder" value="${size.shoulder }"></td>
+					<td><input type="text" class="chest" value="${size.chest }"></td>
+					<td><input type="text" class="arm" value="${size.arm }"></td>
+					<td><input type="text" class="armSection" value="${size.armSection }"></td>
+					<td><input type="text" class="armhole" value="${size.armhole }"></td>
+					<td><input type="text" class="waist" value="${size.waist }"></td>
+					<td><input type="text" class="rise" value="${size.rise}"></td>
+					<td><input type="text" class="heap" value="${size.heap }"></td>
+					<td><input type="text" class="thigh" value="${size.thigh }"></td>
+					<td><input type="text" class="hem" value="${size.hem }"></td>
+				</tr>
+			</tbody>
+		</table>
+		</c:forEach>
+		<table class="tblSize">
+			<thead>
+				<tr>
+					<th class="sizeTitle">${size.sizeName }</th>
+				</tr>
+			</thead>
+			<thead>
+				<tr>
+					<th>총장</th>
+					<th>어깨단면</th>
+					<th>가슴단면</th>
+					<th>팔길이</th>
+					<th>팔단면</th>
+					<th>암홀</th>
+					<th>허리</th>
+					<th>밑위</th>
+					<th>힙</th>
+					<th>허벅지</th>
+					<th>밑단</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input type="text" class="totalLength" value="${size.totalLength }"></td>
+					<td><input type="text" class="shoulder" value="${size.shoulder }"></td>
+					<td><input type="text" class="chest" value="${size.chest }"></td>
+					<td><input type="text" class="arm" value="${size.arm }"></td>
+					<td><input type="text" class="armSection" value="${size.armSection }"></td>
+					<td><input type="text" class="armhole" value="${size.armhole }"></td>
+					<td><input type="text" class="waist" value="${size.waist }"></td>
+					<td><input type="text" class="rise" value="${size.rise}"></td>
+					<td><input type="text" class="heap" value="${size.heap }"></td>
+					<td><input type="text" class="thigh" value="${size.thigh }"></td>
+					<td><input type="text" class="hem" value="${size.hem }"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</form>
 	<div class="line">
 		<button class="submit">다음</button>
 	</div>
@@ -269,8 +455,43 @@ body,html{
 <%@ include file="/WEB-INF/views/component/adminFooter.jsp" %>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script th:inline="javascript">
+var colors = [];
+<c:forEach items="${goods.goodsColor}" var="color">
+	colors.push("${color}".trim())
+</c:forEach>
+var sizes = [];
+<c:forEach items="${goods.goodsSize}" var="size">
+	sizes.push("${size}".trim());
+</c:forEach>
 let goodsBest = [[${goods.goodsBest}]];
 let goodsActive=[[${goods.goodsActive}]];
+var cleaning  = [[${check.cleaning}]];
+var lining = [[${check.lining}]];
+var thickness = [[${check.thickness}]];
+var through = [[${check.through}]];
+var flexibility=[[${check.flexibility}]];
+var fit = [[${check.fit}]];
+
+if(cleaning!="null"){
+	$(".check").children(0).children().eq(0).each(function(i,e){
+		$(e).children().eq(cleaning+1).children(0).attr("checked","checked");
+	})
+	$(".check").children(0).children().eq(1).each(function(i,e){
+		$(e).children().eq(lining+1).children(0).attr("checked","checked");
+	})
+	$(".check").children(0).children().eq(2).each(function(i,e){
+		$(e).children().eq(thickness+1).children(0).attr("checked","checked");
+	})
+	$(".check").children(0).children().eq(3).each(function(i,e){
+		$(e).children().eq(through+1).children(0).attr("checked","checked");
+	})
+	$(".check").children(0).children().eq(4).each(function(i,e){
+		$(e).children().eq(flexibility+1).children(0).attr("checked","checked");
+	})
+	$(".check").children(0).children().eq(5).each(function(i,e){
+		$(e).children().eq(fit+1).children(0).attr("checked","checked");
+	})
+}
 if(goodsBest!="null"){
 	if(goodsBest==0){
 		$(".notBest").attr("checked","true");
@@ -332,6 +553,9 @@ $.ajax({
 			
 	};
 	function fn_changeColor(event){
+		if(event.keyCode==8){
+			fn_keyPress(event);
+		}
 		if(event.keyCode==13){
 			return;	
 		}
@@ -372,32 +596,36 @@ $.ajax({
 		});
 	}
 	function fn_clickResultColor(event,colorCode){
+		
 		let colorName = event.target.innerText;
-		backIndex -=1;
-		if(backIndex<0){
-			backIndex = 0;
-		}
-		let input = `<div style="background:`+backgroundColor[backIndex]+`" contenteditable="false"><button onclick="fn_deleteColor(event)">X</button><span>`+colorName+`</span></div>`
-		let div = document.createElement("div");
-		$(".goodsColorDiv").children().each(function(i,el){
-			if(el.tagName=="DIV"){
-				div.append(el);
+		let bool = colors.includes(colorName);
+		if(!bool){
+			colors.push(colorName);
+			backIndex -=1;
+			if(backIndex<0){
+				backIndex = 0;
 			}
-		});
-		$(".goodsColorDiv").text("");
-		$(".goodsColorDiv").html(div.innerHTML);
-		$(".goodsColorDiv").append(input);
-		$(".goodsColorDiv").children().eq(-1);
-		let span = document.createElement("span");
-		$(".goodsColorDiv").append(span);
-		span.focus();
-		$(".colorBar").html("");
-		let hidden = document.createElement("input");
-		hidden.setAttribute("type","hidden");
-		hidden.setAttribute("name","color");
-		hidden.setAttribute("value",colorName);
-		hidden.setAttribute("class","goodsColor");
-		$(".colorLine").append(hidden);
+			let input = `<div style="background:`+backgroundColor[backIndex]+`" contenteditable="false"><button onclick="fn_deleteColor(event)">X</button><span>`+colorName+`</span></div>`
+			let div = document.createElement("div");
+			$(".goodsColorDiv").children().each(function(i,el){
+				if(el.tagName=="DIV"){
+					div.append(el);
+				}
+			});
+			$(".goodsColorDiv").text("");
+			$(".goodsColorDiv").html(div.innerHTML);
+			$(".goodsColorDiv").append(input);
+			$(".goodsColorDiv").children().eq(-1);
+			caretAtLast(document.querySelector(".goodsColorDiv"))
+			$(".colorBar").html("");
+			let hidden = document.createElement("input");
+			hidden.setAttribute("type","hidden");
+			hidden.setAttribute("name","color");
+			hidden.setAttribute("value",colorName);
+			hidden.setAttribute("class","goodsColor");
+			$(".colorLine").append(hidden);
+		}
+		
 	}
 	function fn_insertColor(event){
 		let colorName = event.target.innerText;
@@ -415,7 +643,7 @@ $.ajax({
 		
 		let colorCode = event.target.previousSibling.value;
 		let colorName= event.target.previousSibling.previousSibling.innerText;
-		
+		colors.push(colorName);
 		$.ajax({
 			
 			url:"/manager/goods/insertColor?colorName="+colorName+"&colorCode="+colorCode,
@@ -439,9 +667,7 @@ $.ajax({
 		$(".goodsColorDiv").html(div.innerHTML);
 		$(".goodsColorDiv").append(input);
 		$(".goodsColorDiv").children().eq(-1);
-		let span = document.createElement("span");
-		$(".goodsColorDiv").append(span);
-		span.focus();
+		caretAtLast(document.querySelector(".goodsColorDiv"));
 		$(".colorBar").html("");
 		let hidden = document.createElement("input");
 		hidden.setAttribute("type","hidden");
@@ -451,12 +677,16 @@ $.ajax({
 		$(".colorLine").append(hidden);
 	}
 	function fn_deleteColor(event){
+		
 		let colorName = event.target.nextSibling.innerText;
-		$(".colorLine").children().each(function(i,el){
-			if(el.value==colorName){
-				el.remove();
+		colors = colors.filter(function(data){
+			if(data==colorName){
+				
+			}else{
+				return data;
 			}
-		});
+		})
+		fn_popHidden(colorName,"color");
 		$(".goodsColorDiv").children().each(function(i,el){
 			if(el.tagName=="DIV"){
 				if(el.childNodes[1].innerText==colorName){
@@ -467,6 +697,9 @@ $.ajax({
 		})
 	}
 	function fn_changeSize(event){
+		if(event.keyCode==8){
+			fn_keyPress(event)
+		}
 		if(event.keyCode==13){
 			return;	
 		}
@@ -489,6 +722,7 @@ $.ajax({
 	function fn_saveSize(event){
 		
 		let size = event.target.previousSibling.innerText;
+		sizes.push(size);
 		let input = document.createElement("input");
 		input.setAttribute("type","hidden");
 		input.setAttribute("value",size);
@@ -504,14 +738,24 @@ $.ajax({
 		$(".goodsSizeDiv").text("");
 		$(".goodsSizeDiv").html(div.innerHTML);
 		$(".goodsSizeDiv").append(sizeTag);
-		let span = document.createElement("span");
-		$(".goodsSizeDiv").append(span);
-		span.focus();
+		caretAtLast(document.querySelector(".goodsSizeDiv"));
 		$(".sizeBar").html("");
+		if(sizes.length==1){
+			$(".sizeTitle").text(size);
+		}else{
+			fn_addSize(size);
+		}
 		
 	}
 	function fn_deleteSize(event){
 		let size= event.target.nextSibling.innerText;
+		sizes = sizes.filter(function(data){
+			if(data==size){
+				
+			}else{
+				return data;
+			}
+		})
 		$(".sizeLine").children().each(function(i,el){
 			if(el.value==size){
 				el.remove();
@@ -524,7 +768,13 @@ $.ajax({
 				}
 			}
 			
-		})
+		});
+		fn_popHidden(size,"size");
+		if(sizes.length==1){
+			$("sizeTitle").text("");
+		}else{
+			fn_popSize(size);
+		}
 	}
 	
 	function fn_changeImages(event){
@@ -620,6 +870,13 @@ $.ajax({
 		}
 		let goodsIndexId = $("input[name=goodsIndexId]").val();
 		let goodsDetail = $(".goodsDetail").val();
+		
+		let cleaning = $("input[name=cleaning][checked=checked]").val();
+		let lining = $("input[name=lining][checked=checked]").val();
+		let thickness = $("input[name=thickness][checked=checked]").val();
+		let through = $("input[name=through][checked=checked]").val();
+		let flexibility = $("input[name=flexibility][checked=checked]").val();
+		let fit = $("input[name=fit][checked=checked]").val();
 		var form = new FormData();
 		form.append("goodsName",goodsName);
 		form.append("goodsType",goodsType);
@@ -630,6 +887,12 @@ $.ajax({
 		form.append("goodsSale",goodsSale);
 		form.append("goodsBest",goodsBest);
 		form.append("goodsActive",goodsActive);
+		form.append("cleanging",cleaning);
+		form.append("lining",lining);
+		form.append("thickness",thickness);
+		form.append("through",through);
+		form.append("flexibility",flexibility);
+		form.append("fit",fit);
 		$(".thumbnail input").each(function(i,el){
 			if(el.getAttribute("type")=="hidden"){
 				let imageUrls = el.value;
@@ -641,7 +904,44 @@ $.ajax({
 		});
 		form.append("goodsIndexId",goodsIndexId);
 		form.append("goodsDetail",goodsDetail);
-		
+		$(".sizeTitle").each(function(i,el){
+			form.append("sizeVos["+i+"].sizeName",el.innerText);
+		})
+		$(".totalLength").each(function(i,el){
+			form.append("sizeVos["+i+"].totalLength",el.value);
+		})
+			$(".shoulder").each(function(i,el){
+			form.append("sizeVos["+i+"].shoulder",el.value);
+		})
+			$(".chest").each(function(i,el){
+			form.append("sizeVos["+i+"].chest",el.value);
+		})
+	$(".arm").each(function(i,el){
+			form.append("sizeVos["+i+"].arm",el.value);
+		})
+			$(".armSection").each(function(i,el){
+			form.append("sizeVos["+i+"].armSection",el.value);
+		})
+			$(".armhole").each(function(i,el){
+			form.append("sizeVos["+i+"].armhole",el.value);
+		})
+			$(".waist").each(function(i,el){
+			form.append("sizeVos["+i+"].waist",el.value);
+		})
+			$(".rise").each(function(i,el){
+			form.append("sizeVos["+i+"].rise",el.value);
+		})
+			$(".thigh").each(function(i,el){
+			form.append("sizeVos["+i+"].thigh",el.value);
+		})
+			$(".heap").each(function(i,el){
+			form.append("sizeVos["+i+"].heap",el.value);
+		})
+			$(".hem").each(function(i,el){
+			form.append("sizeVos["+i+"].hem",el.value);
+		})
+
+
 		fetch('http://localhost:9090/manager/goods/insertGoods', {
 		    method: 'POST',
 		    cache: 'no-cache',
@@ -672,18 +972,122 @@ $.ajax({
 			location.href = "/manager/goods/insertGoodsStep2?"+encodeURI(input);
 		})
 		
-		
 	});
 	function fn_enterColor(event){
 		if(event.keyCode==13){
 			event.preventDefault();
 			$(".colorBar").children().children().eq(0).click();
+		
+		}
+		if(event.keyCode==8){
+			fn_keyPress(event);
 		}
 	}
 	function fn_enterSize(event){
 		if(event.keyCode==13){
 			event.preventDefault();
 			$(".sizeBar").children().children().eq(1).click();
+		}
+		if(event.keyCode==8){
+			fn_keyPress(event);
+		}
+	}
+	$(".buttonSpan").click(function(){
+		$(this).parent().parent().children().each(function(i,el){
+			if($(el).children().eq(0).attr("checked")=="checked"){
+				$(el).children().eq(0).removeAttr("checked");
+			}
+		})
+		$(this).prev().attr("checked","checked");
+		
+	});
+	/*커서 마지막 위치로*/
+	function caretAtLast(el){
+		let sel = window.getSelection();
+		sel.setPosition(el,el.childNodes.length);
+	}
+	/*백스페이스로 블록 지울때 배열에서 삭제하기*/
+	function fn_keyPress(event){
+		if(event.keyCode==8){
+			if(event.target.className=="goodsColorDiv"){
+				let temp = [];
+				event.target.childNodes.forEach(function(el,i){
+					if(el.tagName=="DIV"){
+						let colorName = el.childNodes[1].innerText.trim();
+						let bool = colors.includes(colorName);
+						if(bool){
+							temp.push(colorName);
+						}
+					}
+				});
+				for(let i = 0;i<colors.length;i++){
+					let bool = temp.includes(colors[i]);
+					if(!bool){
+						console.log(colors[i])
+						fn_popHidden(colors[i],"color");
+					}
+				}
+				colors = temp;
+				
+			}else if(event.target.className="goodsSizeDiv"){
+				let temp = [];
+				event.target.childNodes.forEach(function(el,i){
+					if(el.tagName=="DIV"){
+						let sizeName=el.childNodes[1].innerText.trim();
+						let bool = sizes.includes(sizeName);
+						if(bool){
+							temp.push(sizeName);
+						}
+					}
+				});
+				for(let i = 0;i<sizes.length;i++){
+					let bool = temp.includes(sizes[i]);
+					if(!bool){
+						if(temp.length==0){
+							$(".sizeTitle").text("");
+						}else{
+							fn_popSize(sizes[i]);
+						}
+						fn_popHidden(sizes[i],"size");
+					}
+				}
+				sizes= temp;
+			}
+		}
+	}
+	
+	function fn_addSize(size){
+		let table = document.querySelector(".tblSize").cloneNode(true);
+		$(table).children().eq(0).children().eq(0).children().eq(0).text(size);
+		$(".detailSize").append(table);
+		
+	}
+	function fn_popSize(size){
+		$(".tblSize").each(function(i,el){
+			if($(el).children().eq(0).children().eq(0).children().eq(0).text()==size){
+				el.remove();
+			}
+		})
+	}
+	function fn_popHidden(name,type){
+		if(type=="size"){
+			$(".sizeLine").children().each(function(i,el){
+				if(el.tagName=="INPUT"){
+				if(el.value.trim()==name){
+					el.remove();
+					return;
+				};
+				}
+			})
+		}else{
+			$(".colorLine").children().each(function(i,el){
+				if(el.tagName=="INPUT"){
+				if(el.value.trim()==name){
+					el.remove();
+					return;
+				}
+				}
+			})
 		}
 	}
 </script>
