@@ -110,7 +110,7 @@
 		where 1= 1
 	</when>
 	<otherwise>
-		where 1=1
+		where goods_type = #{goodsType}
 	</otherwise>
 	</choose>
 	<if test= "searchKeyword !='' and searchKeyword!=null">
@@ -200,7 +200,7 @@
 		where 1=1
 	</when>
 	<otherwise>
-		where 1=1
+		where goods_type = #{goodsType}
 		
 	</otherwise>
 	</choose>

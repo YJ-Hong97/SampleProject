@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="/resources/css/common.css" rel="stylesheet" type="text/css">
+<link href="resources/css/common.css" rel="stylesheet" type="text/css">
 <title>Sample Project</title>
 </head>
 <style>
