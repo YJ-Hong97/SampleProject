@@ -44,7 +44,7 @@
 	}
 	.cart{
 		display:inline-block;
-		background:url(resources/images/shopping_cart_FILL0_wght400_GRAD0_opsz48.png);
+		background:url(../resources/images/shopping_cart_FILL0_wght400_GRAD0_opsz48.png);
 		width:20px;
 		height:20px;
 		line-height:55px;
@@ -54,7 +54,7 @@
 	}
 	.searchIcon{
 		display:inline-block;
-		background:url(resources/images/search_FILL0_wght400_GRAD0_opsz48.png);
+		background:url(../resources/images/search_FILL0_wght400_GRAD0_opsz48.png);
 		width:20px;
 		height:20px;
 		line-height:55px;

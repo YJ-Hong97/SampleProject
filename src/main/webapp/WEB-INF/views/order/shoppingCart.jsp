@@ -194,7 +194,7 @@
 	}
 </style>
 <body>
-    <header><%@ include file="/WEB-INF/views/component/homeHeader.jsp" %></header>
+    <header><%@ include file="/WEB-INF/views/component/everyHeader.jsp" %></header>
     <main>
     	
     	<div class="main"> 

@@ -158,7 +158,7 @@
 	}
 </style>
 <body>
-<%@ include file="/WEB-INF/views/component/homeHeader.jsp" %>
+<%@ include file="/WEB-INF/views/component/everyHeader.jsp" %>
 <%@ include file="/WEB-INF/views/component/mySize.jsp" %>
 <div class="detailHead">
 <div class="imageWrap">
