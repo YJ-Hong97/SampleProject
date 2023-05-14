@@ -159,7 +159,7 @@
 	}
 </style>
 <body>
-<%@ include file="/WEB-INF/views/component/homeHeader.jsp" %>
+<header><%@ include file="/WEB-INF/views/component/homeHeader.jsp" %></header>
 <div class="slideWrap">
 	<div class="imageWrap">
 	<c:forEach items="${adsList }" var="ad">
@@ -178,15 +178,17 @@
 		<c:forEach items="${goodsList }" var="goods" varStatus="status">
 			<div class="goodsItem${status.index } goodsItem" >
 				<c:forEach items="${goods.imageUrls}" var="image">
-					<a href="/goods/detail?goodsId=${goods.goodsIndexId }"><img src="${image }" class="goodsImage"></a>
+					<a href="${pageContext.request.contextPath}/goods/detail?goodsId=${goods.goodsIndexId }"><img src="${image }" class="goodsImage"></a>
 				</c:forEach>
 				<button value="${goods.goodsIndexId }" class="heart" onclick="clickHeart(event)"></button>
+
 				<ul class="goodsColors">
 				<c:forEach items="${goods.goodsColor }" var="color">
 					<li style="background-color:${color};"></li>
 				</c:forEach>
 				</ul>
 				<a href="/goods/detail?goodsId=${goods.goodsIndexId }"><p class="goodsName">${goods.goodsName }</p></a>
+
 				<p class="goodsPrice">
 					<c:if test ="${goods.goodsSale!=0 }">
 						<span>${goods.goodsPrice-((goods.goodsSale/100)*goods.goodsPrice) }원 </span>

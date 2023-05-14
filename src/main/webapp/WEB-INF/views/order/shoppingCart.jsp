@@ -326,20 +326,20 @@
 	      	<div class="main" style="border-right: 1px solid #DCDCDC; width: 200%; height:100%;"> 
 	      		2,500원
 	      	</div>
-	      	<div class="main" style="width: 1000%; height:100%;"> 
+	      	<div class="main" id="finalprice" value="16900" style="width: 1000%; height:100%;"> 
 	      		= 16,900원
 			</div>
 		</div>
 
 		<div class="main order"> 
-			<button>전체상품주문</button>
-			<button>선택상품주문</button>
+			<button class="iamportinit" type="button">전체상품주문</button>
+			<button class="iamportinit" type="button">선택상품주문</button>
 			<button>쇼핑계속하기</button>
 		</div>
 		
 		<div class="main order" style=""> 
-			<button>kakao pay 구매</button>
-			<button>naver pay 구매</button>
+			<button id="iamportPayment" type="button"> kakao pay 구매</button>
+			<button id="iamportnaver" type="button">naver pay 구매</button>
 		</div>
 		
 		<div class="main" style="border-right: 1px solid #DCDCDC; border-left: 1px solid #DCDCDC; border-top: 1px solid #DCDCDC; margin-top: 30px;"> 
@@ -385,162 +385,139 @@
 	<footer><%@ include file="/WEB-INF/views/component/homeFooter.jsp" %></footer>
 	
 <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+<!-- 아래 제이쿼리는 1.0이상이면 원하는 버전을 사용하셔도 무방합니다. -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script th:inline="javascript">
-var goodsName = `${goods.goodsName}`;
-<c:set var="images" value="${fn:split(goods.dbImages, ',')}"/>
-var last = [[${fn:length(images)}]]-1;
-var index = 0;
-var before = last;
-bigSlide();
-var intervalSlide = setInterval(bigSlide,3000);
-function bigSlide(){
-	$(".bigImage").children().eq(before).removeClass("visible");
-	$(".bigImage").children().eq(index).addClass("visible");
-	$(".smallImage").children().children().eq(before).children().removeClass("redBorder");
-	$(".smallImage").children().children().eq(index).children().addClass("redBorder");
-	before= index;
-	index++;
-	if(index> last){
-		index = 0;
-		before = last;
-	}
-	
-}
-function fn_changeBigImage(statusIndex,event){
-	event.target.parentNode.parentNode.childNodes.forEach(function(el,i){
-		if(i%2==1){
-			el.childNodes[0].classList.remove("redBorder");
-		}
-		
-	});
-	event.target.classList.add("redBorder");
-	clearInterval(intervalSlide);
-	index = statusIndex;
-	bigSlide();
-	intervalSlide = setInterval(bigSlide,3000);
-}
-var colorlength = ${fn:length(colors)};
-var sizelength = ${fn:length(sizes)};
-var colorAndSize = {};
 
-var size = false;
-var color = false;
-var sizeName = "";
-var colorName = "";
-function fn_clickSize(inputsize,event){
-	event.target.parentNode.parentNode.childNodes.forEach((el,i)=>{
-		if(el.tagName=="SPAN"){
-			el.childNodes[0].style.background = "white";
-		}
-	});
-	event.target.style.background = "#D9D9D9";
-	size = true;
-	sizeName = inputsize;
-	let attrName =colorName+"/"+sizeName;
-	let className = colorName.replace(" ","")+sizeName.replace(" ","");
-	
-	if(size&&color){
-		if(colorAndSize[attrName]!=undefined&&colorAndSize[attrName]!=0){
-			colorAndSize[attrName]++;
-			$("."+className).children().eq(1).children().val(colorAndSize[attrName]);
-			fn_totalPrice();
-		}else{
-			var div = document.createElement("div");
-			div.setAttribute("class","inputGoods "+className);
-			var input = "<p>"+goodsName+"<button class='deleteGoods' onclick='fn_deleteCart(`"+attrName+"`,event)'>X</button></p>"
-			+"<p>"+colorName+"/"+sizeName+"<input type='number' value='1' min='1' onchange='fn_changePrice(`"+attrName+"`,event)'></p>";
-			div.innerHTML = input;
-			$(".selectBox").prepend(div);
-			colorAndSize[attrName]=1;
-			fn_totalPrice();
-		}
-		size = false;
-		color = false;
-	}
+var finalprice = document.getElementById('finalprice').value
+//문서가 준비되면 제일 먼저 실행
+$(document).ready(function(){ 
+	$("#iamportPayment").click(function(){ 
+    	payment(); //버튼 클릭하면 호출 
+    }); 
+    $(".iamportinit").click(function(){ 
+    	innit(); //버튼 클릭하면 호출 
+    }); 
+    $("#iamportnaver").click(function(){ 
+    	naver(); //버튼 클릭하면 호출 
+    }); 
+})
+
+
+//버튼 클릭하면 실행
+function payment(data) {
+    IMP.init('imp41702258');//아임포트 관리자 콘솔에서 확인한 '가맹점 식별코드' 입력
+    IMP.request_pay({// param
+        pg: "kakaopay.TC0ONETIME", //pg사명 or pg사명.CID (잘못 입력할 경우, 기본 PG사가 띄워짐)
+        pay_method: "card", //지불 방법
+        merchant_uid: "iamport_test_id?<%=System.currentTimeMillis() %>", //가맹점 주문번호 (아임포트를 사용하는 가맹점에서 중복되지 않은 임의의 문자열을 입력)
+        name: "도서", //결제창에 노출될 상품명
+        amount: $("#finalprice").attr("value"), //금액
+        buyer_email : "testiamport@naver.com", 
+        buyer_name : "홍길동",
+        buyer_tel : "01012341234"
+    }, function (rsp) { // callback
+        if (rsp.success) {
+            alert("완료 -&gt; imp_uid : "+rsp.imp_uid+" / merchant_uid(orderKey) : " +rsp.merchant_uid);
+        } else {
+            alert("실패 : 코드("+rsp.error_code+") / 메세지(" + rsp.error_msg + ")");
+        }
+    });
 }
-function fn_clickColor(inputcolor,event){
-	event.target.parentNode.parentNode.childNodes.forEach((el,i)=>{
-		if(el.tagName=="SPAN"){
-			el.childNodes[0].style.background="white";
-		}
-	});
-	event.target.style.background = "#D9D9D9";
-	color =true;
-	colorName= inputcolor;
-	let attrName =colorName+"/"+sizeName;
-	let className = colorName.replace(" ","")+sizeName.replace(" ","");
-	if(size&&color){
-		if(colorAndSize[attrName]!=undefined&&colorAndSize[attrName]!=0){
-			colorAndSize[attrName]++;
-			$("."+className).children().eq(1).children().val(colorAndSize[attrName]);
-			fn_totalPrice();
-		}else{
-			var div = document.createElement("div");
-			div.setAttribute("class","inputGoods "+className);
-			var input = "<p>"+goodsName+"<button class='deleteGoods' onclick='fn_deleteCart(`"+attrName+"`,event)'>X</button></p>"
-			+"<p>"+colorName+"/"+sizeName+"<input type='number' value='1' min='1' onchange='fn_changePrice(`"+attrName+"`,event)'></p>";
-			div.innerHTML = input;
-			$(".selectBox").prepend(div);
-			colorAndSize[attrName]=1;
-			fn_totalPrice();
-			
-		}
-		size = false;
-		color = false;
-	}
+
+function innit(data){
+	IMP.init('imp41702258');//아임포트 관리자 콘솔에서 확인한 '가맹점 식별코드' 입력
+    IMP.request_pay({// param
+        pg: "html5_inicis", //pg사명 or pg사명.CID (잘못 입력할 경우, 기본 PG사가 띄워짐)
+        pay_method: "card", //지불 방법
+        merchant_uid: "iamport_test_id?<%=System.currentTimeMillis() %>", //가맹점 주문번호 (아임포트를 사용하는 가맹점에서 중복되지 않은 임의의 문자열을 입력)
+        name: "도서", //결제창에 노출될 상품명
+        amount: $("#finalprice").attr("value"), //금액
+        buyer_email : "testiamport@naver.com", 
+        buyer_name : "홍길동",
+        buyer_tel : "01012341234"
+    }, function (rsp) { // callback
+        if (rsp.success) {
+            alert("완료 -&gt; imp_uid : "+rsp.imp_uid+" / merchant_uid(orderKey) : " +rsp.merchant_uid);
+        } else {
+            alert("실패 : 코드("+rsp.error_code+") / 메세지(" + rsp.error_msg + ")");
+        }
+    });
 }
-function fn_totalPrice(){
-	var p = document.querySelector(".totalP");
-	var total = 0;
-	Object.keys(colorAndSize).forEach(function(k){
-		
-	    total+= colorAndSize[k]*$(".goodsPrice").text();
-	});
-	var input = "<label id='totalTitle'>TOTAL</label>"
-	+total+"원";
-	p.innerHTML = input;
-}
-function fn_deleteCart(attrName){
-	let total = 0;
-	Object.keys(colorAndSize).forEach(function(k){
-		if(k!=attrName){
-			total+= colorAndSize[k]*$(".goodsPrice").text();
-		}
-	    
-	});
-	let p = document.querySelector(".totalP");
-	let input =  "<label id='totalTitle'>TOTAL</label>"
-		+total+"원";
-	p.innerHTML = input;
-	
-	
-	colorAndSize[attrName] = 0;
-	event.target.parentNode.parentNode.remove();
-	
-	
-}
-function fn_changePrice(attrName,event){
-	let count = event.target.value;
-	colorAndSize[attrName] = count;
-	
-	var p = document.querySelector(".totalP");
-	var total = 0;
-	Object.keys(colorAndSize).forEach(function(k){
-		
-	    total+= colorAndSize[k]*$(".goodsPrice").text();
-	});
-	var input = "<label id='totalTitle'>TOTAL</label>"
-	+total+"원";
-	p.innerHTML = input;
-}
-function fn_clickMySize(event){
-	
-	$(".bodyWrap").css("display","block");
-}
-$(".closeSize").click(function(){
-	
-	$(".bodyWrap").css("display","none");
+
+function naver(data){
+IMP.init('imp41702258');
+IMP.request_pay({
+    pg : 'naverpay',
+    merchant_uid: "order_no_0001", //상점에서 관리하는 주문 번호
+    name : '주문명:결제테스트',
+    amount : 14000,
+    tax_free : 4000, //면세공급가액(누락되면 0원으로 처리)
+    buyer_email : 'iamport@siot.do',
+    buyer_name : '구매자이름',
+    buyer_tel : '010-1234-5678',
+    buyer_addr : '서울특별시 강남구 삼성동',
+    buyer_postcode : '123-456',
+    naverUseCfm : '20201001', //이용완료일자 (네이버페이 계약시 필수 파라미터로 설정된 경우에만 설정합니다.)
+    naverPopupMode : true, //팝업모드 활성화
+    m_redirect_url : "${pageContext.request.contextPath}/", //예 : http://yourservice.com/payments/complete
+    naverPurchaserName: "구매자이름",
+    naverPurchaserBirthday: "20151201",
+    naverChainId: "sAMplEChAINid",
+    naverMerchantUserKey: "가맹점의 사용자 키",
+    naverProducts : [{
+      "categoryType": "BOOK",
+			"categoryId": "GENERAL",
+			"uid": "107922211",
+			"name": "한국사",
+			"payReferrer": "NAVER_BOOK",
+			"sellerId": "sellerA",
+			"count": 10
+		},
+		{
+			"categoryType": "MUSIC",
+			"categoryId": "CD",
+			"uid": "299911002",
+			"name": "러블리즈",
+			"payReferrer": "NAVER_BOOK",
+			"sellerId": "sellerB",
+			"count": 1
+		}]
+}, function(rsp) { //팝업 방식으로 진행 또는 결제 프로세스 시작 전 오류가 발생할 경우 호출되는 callback
+    if ( rsp.success ) {
+    	//[1] 서버단에서 결제정보 조회를 위해 jQuery ajax로 imp_uid 전달하기
+    	jQuery.ajax({
+    		url: "/payments/complete", //cross-domain error가 발생하지 않도록 주의해주세요
+    		type: 'POST',
+    		dataType: 'json',
+    		data: {
+	    		imp_uid : rsp.imp_uid
+	    		//기타 필요한 데이터가 있으면 추가 전달
+    		}
+    	}).done(function(data) {
+    		//[2] 서버에서 REST API로 결제정보확인 및 서비스루틴이 정상적인 경우
+    		if ( everythings_fine ) {
+    			var msg = '결제가 완료되었습니다.';
+    			msg += '\n고유ID : ' + rsp.imp_uid;
+    			msg += '\n상점 거래ID : ' + rsp.merchant_uid;
+    			msg += '\n결제 금액 : ' + rsp.paid_amount;
+    			msg += '카드 승인번호 : ' + rsp.apply_num;
+
+    			alert(msg);
+    		} else {
+    			//[3] 아직 제대로 결제가 되지 않았습니다.
+    			//[4] 결제된 금액이 요청한 금액과 달라 결제를 자동취소처리하였습니다.
+    		}
+    	});
+    } else {
+        var msg = '결제에 실패하였습니다.';
+        msg += '에러내용 : ' + rsp.error_msg;
+
+        alert(msg);
+    }
 });
+}
 </script>
 <div id="scrollbottom"></div>
 </body>
