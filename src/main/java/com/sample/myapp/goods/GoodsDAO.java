@@ -174,7 +174,7 @@ public class GoodsDAO {
 		return session.selectList("goodsMapper.selectGoodsVo", goodsIndexId);
 	}
 
-	public List<GoodsVo> selectOrderBy(Map<String, Object> map) {
+	public List<GoodsStep1> selectOrderBy(Map<String, Object> map) {
 
 		return session.selectList("goodsMapper.goodsSelecOrderBy", map);
 	}

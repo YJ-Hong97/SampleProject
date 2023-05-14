@@ -13,7 +13,6 @@
 	body, html{
 		width:100%;
 		height:100%;
-		padding-top:55px;
 	}
 	.imageWrap{
 		position:relative;

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.JsonElement;
@@ -146,7 +147,6 @@ public class ManagerController {
 			for(int i =0;i<sizeVo.getSizeVos().size();i++) {
 				sizeVo.getSizeVos().get(i).setGoodsId(goodsIndexId);
 				goodsDAO.insertDetailSize(sizeVo.getSizeVos().get(i));
-				System.out.println(sizeVo);
 			}
 			checkVo.setGoodsIndexId(goodsIndexId);
 			goodsDAO.insertCheck(checkVo);
@@ -156,7 +156,6 @@ public class ManagerController {
 			for(int i =0;i<sizeVo.getSizeVos().size();i++) {
 				sizeVo.getSizeVos().get(i).setGoodsId(goodsIndexId);
 				goodsDAO.updateSize(sizeVo.getSizeVos().get(i));
-				System.out.println(sizeVo);
 			}
 			checkVo.setGoodsIndexId(goodsIndexId);
 			goodsDAO.updateCheck(checkVo);

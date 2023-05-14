@@ -945,7 +945,7 @@ $.ajax({
 		fetch('http://localhost:9090/manager/goods/insertGoods', {
 		    method: 'POST',
 		    cache: 'no-cache',
-		   	headers:{},
+		    headers: {},
 		    body:form // body 부분에 폼데이터 변수를 할당
 		})
 		.then((response) => 

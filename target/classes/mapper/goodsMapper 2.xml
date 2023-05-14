@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="goodsMapper">
+<resultMap id="goods" type="com.sample.myapp.goods.GoodsVo">
+	<result column="goods_id" property="goodsId"/>
+	<result column="goods_index_id" property="goodsIndexId"/>
+	<result column="goods_color" property="goodsColor"/>
+	<result column="goods_size" property="goodsSize"/>
+	<result column="stock" property="stock"/>
+</resultMap>
+<resultMap id="goodsStep1" type="com.sample.myapp.goods.GoodsStep1">
+	<result column="goods_index_id" property="goodsIndexId"/>
+	<result column="goods_type" property="goodsType"/>
+	<result column="goods_small_type" property="goodsSmallType"/>
+	<result column="goods_name" property="goodsName"/>
+	<result column="goods_price" property="goodsPrice"/>
+	<result column="goods_image" property="dbImages"/>
+	<result column="goods_date" property="goodsDate"/>  
+	<result column="goods_best" property="goodsBest"/>
+	<result column="goods_sale" property="goodsSale"/>
+	<result column="goods_active" property="goodsActive"/>
+	<result column="goods_detail" property="goodsDetail"/>
+	<result column="goods_html" property="goodsHTML"/>
+	<result column="goods_color" property="dbGoodsColor"/>
+	<result column="goods_size" property="dbGoodsSize"/>
+</resultMap>
+<resultMap id="emoji" type="com.sample.myapp.goods.EmojiVo">
+	<result column="emojis_code" property="emojis_code"/>
+	<result column="emojis_type" property="emojis_type"/>
+</resultMap>
+<resultMap id="goodsType" type="com.sample.myapp.goods.GoodsTypeVo">
+	<result column="goods_code" property="goodsCode"/>
+	<result column="type_name" property="typeName"/>
+</resultMap>
+<resultMap id="goodsSmallType" type="com.sample.myapp.goods.GoodsSmallType">
+	<result column="goods_code" property="goodsCode"/>
+	<result column="goods_small_code" property="goodsSmallCode"/>
+	<result column="type_name" property="typeName"/>
+</resultMap>
+<resultMap id="order" type="com.sample.myapp.goods.OrderVo">
+	<result column="order_id" property="orderId"/>
+	<result column="user_id" property="userId"/>
+	<result column="price" property="price"/>
+	<result column="payment" property="payment"/>
+	<result column="delivery" property="delivery"/>
+	<result column="order_list_id" property="orderListId"/>
+	<result column="pay_date" property="payDate"/>
+	<result column="order_state" property="orderState"/>
+	<result column="order_date" property="orderDate"/>
+</resultMap>
+<resultMap id="size" type="com.sample.myapp.goods.SizeVo">
+	<result column="goods_id" property="goodsId"/>
+	<result column="total_length" property="totalLength"/>
+	<result column="shoulder" property="shoulder"/>
+	<result column="chest" property="chest"/>
+	<result column="arm" property="arm"/>
+	<result column="arm_section" property="armSection"/>
+	<result column="armhole" property="armhole"/>
+	<result column="waist" property="waist"/>
+	<result column="rise" property="rise"/>
+	<result column="heap" property="heap"/>
+	<result column="thigh" property="thigh"/>
+	<result column="hem" property="hem"/>
+	<result column="size_name" property="sizeName"/>
+</resultMap>
+<resultMap id="check" type="com.sample.myapp.goods.CheckVo">
+	<result column="goods_id" property="goodsIndexId"/>
+	<result column="cleaning" property="cleaning"/>
+	<result column="lining" property="lining"/>
+	<result column="thickness" property="thickness"/>
+	<result column="through" property="through"/>
+	<result column="flexibility" property="flexibility"/>
+	<result column="fit" property="fit"/>
+</resultMap>
+<resultMap id="sizeImg" type="com.sample.myapp.goods.SizeImgVo">
+	<result column="top" property="top"/>
+	<result column="bottom" property="bottom"/>
+	<result column="skirt" property="skirt"/>
+</resultMap>
+<resultMap id="color" type="com.sample.myapp.goods.ColorVo">
+	<result column="color_name" property="colorName"/>
+	<result column="color_code" property="colorCode"/>
+</resultMap>
+<select id ="selectGoodsIndexId" parameterType="java.lang.String" resultType="java.lang.Integer">
+	select goods_index_id from goods_index where goods_name = #{goodsName}
+</select>
+<select id="selectGoodsIndex" parameterType="java.lang.Integer" resultMap="goodsStep1">
+	select * from goods_index where goods_index_id = #{goodsIndexId}
+</select>
+<select id="goodsSelectAll" parameterType="HashMap" resultMap="goodsStep1">
+	select * from goods_index
+	<choose>
+		<when test = "goodsType==null or goodsType == -1">
+		where 1= 1
+	</when>
+	<otherwise>
+		where goods_type = #{goodsType}
+	</otherwise>
+	</choose>
+	<if test = "searchKeyword!='' and searchKeyword!=null">
+		AND goods_name like CONCAT('%',#{searchKeyword},'%')
+	</if>
+	order by goods_date
+	limit #{size} offset #{start}
+</select>
+<select id="goodsTotal" parameterType="HashMap" resultType="java.lang.Integer">
+	select count(goods_index_id) from goods_index 
+	<choose>
+		<when test = "goodsType==null or goodsType == -1">
+		where 1= 1
+	</when>
+	<otherwise>
+		where goods_type = #{goodsType}
+	</otherwise>
+	</choose>
+	<if test= "searchKeyword !='' and searchKeyword!=null">
+		AND goods_name like CONCAT('%',#{searchKeyword},'%')
+	</if>
+</select>
+<select id="goodsTypeSelectAll" resultMap="goodsType">
+	select * from goods_type
+</select>
+<select id="emojisSelectAll" parameterType="com.sample.myapp.PageVO" resultMap="emoji">
+	select * from emojis
+	limit #{size} offset #{start}
+</select>
+<select id="emojisCount" resultType="java.lang.Integer">
+	select count(*) from emojis
+</select>
+<insert id="goodsInsert" parameterType="com.sample.myapp.goods.GoodsStep1">
+	<if test = "goodsIndexId == null">
+		insert into goods_index(
+			goods_index_id,
+			goods_type,
+			goods_small_type,
+			goods_name,
+			goods_price,
+			goods_image,
+			goods_date,
+			goods_sale,
+			goods_best,
+			goods_active,
+			goods_detail,
+			goods_color,
+			goods_size,
+			goods_html
+		) values(
+		(select IFNULL(max(a.goods_index_id)+1,0) from goods_index a),
+		#{goodsType},
+		#{goodsSmallType},
+		#{goodsName},
+		#{goodsPrice},
+		#{dbImages},
+		SYSDATE(),
+		#{goodsSale},
+		#{goodsBest},
+		#{goodsActive},
+		#{goodsDetail},
+		#{dbGoodsColor},
+		#{dbGoodsSize},
+		#{goodsHTML}
+	)
+	</if>
+	<if test = "goodsIndexId != null">
+		update goods_index set 
+			goods_type = #{goodsType},
+			goods_name = #{goodsName},
+			goods_price = #{goodsPrice},
+			goods_color = #{dbGoodsColor},
+			goods_size = #{dbGoodsSize},
+			goods_date = SYSDATE(),
+			goods_html = #{goodsHTML},
+			goods_sale = #{goodsSale},
+			goods_best = #{goodsBest},
+			goods_active = #{goodsActive},
+			goods_small_type = #{goodsSmallType},
+			goods_detail = #{goodsDetail},
+			goods_image = #{dbImages}
+		
+		where goods_index_id = #{goodsIndexId}
+	</if>
+</insert>
+<select id="goodsOption" resultType="STRING">
+ 	select * from goods
+ 	where goods_type =1
+ </select>
+ <select id="selectOneGoods" parameterType="java.lang.Integer" resultMap="goods">
+ 	select * from goods where goods_id = #{goodsId}
+ </select>
+
+ <delete id="deleteGoods" parameterType="java.lang.Integer">
+ 	delete from goods where goods_id = #{goodsId}
+ </delete>
+
+
+<select id="goodsSelecOrderBy" parameterType="HashMap" resultMap="goods">
+	select * from goods
+	<choose>
+		<when test = "goodsType==null or goodsType == -1">
+		where 1=1
+	</when>
+	<otherwise>
+		where goods_type = #{goodsType}
+		
+	</otherwise>
+	</choose>
+	 <trim prefix="ORDER BY"> 
+                        <if test="orderBy == 'goods_best'"> goods_best ASC </if>
+                        <if test="orderBy == 'goods_date'">  goods_date desc </if>     
+                        <if test="orderBy == 'goods_price_down'">  goods_price </if>     
+                        <if test="orderBy == 'goods_price_up'">  goods_price desc </if>   
+                        <if test="orderBy == 'goods_icon'">  goods_date </if>                        
+                    </trim>
+	limit #{size} offset #{start}
+</select>
+
+<select id="selectSmallTypebyType" parameterType="java.lang.Integer" resultMap="goodsSmallType">
+	select * from goods_small_type where goods_code = #{goodsType}
+</select>
+<select id="selectOrder" resultMap="order">
+	select * from tbl_order 
+	<choose>
+		<when test="payment==null">
+			where 1=1
+		</when>
+		<otherwise>
+			where payment = #{payment}
+		</otherwise>
+	</choose>
+	<if test="delivery!=null">
+		AND delivery = #{delivery}
+	</if>
+	<if test="orderState!=null">
+		AND order_state = #{orderState}
+	</if>
+	<if test="start!=null and end!=null"> 
+		<![CDATA[ AND order_date >= #{start} AND order_date <= #{end} ]]>
+	</if>
+	<if test="month!=null and month!=''">
+		AND order_date like CONCAT('%',#{month},'%')
+	</if>
+	order by order_date
+	limit #{limit} offset #{offset}
+</select>
+<select id="selectOrderCount" resultType="java.lang.Integer">
+	select count(*) from tbl_order 
+	<choose>
+		<when test="payment==null">
+			where 1=1
+		</when>
+		<otherwise>
+			where payment = #{payment}
+		</otherwise>
+	</choose>
+	<if test="delivery!=null">
+		AND delivery = #{delivery}
+	</if>
+	<if test="orderState!=null">
+		AND order_state = #{orderState}
+	</if>
+	<if test="start!=null and end!=null"> 
+		<![CDATA[ AND order_date >= #{start} AND order_date <= #{end} ]]>
+	</if>
+	<if test="month!=null">
+		AND order_date like CONCAT('%',#{month},'%')
+	</if>
+</select>
+<select id="selectNewGoods" resultMap="goodsStep1">
+	select * from goods_index
+	order by goods_date desc
+	limit 4 offset 0
+</select>
+<select id="selectSize" resultMap="size" parameterType="java.lang.Integer">
+	select * from tbl_size where goods_id = #{goodsId}
+</select>
+<select id="selectSizeImg" resultMap = "sizeImg">
+	select * from tbl_sizeimg
+</select>
+<select id="selectCheck" parameterType="java.lang.Integer" resultMap="check">
+	select * from tbl_check where goods_id = #{goodsId}
+</select>
+<select id="selectGoodsName" parameterType="java.lang.String" resultType="java.lang.String">
+	select goods_name from goods where goods_name=#{goodsName}
+</select>
+<select id="searchColor" parameterType="java.lang.String" resultMap="color">
+	select * from tbl_color where color_name like #{keyword}||'%'
+</select>
+<select id="selectColor" parameterType="java.lang.String" resultType="java.lang.String">
+	select color_code from tbl_color where color_name=#{color}
+</select>
+<insert id="insertColor" parameterType="com.sample.myapp.goods.ColorVo">
+	insert into tbl_color values(
+		#{colorName},
+		#{colorCode}
+	)
+</insert>
+<select id="selectSmallType" parameterType="java.lang.Integer" resultMap="goodsSmallType">
+	select * from goods_small_type where goods_code = #{goodsCode}
+</select>
+<insert id="insertGoodsStock" parameterType="com.sample.myapp.goods.GoodsVo">
+	insert into goods values(
+		(select IFNULL(max(a.goods_id),0)+1 from goods a),
+		#{goodsColor},
+		#{goodsSize},
+		#{stock},
+		#{goodsIndexId}
+	)
+</insert>
+<select id="selectGoodsVo" parameterType="java.lang.Integer" resultMap="goods">
+	select * from goods where goods_index_id = #{goodsIndexId}
+</select>
+<insert id="insertCheck" parameterType="com.sample.myapp.goods.CheckVo">
+	insert into tbl_check values(
+		#{goodsIndexId},
+		#{cleaning},
+		#{lining},
+		#{thickness},
+		#{through},
+		#{flexibility},
+		#{fit}
+		
+	);
+</insert>
+<insert id="insertSize" parameterType="com.sample.myapp.goods.SizeVo">
+	insert into tbl_size values(
+		#{goodsId},
+		#{totalLength},
+		#{shoulder},
+		#{chest},
+		#{arm},
+		#{armSection},
+		#{armhole},
+		#{waist},
+		#{rise},
+		#{heap},
+		#{thigh},
+		#{hem},
+		#{sizeName}
+	)
+</insert>
+<select id="selectSizeList" parameterType="java.lang.Integer" resultMap="size">
+	select * from tbl_size where goods_id =#{goodsIndexId}
+</select>
+<update id="updateSize" parameterType="com.sample.myapp.goods.SizeVo">
+	update tbl_size set
+		total_length=#{totalLength},
+		shoulder=#{soulder},
+		chest=#{chest},
+		arm=#{arm},
+		armSection=#{arm_section},
+		armhole=#{armhole},
+		waist=#{waist},
+		rise=#{rise},
+		heap=#{heap},
+		thigh=#{thigh},
+		hem=#{hem}
+	
+	where goods_id=#{goodsId} and size_name=#{sizeName}
+</update>
+<update id="updateCheck" parameterType="com.sample.myapp.goods.CheckVo">
+	update tbl_check set
+		cleaning=#{cleaning},
+		lining=#{lining},
+		thickness=#{thickness},
+		through=#{through},
+		flexibility=#{flexibility},
+		fit=#{fit}
+	
+	where goods_id=#{goodsIndexId}
+</update>
+</mapper>
