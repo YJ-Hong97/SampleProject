@@ -38,7 +38,7 @@ public class GoodsCategory_Controller {
 	}
 
 	/* 상품 관리 페이지 이동 */
-	@RequestMapping("/goodsList_byhi2")
+	@RequestMapping("/goodsList")
 
 	public String goods(PageVO page,Model model,@RequestParam(required = false, defaultValue = "-1")String userid, @RequestParam(required = false, defaultValue = "0")Integer pageNum, @RequestParam(required = false, defaultValue = "-1")Integer goodsType, @RequestParam(required = false, defaultValue = "goods_date desc") String orderBy){
 
@@ -120,7 +120,7 @@ public class GoodsCategory_Controller {
 		System.out.println(mainImage.toString());
 		
 		
-		List<GoodsSmallType> goodsSmallType = goodsDAO.selectSmallType(goods.getGoodsSmallType());
+		List<GoodsSmallType> goodsSmallType = goodsDAO.selectSmallType(goods.getGoodsType());
 		
 		model.addAttribute("mainImage", mainImage);
  		model.addAttribute("goodsList",goodsList);
