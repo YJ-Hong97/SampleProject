@@ -105,12 +105,22 @@ public class GoodsCategory_Controller {
 					goodsid = goodsList.get(i).getGoodsIndexId();
 				}
 			}
+			goodsList.get(i).setGoodsColor(goodsList.get(i).getDbGoodsColor().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
+			String[] colors = goodsList.get(i).getGoodsColor();
+			for(int j = 0;j<colors.length;j++) {
+			String color= goodsDAO.selectColor(colors[j].trim());
+			
+			colors[j] = color;
+			System.out.println(color);
+			}
+			goodsList.get(i).setGoodsColor(colors);
 			
 			dbImage.put("ImageList", imageList);
 			dbImage.put("goodsName", name);
 			dbImage.put("goodsPrice", price );
 			dbImage.put("goodsId", goodsid );
-			
+			dbImage.put("colors", colors );
+			dbImage.put("goodsBest", goodsList.get(i).getGoodsBest());
 			mainImage.add((HashMap<String, Object>) dbImage);
 			
 		}
@@ -142,7 +152,24 @@ public class GoodsCategory_Controller {
 	public String detail(PageVO page,Model model,@RequestParam(required = false, defaultValue = "-1")int goodsId) {
 		GoodsStep1 goods = goodsDAO.selectGoodsIndex(goodsId);
 		System.out.println(goods.toString());
+		
+		goods.setGoodsColor(goods.getDbGoodsColor().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
+		String[] colors = goods.getGoodsColor();
+		for(int j = 0;j<colors.length;j++) {
+		String color= colors[j].trim();
+		
+		colors[j] = color;
+		}
+		
+		goods.setGoodsSize(goods.getDbGoodsSize().replaceAll("\\[", "").replaceAll("\\]", "").trim().split(","));
+		String[] sizes = goods.getGoodsSize();
+		for(int j = 0;j<sizes.length;j++) {
+		String size= sizes[j].trim();
+		
+		sizes[j] = size;
+		}
 		model.addAttribute("goods",goods);
 		return "goods/detail";
 	}
+	
 }
