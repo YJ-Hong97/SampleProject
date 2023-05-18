@@ -234,22 +234,24 @@
 		<hr>
 		</div>
 		
+		<c:forEach items="${mainImage}" var="list" varStatus="i">
 		<div class="main height"> 
+	
 			<label style="width: 100px;"><input type="checkbox" name="color" value="blue"></label>
-			<a href="detail?goodsId=${list.goodsId}" class="product">
-               <img src="https://sampleprojectbucket.s3.ap-northeast-2.amazonaws.com/bottom/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202023-03-20%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%202.16.09.png" style="width:150px; height:200px; margin:10px;" alt="" class="lb-image">
+			<a href="${pageContext.request.contextPath}/user/detail?goodsId=${list.goodsId}" class="product">
+               <img src=${fn:replace(fn:replace(list.ImageList[0], '[', ''), ']', '')}  style="width:150px; height:180px; margin:10px;" alt="" class="lb-image">
       		<div style="width: 400px;">
-      		<a >리코 부클 꽈배기 크롭 가디건 (5 color)</a>
-      		<a >리코 부클 꽈배기 크롭 가디건 (5 color)</a>
+      		<a >${list.detail}</a>
+      		<a >${list.detail}</a>
       		<a >리코 부클 꽈배기 크롭 가디건 (5 color)</a>
       		</div>
       		
       		<div style="width: 100px;">
-      		14,400원
+      		${list.goodsList.price/list.goodsList.goodsCount}원
       		</div>
       		
       		<div style="width: 100px;">
-      		1
+      		${list.goodsList.goodsCount}
       		</div>
       		
       		<div style="width: 100px;">
@@ -265,7 +267,7 @@
       		</div>
       		
       		<div style="width: 100px;">
-      		14,400원
+      		${list.goodsList.price+2500}원
       		</div>
       		
       		<div style="width:110px;">
@@ -273,7 +275,9 @@
 				<button class="d">관심상품등록</button>
 				<button class="d">삭제</button>
       		</div>
+      		
 		</div>
+		</c:forEach> 
 		
 		<div class="main"> 
 		<hr>
