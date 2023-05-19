@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.sample.myapp.goods.GoodsDAO;
 import com.sample.myapp.goods.GoodsStep1;
 import com.sample.myapp.goods.GoodsVo;
+import com.sample.myapp.user.UserVo;
 
 /**
  * Handles requests for the application home page.
@@ -35,7 +37,7 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model, HttpServletRequest request) {
+	public String home(Locale locale, Model model, HttpServletRequest request,HttpSession session) {
 
 		List<AdsVo> adsList = homeDao.selectAds();
 		List<GoodsStep1> goodsList = goodsDAO.selectNewGoods();
@@ -51,6 +53,11 @@ public class HomeController {
 			}
 			goodsList.get(i).setGoodsColor(colors);
 		}
+		
+		/*사용자 정보*/
+		UserVo user = (UserVo)session.getAttribute("user");
+		
+		model.addAttribute("user",user);
 		model.addAttribute("goodsList", goodsList);
 		model.addAttribute("adsList", adsList);
 		return "index";

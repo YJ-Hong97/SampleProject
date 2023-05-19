@@ -8,6 +8,10 @@
 <title>mypage</title>
 </head>
 <style>
+html,body{
+	width:100%;
+	height:100%;
+}
 .mypageWrap{
 	margin:0 auto;
 	overflow:hidden;
@@ -51,7 +55,7 @@ background:url(/resources/images/monetization_on_FILL0_wght400_GRAD0_opsz48.png)
 }
 </style>
 <body>
-<%@ include file="/WEB-INF/views/component/header.jsp" %>
+<%@ include file="/WEB-INF/views/component/homeHeader.jsp" %>
 <div class="mypageWrap">
 <%@ include file="/WEB-INF/views/component/mypageSidebar.jsp" %>
 <div class="menuWrap">
@@ -69,6 +73,6 @@ background:url(/resources/images/monetization_on_FILL0_wght400_GRAD0_opsz48.png)
 </div>
 </div>
 </div>
-<%@ include file="/WEB-INF/views/component/footer.jsp" %>
+<%@ include file="/WEB-INF/views/component/homeFooter.jsp" %>
 </body>
 </html>
