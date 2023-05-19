@@ -21,4 +21,24 @@ public class OrderDAO {
 		return session.selectList("orderMapper.selectShoppingCart", userId);
 	}
 	
+	//아이디별 장바구니 상품 개수
+	public int  selectCountByUserId(String userId) {
+		return session.selectOne("orderMapper.selectCountByUserId", userId);
+	}
+	
+	//장바구니 상품 선택 삭제
+	public int deleteShoppingCart(String userId, String goodsId) {
+		Ids id = new Ids(userId, goodsId); 
+		return session.delete("orderMapper.deleteShoppingCart",id);
+	}
+	
+	public class Ids {
+		String userId;
+		String goodsId;
+		
+		Ids(String userId, String goodsId){
+			this.userId = userId;
+			this.goodsId = goodsId;
+		}
+	}
 }

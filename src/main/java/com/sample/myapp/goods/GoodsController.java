@@ -4,10 +4,14 @@ package com.sample.myapp.goods;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RequestMapping("/goods")
 @Controller
@@ -30,5 +34,11 @@ public class GoodsController {
 		model.addAttribute("check",check);
 		model.addAttribute("goods", index);
 		return "goods/detail";
+	}
+	
+	@RequestMapping(value = "/haca",method = { RequestMethod.POST })
+	public String haca( HttpServletRequest request,@RequestParam(required = false, defaultValue = "hyj1077") String userId, Model model) {
+		System.out.println("hyj1077");
+		return userId;
 	}
 }

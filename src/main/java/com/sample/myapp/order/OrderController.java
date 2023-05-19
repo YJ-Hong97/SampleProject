@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sample.myapp.goods.GoodsDAO;
 import com.sample.myapp.goods.GoodsStep1;
 import com.sample.myapp.goods.OrderListVo;
+import com.sample.myapp.order.OrderDAO.Ids;
 
 @Controller
 @RequestMapping(value = "order")
@@ -79,12 +80,21 @@ public class OrderController {
 			mainImage.add((HashMap<String, Object>) dbImage);
 			
 		}
-		//model.addAttribute("goodsList",goodsList);
-		model.addAttribute("mainImage",mainImage);
 		
+		int count = orderService.selectCountByUserId(userId);
+		
+		model.addAttribute("count",count);
+		model.addAttribute("mainImage",mainImage);
 		return "order/shoppingCart";
 	}
 	
-	
+	@RequestMapping(value = "/deleteShoppingCart" ,method = RequestMethod.POST)	
+	@ResponseBody
+	public String test(HttpServletRequest request, @RequestParam("goodsId") String goodsId, @RequestParam("userId") String userId) {
+		orderService.deleteShoppingCart(userId, goodsId);
+		
+		System.out.println(goodsId);
+	        return "/";
+	}
 	
 }

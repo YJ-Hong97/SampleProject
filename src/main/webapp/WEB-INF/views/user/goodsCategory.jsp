@@ -215,7 +215,7 @@
   		</div>
   		<div class="product-list">
    		<c:forEach items="${mainImage}" var="list" varStatus="i">
-   			<div>
+   			<div class="product">
 
 
    			 <div class="right_area">
