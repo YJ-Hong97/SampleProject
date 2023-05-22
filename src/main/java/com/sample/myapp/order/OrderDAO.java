@@ -30,4 +30,8 @@ public class OrderDAO {
 	public List<OrderListVo> selectOrderList(OrderVo orders) {
 		return session.selectList("orderMapper.selectOrderList",orders);
 	}
+
+	public OrderVo selectOrdertoId(String orderId) {
+		return session.selectOne("orderMapper.selectOrdertoId",orderId);
+	}
 }

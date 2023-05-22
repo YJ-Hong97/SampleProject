@@ -96,4 +96,26 @@ public class UserController {
 		model.addAttribute("orderList",orderList);
 		return "user/mypage";
 	}
+	/*마이페이지 주문 상세보기*/
+	@RequestMapping("/mypage/detail")
+	public String mypageDetail(String orderId,Model model) {
+		OrderVo order = orderDAO.selectOrdertoId(orderId);
+		List<OrderListVo> orderList = orderDAO.selectOrderList(order);
+		List<GoodsStep1> goodsIndexList = new ArrayList<>();
+		for(int i = 0;i<orderList.size();i++) {
+			GoodsStep1 goods = goodsDAO.selectIdtoIndex(orderList.get(i).getGoodsId());
+			goods.setImageUrls(goods.getDbImages().replaceAll("\\[", "").replaceAll("\\]", "").split(","));
+			goodsIndexList.add(goods);
+		}
+		List<GoodsVo> goodsList = new ArrayList<>();
+		for(int i=0;i<orderList.size();i++) {
+			GoodsVo goodsVo = goodsDAO.selectGoods(orderList.get(i).getGoodsId());
+			goodsList.add(goodsVo);
+		}
+		model.addAttribute("goodsList",goodsList);
+		model.addAttribute("goodsIndexList",goodsIndexList);
+		model.addAttribute("order",order);
+		model.addAttribute("orderList",orderList);
+;		return "user/mypageDetail";
+	}
 }

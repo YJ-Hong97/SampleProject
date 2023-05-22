@@ -155,10 +155,10 @@ h1{
 					<c:if test="${list.key.equals(order.orderId) }">
 						<div>
 							<c:if test="${orderList.size()>1 }">
-								${goodsList.get(status.index).goodsName }외 ${list.value.size() }건
+								<a href="/auth/mypage/detail?orderId=${order.orderId }">${goodsList.get(status.index).goodsName }외 ${list.value.size() }건</a>
 							</c:if>
 							<c:if test="${orderList.size()==1 }">
-								${goodsList.get(status.index).goodsName }
+								<a href="/auth/mypage/detail?orderId=${order.orderId }">${goodsList.get(status.index).goodsName }</a>
 							</c:if>
 						</div>
 						<div>
@@ -200,10 +200,10 @@ h1{
 					<c:if test="${list.key.equals(order.orderId) }">
 						<div>
 							<c:if test="${orderList.size()>1 }">
-								${goodsList.get(status.index).goodsName }외 ${list.value.size() }건
+								<a href="/auth/mypage/detail?orderId=${order.orderId }">${goodsList.get(status.index).goodsName }외 ${list.value.size() }건</a>
 							</c:if>
 							<c:if test="${orderList.size()==1 }">
-								${goodsList.get(status.index).goodsName }
+								<a href="/auth/mypage/detail?orderId=${order.orderId }">${goodsList.get(status.index).goodsName }</a>
 							</c:if>
 						</div>
 						<div>

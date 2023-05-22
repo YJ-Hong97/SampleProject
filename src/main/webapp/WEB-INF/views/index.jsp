@@ -10,10 +10,7 @@
 <title>Sample Project</title>
 </head>
 <style>
-	body, html{
-		width:100%;
-		height:100%;
-	}
+
 	.imageWrap{
 		position:relative;
 		width:100%;
@@ -160,6 +157,7 @@
 </style>
 <body>
 <header><%@ include file="/WEB-INF/views/component/homeHeader.jsp" %></header>
+<div id="wrapper">
 <div class="slideWrap">
 	<div class="imageWrap">
 	<c:forEach items="${adsList }" var="ad">
@@ -210,7 +208,7 @@
 		</c:forEach>
 	</div>
 </div>
- 	
+</div>
 <%@ include file="/WEB-INF/views/component/up_down_support.jsp" %>
 <%@ include file="/WEB-INF/views/component/homeFooter.jsp" %>
 <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>

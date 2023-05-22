@@ -32,4 +32,7 @@
 <select id="selectOrderList" parameterType="com.sample.myapp.goods.OrderVo" resultMap="order">
 	select * from order_list where order_list_id=#{orderListId}
 </select>
+<select id="selectOrdertoId" parameterType="java.lang.String" resultMap="orderVo">
+	select * from tbl_order where order_id=#{orderId}
+</select>
 </mapper>
