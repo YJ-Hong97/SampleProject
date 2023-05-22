@@ -210,6 +210,8 @@
 		</c:forEach>
 	</div>
 </div>
+ 	
+<%@ include file="/WEB-INF/views/component/up_down_support.jsp" %>
 <%@ include file="/WEB-INF/views/component/homeFooter.jsp" %>
 <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
 <script th:inline="javascript">
@@ -329,5 +331,6 @@
 		}
 	}
 </script>
+<div id="scrollbottom"></div> 
 </body>
 </html>

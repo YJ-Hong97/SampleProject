@@ -2,15 +2,13 @@ package com.sample.myapp.goods;
 
 import java.sql.Date;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
-@AllArgsConstructor
+import lombok.Data;
+
+
+
+@Data
+
 
 public class OrderVo {
 	private String orderId;

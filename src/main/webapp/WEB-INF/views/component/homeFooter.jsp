@@ -6,6 +6,8 @@
 <meta charset="UTF-8">
 </head>
 <style>
+.footerWarp{
+}
 	.firstWrap{
 		width:100%;
 		height:150px;

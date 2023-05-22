@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -79,7 +81,12 @@
 		<li><a href="${pageContext.request.contextPath}/user/goodsList?goodsType=9">Acc</a></li>
 	</ul>
 	<ul class="rightWrap">
-		<li>mypage</li>
+		<c:if test="${user==null }">
+			<li><a href="/auth/login">login</a></li>
+		</c:if>
+		<c:if test="${user!=null }">
+			<li><a href="/auth/mypage">mypage</a></li>
+		</c:if>
 		<li>event</li>
 		<li><a class="cart" href="${pageContext.request.contextPath}/order/shoppingcart?userId=${userId}"></a></li>
 		<li><a class="searchIcon"></a></li>
