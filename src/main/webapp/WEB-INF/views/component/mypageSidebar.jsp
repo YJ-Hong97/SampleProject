@@ -22,8 +22,8 @@
 </style>
 <body>
 <div class="sideWrap">
-	<span><a>주문목록/배송조회</a></span>
-	<span><a>취소/반품/교환/환불내역</a></span>
+	<span><a onclick="fn_shoppingList()">주문목록/배송조회</a></span>
+	<span><a onclick="fn_cancelList()">취소/반품/교환/환불내역</a></span>
 	<span><a>할인 쿠폰</a></span>
 	<span><a>찜한 상품</a></span>
 	<span><a>문의하기/문의내역</a></span>
