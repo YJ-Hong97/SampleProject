@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.sample.myapp.S3Service;
 import com.sample.myapp.goods.OrderListVo;
+import com.sample.myapp.goods.OrderVo;
 
 @Repository
 public class OrderDAO {
@@ -21,4 +22,12 @@ public class OrderDAO {
 		return session.selectList("orderMapper.selectShoppingCart", userId);
 	}
 	
+	/*주문목록 불러오기*/
+	public List<OrderVo> selectOrder(String userId){
+		return session.selectList("orderMapper.selectOrder",userId);
+	}
+
+	public List<OrderListVo> selectOrderList(OrderVo orders) {
+		return session.selectList("orderMapper.selectOrderList",orders);
+	}
 }

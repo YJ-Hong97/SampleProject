@@ -368,4 +368,7 @@
 	
 	where goods_id=#{goodsIndexId}
 </update>
+<select id="selectIdtoIndex" parameterType="java.lang.Integer" resultMap="goodsStep1">
+	select * from goods_index where goods_index_id = (select goods_index_id from goods where goods_id=#{goodsId})
+</select>
 </mapper>

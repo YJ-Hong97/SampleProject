@@ -85,7 +85,7 @@
 			<li><a href="/auth/login">login</a></li>
 		</c:if>
 		<c:if test="${user!=null }">
-			<li>mypage</li>
+			<li><a href="/auth/mypage">mypage</a></li>
 		</c:if>
 		<li>event</li>
 		<li><a class="cart" href="${pageContext.request.contextPath}/order/shoppingcart?userId=${userId}"></a></li>

@@ -2,6 +2,12 @@ package com.sample.myapp.user;
 
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +17,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sample.myapp.goods.GoodsDAO;
+import com.sample.myapp.goods.GoodsStep1;
+import com.sample.myapp.goods.GoodsVo;
+import com.sample.myapp.goods.OrderListVo;
+import com.sample.myapp.goods.OrderVo;
+import com.sample.myapp.order.OrderDAO;
+
 @Controller
 @RequestMapping(value = "/auth")
 public class UserController {
 	@Autowired
 	UserDAO userDAO;
+	@Autowired
+	OrderDAO orderDAO;
+	@Autowired
+	GoodsDAO goodsDAO;
 	/*로그인페이지로 이동*/
 	@RequestMapping("/login")
 	public String login() {
@@ -59,8 +76,24 @@ public class UserController {
 	}
 	/*마이페이지*/
 	@RequestMapping("/mypage")
-	public String mypage(UserVo userVo, Model model) {
+	public String mypage(HttpSession session , Model model) {
+		UserVo userVo = (UserVo) session.getAttribute("user");
 		model.addAttribute("user",userVo);
+		List<OrderVo> orders = orderDAO.selectOrder(userVo.getUserId());
+		model.addAttribute("orders",orders);
+		Map<String, List<OrderListVo>> orderList = new HashMap<>();
+		for(int i = 0;i<orders.size();i++) {
+			orderList.put(orders.get(i).getOrderId(),orderDAO.selectOrderList(orders.get(i)));
+		}
+		List<GoodsStep1> goodsList = new ArrayList<>();
+		for(String key:orderList.keySet()) {
+			int goodsId = orderList.get(key).get(0).getGoodsId();
+			GoodsStep1 goods = goodsDAO.selectIdtoIndex(goodsId);
+			goods.setImageUrls(goods.getDbImages().replaceAll("\\[", "").replaceAll("\\]","").split(","));
+			goodsList.add(goods);
+		}
+		model.addAttribute("goodsList",goodsList);
+		model.addAttribute("orderList",orderList);
 		return "user/mypage";
 	}
 }
