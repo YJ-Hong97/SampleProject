@@ -32,4 +32,13 @@
 <select id="selectOrderList" parameterType="com.sample.myapp.goods.OrderVo" resultMap="order">
 	select * from order_list where order_list_id=#{orderListId}
 </select>
+
+<select id="selectCountByUserId" parameterType="java.lang.String" resultType="java.lang.Integer">
+	select count(*) from order_list right join goods_index on order_list.goods_id = goods_index.goods_index_id WHERE  user_id = #{userId} 
+</select>
+
+<delete id ="deleteShoppingCart" parameterType="java.lang.String">
+	delete from order_list where user_id = #{userId} and goods_id = #{goodsId}
+</delete>
+
 </mapper>

@@ -31,4 +31,5 @@ public class GoodsController {
 		model.addAttribute("goods", index);
 		return "goods/detail";
 	}
+	
 }

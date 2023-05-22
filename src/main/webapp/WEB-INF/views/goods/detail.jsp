@@ -158,7 +158,9 @@
 	}
 </style>
 <body>
+<div style="margin-top: -25px;">
 <%@ include file="/WEB-INF/views/component/everyHeader.jsp" %>
+</div>
 <%@ include file="/WEB-INF/views/component/mySize.jsp" %>
 <div class="detailHead">
 <div class="imageWrap">
