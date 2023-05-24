@@ -1,6 +1,7 @@
 package com.sample.myapp.order;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,11 +52,11 @@ public class OrderController {
 			String detail = null;
 			
 			System.out.print(goodsList.get(i).getGoodsId());
-			if(Integer.parseInt(goodsList.get(i).getGoodsId())>22) {
+			if(goodsList.get(i).getGoodsId()>22) {
 				continue;
 			}
 			
-			goods = goodsDAO.selectGoodsIndex(Integer.parseInt(goodsList.get(i).getGoodsId()));
+			goods = goodsDAO.selectGoodsIndex(goodsList.get(i).getGoodsId());
 			System.out.print(":D>DDD:D "+goods.toString());
 			String[] arr=(((goods.getDbImages().replace("[","")).replace("]","")).split(","));
 			if(arr[0] == null || arr[0].isEmpty() || arr[0].equals("null")) {
@@ -66,7 +67,7 @@ public class OrderController {
 					imageList.add(arr[j]);
 					name= goods.getGoodsName();
 					price=goods.getGoodsPrice();
-					goodsid = Integer.parseInt(goodsList.get(i).getGoodsId());
+					goodsid = goodsList.get(i).getGoodsId();
 					detail = goods.getGoodsDetail();
 				}
 			}

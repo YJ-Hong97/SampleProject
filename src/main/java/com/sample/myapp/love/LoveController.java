@@ -33,5 +33,18 @@ public class LoveController {
 		System.out.println(love.toString());
 		return "success";
 	}
-
+	/*메인페이지에서 찜하기*/
+	@ResponseBody
+	@RequestMapping("/love")
+	public String love(LoveVO love) {
+		loveService.insertLove(love);
+		return "success";
+	}
+	/*메인페이지에서 찜취소*/
+	@ResponseBody
+	@RequestMapping("/notLove")
+	public String notLove(LoveVO love) {
+		loveService.deleteLove(love);
+		return "success";
+	}
 }

@@ -262,4 +262,8 @@ public class GoodsDAO {
 	public String selectColor(String color) {
 		return session.selectOne("goodsMapper.selectColor",color);
 	}
+
+	public GoodsStep1 selectIdtoIndex(int goodsId) {
+		return session.selectOne("goodsMapper.selectIdtoIndex",goodsId);
+	}
 }

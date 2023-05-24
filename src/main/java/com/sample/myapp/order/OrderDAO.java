@@ -29,6 +29,7 @@ public class OrderDAO {
 
 	public List<OrderListVo> selectOrderList(OrderVo orders) {
 		return session.selectList("orderMapper.selectOrderList",orders);
+	}
 	//아이디별 장바구니 상품 개수
 	public int  selectCountByUserId(String userId) {
 		return session.selectOne("orderMapper.selectCountByUserId", userId);
@@ -49,5 +50,9 @@ public class OrderDAO {
 			this.goodsId = goodsId;
 		}
 
+	}
+
+	public OrderVo selectOrdertoId(String orderId) {
+		return session.selectOne("orderMapper.selectOrdertoId",orderId);
 	}
 }

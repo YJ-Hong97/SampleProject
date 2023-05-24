@@ -64,8 +64,8 @@ background:url(/resources/images/monetization_on_FILL0_wght400_GRAD0_opsz48.png)
 h1{
 	font-size:30px;
 	text-align:left;
-	margin-left:25%;
 	margin-top:20px;
+	margin-left:25%;
 }
 .order{
 	width:100%;
@@ -126,10 +126,12 @@ h1{
 <a><span>적립금</span></a>
 </div>
 </div>
-<h1>주문 목록</h1>
+<h1 class="title">주문 목록</h1>
 <div class="orderWrap">
 	<c:forEach items="${orders }" var="order" varStatus="status">
-		<div class="order">
+	<c:choose>
+		<c:when test="${order.orderState==0||order.orderState==7 }">
+		<div class="order order" >
 			<div class="left">
 				<span>
 				<c:choose>
@@ -153,10 +155,10 @@ h1{
 					<c:if test="${list.key.equals(order.orderId) }">
 						<div>
 							<c:if test="${orderList.size()>1 }">
-								${goodsList.get(status.index).goodsName }외 ${list.value.size() }건
+								<a href="/auth/mypage/detail?orderId=${order.orderId }">${goodsList.get(status.index).goodsName }외 ${list.value.size() }건</a>
 							</c:if>
 							<c:if test="${orderList.size()==1 }">
-								${goodsList.get(status.index).goodsName }
+								<a href="/auth/mypage/detail?orderId=${order.orderId }">${goodsList.get(status.index).goodsName }</a>
 							</c:if>
 						</div>
 						<div>
@@ -172,9 +174,69 @@ h1{
 				<button type="button">리뷰 작성하기</button>
 			</div>
 		</div>
+		</c:when>
+		<c:when test="${order.orderState>=1&&order.orderState<=6 }">
+		<div class="order cancel">
+			<div class="left">
+				<span>
+				<c:choose>
+					<c:when test="${order.orderState==0 }">주문</c:when>
+					<c:when test="${order.orderState==1 }">취소 요청</c:when>
+					<c:when test="${order.orderState==2 }">교환 요청</c:when>
+					<c:when test="${order.orderState==3 }">환불 요청</c:when>
+					<c:when test="${order.orderState==4 }">취소 완료</c:when>
+					<c:when test="${order.orderState==5 }">교환 완료</c:when>
+					<c:when test="${order.orderState==6 }">환불 완료</c:when>
+					<c:when test="${order.orderState==7 }">구매 확정</c:when>
+				</c:choose>
+				<div>
+					<img src="${goodsList.get(status.index).imageUrls[0] }" class="thumbnail">
+				</div>
+				
+				</span>
+			</div>
+			<div class="center">
+				<c:forEach items="${orderList }" var="list">
+					<c:if test="${list.key.equals(order.orderId) }">
+						<div>
+							<c:if test="${orderList.size()>1 }">
+								<a href="/auth/mypage/detail?orderId=${order.orderId }">${goodsList.get(status.index).goodsName }외 ${list.value.size() }건</a>
+							</c:if>
+							<c:if test="${orderList.size()==1 }">
+								<a href="/auth/mypage/detail?orderId=${order.orderId }">${goodsList.get(status.index).goodsName }</a>
+							</c:if>
+						</div>
+						<div>
+							${order.price }원
+						</div>
+					</c:if>
+				</c:forEach>
+			
+			</div>
+			<div class="right">
+				<button type="button">배송조회</button>
+				<button type="button">주문 환불 조회</button>
+				<button type="button">리뷰 작성하기</button>
+			</div>
+		</div>
+	</c:when>
+	</c:choose>
 	</c:forEach>
 </div>
 </div>
 <%@ include file="/WEB-INF/views/component/homeFooter.jsp" %>
+<script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
+<script>
+		
+	function fn_shoppingList(){
+		$(".order").css("display","flex");
+		$(".cancel").css("display","none");
+	}
+	function fn_cancelList(){
+		$(".order").css("display","none");
+		$(".cancel").css("display","flex");
+	}
+	
+</script>
 </body>
 </html>

@@ -22,4 +22,8 @@ public class LoveService {
 	public List<LoveVO> selectLoveUser(String userid) {
 		return loveDAO.selectLoveUser(userid);
 	}
+
+	public void deleteLove(LoveVO love) {
+		loveDAO.deleteLove(love);
+	}
 }
