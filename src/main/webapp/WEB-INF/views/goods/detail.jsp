@@ -156,6 +156,9 @@
 		width:40px;
 		display:inline-block;
 	}
+	.hidden{
+		display:none;
+	}
 </style>
 <body>
 <div style="margin-top: -25px;">
@@ -225,15 +228,26 @@
 		<div class="buttonBox">
 			<button>BUY IT NOW</button>
 			<button>장바구니 추가</button>
-			<button>위시리스트 추가</button>
+			<button type="button" onclick="fn_clickWish()">위시리스트 추가</button>
 		</div>
 	</div>
 </div>
 </div>
 <%@ include file="/WEB-INF/views/component/homeFooter.jsp" %>
-<script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script th:inline="javascript">
 var goodsName = `${goods.goodsName}`;
+var indexId = `${goods.goodsIndexId}`;
+var userId = `${user.userId}`;
+var goodsList = [];
+<c:forEach items="${goodsList}" var="goods">
+	let goods = {
+			goodsId:`${goods.goodsId}`,
+			goodsColor:`${goods.goodsColor}`,
+			goodsSize:`${goods.goodsSize}`,
+	}
+	goodsList.push(goods)
+</c:forEach>
 <c:set var="images" value="${fn:split(goods.dbImages, ',')}"/>
 var last = [[${fn:length(images)}]]-1;
 var index = 0;
@@ -298,6 +312,11 @@ function fn_clickSize(inputsize,event){
 			+"<p>"+colorName+"/"+sizeName+"<input type='number' value='1' min='1' onchange='fn_changePrice(`"+attrName+"`,event)'></p>";
 			div.innerHTML = input;
 			$(".selectBox").prepend(div);
+			
+			/*위시리스트 추가*/
+			let goods = fn_createGoods(colorName,sizeName);
+			div.append(goods);
+			
 			colorAndSize[attrName]=1;
 			fn_totalPrice();
 		}
@@ -330,7 +349,9 @@ function fn_clickColor(inputcolor,event){
 			$(".selectBox").prepend(div);
 			colorAndSize[attrName]=1;
 			fn_totalPrice();
-			
+			/*위시리스트 추가*/
+			let goods = fn_createGoods(colorName,sizeName);
+			div.append(goods);
 		}
 		size = false;
 		color = false;
@@ -388,6 +409,39 @@ $(".closeSize").click(function(){
 	
 	$(".bodyWrap").css("display","none");
 });
+function fn_createGoods(colorName,sizeName){
+	
+	let goods = document.createElement("input");
+	goods.setAttribute("type","text");
+	goods.setAttribute("name","goods_id");
+	goods.classList.add("hidden");
+	
+	for(let i = 0;i<goodsList.length;i++){
+		if(goodsList[i].goodsColor==colorName&&goodsList[i].goodsSize==sizeName){
+			goods.setAttribute("value",goodsList[i].goodsId);
+		}
+	}
+	return goods;
+}
+function fn_clickWish(){
+	if(userId==""||userId=="null"){
+		alert("로그인해 주세요.");
+		return;
+	}else{
+		$(".inputGoods").each(function(i,el){
+			let goodsId = $(el).children().eq(2).val();
+			let goodsIndexId = indexId;
+			$.ajax({
+				url:"/user/love?user_id="+userId+"&goods_id="+goodsId+"&goods_index_id="+goodsIndexId,
+				type:"get",
+				success:function(){
+					alert("찜목록에 추가되었습니다.")
+				}
+			})
+		})
+	}
+	
+}
 </script>
 </body>
 </html>
