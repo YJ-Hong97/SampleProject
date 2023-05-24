@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.sample.myapp.goods.GoodsDAO;
 import com.sample.myapp.goods.GoodsStep1;
 import com.sample.myapp.goods.GoodsVo;
+import com.sample.myapp.love.LoveDAO;
+import com.sample.myapp.love.LoveVO;
 import com.sample.myapp.user.UserDAO;
 import com.sample.myapp.user.UserVo;
 
@@ -33,6 +35,8 @@ public class HomeController {
 	private GoodsDAO goodsDAO;
 	@Autowired
 	UserDAO userDAO;
+	@Autowired
+	LoveDAO loveDAO;
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
@@ -65,7 +69,9 @@ public class HomeController {
 		/*
 		 UserVo user = (UserVo)session.getAttribute("user"); 
 		 */
+		List<LoveVO> loveList = loveDAO.selectLoveUser(user.getUserId());
 		
+		model.addAttribute("loveList",loveList);
 		model.addAttribute("user",user);
 		model.addAttribute("goodsList", goodsList);
 		model.addAttribute("adsList", adsList);

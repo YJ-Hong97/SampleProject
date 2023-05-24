@@ -23,4 +23,8 @@ public class LoveDAO {
 		return session.selectList("loveMapper.selectLoveUser", userid);
 	}
 
+	public void deleteLove(LoveVO love) {
+		session.delete("loveMapper.deleteLove",love);
+	}
+
 }

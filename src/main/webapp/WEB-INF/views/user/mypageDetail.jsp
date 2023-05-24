@@ -74,7 +74,46 @@ h1{
 <div class="mypageWrap"id="wrapper">
 <h1>주문 상세</h1>
 	<c:if test="${order.delivery==0}">
-		<c:forEach items="${orderList }" var="ol" varStatus="status">
+	<c:forEach items="${orderList }" var="ol" varStatus="status">
+			<div class="order">
+				<div class="left">
+					<div>
+						<c:if test="${ol.cancel==1 }">
+							취소 신청
+						</c:if>
+							<c:if test="${ol.cancel==1 }">
+							취소 완료
+						</c:if>
+							<c:if test="${ol.cancel==1 }">
+							취소 불가
+						</c:if>
+					</div>
+					<div>
+						<img src="${goodsIndexList.get(status.index).imageUrls[0] }" class="thumbnail">
+					</div>
+				</div>
+				<div class="center">
+					<div>${goodsIndexList.get(status.index).goodsName }</div>
+					<div>${goodsList.get(status.index).goodsSize }/${goodsList.get(status.index).goodsColor }</div>
+					<div>
+						<c:if test="${goodsIndexList.get(status.index).goodsSale>0 }">
+							<span class="cancelLine">${goodsIndexList.get(status.index).goodsPrice }</span>${goodsIndexList.get(status.index).goodsPrice -(goodsIndexList.get(status.index).goodsPrice *(goodsIndexList.get(status.index).goodsSale/100)) }원
+						</c:if>
+						<c:if test="${goodsIndexList.get(status.index).goodsPrice ==0 }">
+							${goodsIndexList.get(status.index).goodsPrice  }원
+						</c:if>
+					</div>
+				</div>
+				<div class="right">
+				<button type="button">배송조회</button>
+				<button type="button">주문 환불 조회</button>
+				<button type="button">리뷰 작성하기</button>
+				</div>
+			</div>
+		</c:forEach>
+	</c:if>
+	<c:if test="${order.delivery>0 }">
+	<c:forEach items="${orderList }" var="ol" varStatus="status">
 			<div class="order">
 				<div class="left">
 					<div>
@@ -126,9 +165,6 @@ h1{
 				</div>
 			</div>
 		</c:forEach>
-	</c:if>
-	<c:if test="${order.delivery>0 }">
-	
 	</c:if>
 </div>
 <%@ include file="/WEB-INF/views/component/homeFooter.jsp" %>

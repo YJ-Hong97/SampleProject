@@ -178,7 +178,7 @@
 				<c:forEach items="${goods.imageUrls}" var="image">
 					<a href="${pageContext.request.contextPath}/goods/detail?goodsId=${goods.goodsIndexId }"><img src="${image }" class="goodsImage"></a>
 				</c:forEach>
-				<button value="${goods.goodsIndexId }" class="heart" onclick="clickHeart(event)"></button>
+				<button value="${goods.goodsIndexId }" class="heart" onclick="clickHeart(event,`${goods.goodsIndexId}`,`${user.userId }`)"></button>
 
 				<ul class="goodsColors">
 				<c:forEach items="${goods.goodsColor }" var="color">
@@ -211,7 +211,7 @@
 </div>
 <%@ include file="/WEB-INF/views/component/up_down_support.jsp" %>
 <%@ include file="/WEB-INF/views/component/homeFooter.jsp" %>
-<script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script th:inline="javascript">
 	var last = [[${adsList.size()}]]-1;
 	var index = 1;
@@ -318,16 +318,53 @@
 		}
 		
 	}
-	function clickHeart(event){
+	function clickHeart(event,goodsIndexId,userId){
 		if(event.target.className == "heart"){
-			event.target.classList.remove("heart");
-			event.target.classList.add("redheart");
+			
+			if(userId==""||userId=="null"){
+				alert("로그인을 해주세요.");
+				return;
+			}else{
+				$.ajax({
+					url:"/user/love?user_id="+userId+"&goods_index_id="+goodsIndexId,
+					type:"post",
+					success:function(response){
+						if(response=="success"){
+							event.target.classList.remove("heart");
+							event.target.classList.add("redheart");
+						}
+					}
+				})
+			}
+			
 		}else{
-			event.target.classList.remove("redheart");
-			event.target.classList.add("heart");
+			
+			if(userId==""||userId=="null"){
+				alert("로그인을 해주세요.");
+				return;
+			}else{
+				$.ajax({
+					url:"/user/notLove?user_id="+userId+"&goods_index_id="+goodsIndexId,
+					type:"post",
+					success:function(response){
+						if(response=="success"){
+							event.target.classList.remove("redheart");
+							event.target.classList.add("heart");
+						}
+					}
+				})
+			}
 			
 		}
 	}
+	<c:forEach items="${loveList}" var="love">
+		$(".heart").each(function(i,el){
+			if(`${love.goods_index_id}`==el.value){
+				el.classList.remove("heart");
+				el.classList.add("redheart");
+			}
+		})
+	</c:forEach>
 </script>
 <div id="scrollbottom"></div> 
 </body>

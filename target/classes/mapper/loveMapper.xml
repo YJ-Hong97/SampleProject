@@ -5,20 +5,26 @@
 	<result column="love_id" property="love_id"/>
 	<result column="user_id" property="user_id"/>
 	<result column="goods_id" property="goods_id"/>
+	<result column="goods_index_id" property="goods_index_id"/>
 </resultMap>
 <insert id="loveInsert" parameterType="com.sample.myapp.love.LoveVO">
-	insert into love_it(
-		love_id,
-		user_id,
-		goods_id
-	)values(
-		#{love_id},
+	insert into love_it
+	values(
+		(select ifnull(max(a.love_id)+1,0) from love_it a),
 		#{user_id},
-		#{goods_id}
+		#{goods_id},
+		#{goods_index_id}
 	)
 </insert>
 
 <select id="selectLoveUser" parameterType="String" resultMap="love">
 	select * from love_it where user_id = #{userId} 
 </select>
+<delete id="deleteLove" parameterType="com.sample.myapp.love.LoveVO">
+	delete from love_it where love_id = (
+		select a.love_id from love_it a 
+		where user_id = #{user_id} and (goods_id=#{goods_id} or goods_index_id = #{goods_index_id})
+		
+	)
+</delete>
 </mapper>

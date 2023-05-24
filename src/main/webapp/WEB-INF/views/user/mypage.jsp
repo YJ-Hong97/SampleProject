@@ -236,6 +236,7 @@ h1{
 		$(".order").css("display","none");
 		$(".cancel").css("display","flex");
 	}
+	
 </script>
 </body>
 </html>

@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sample.myapp.coupon.CouponDao;
+import com.sample.myapp.coupon.CouponList;
+import com.sample.myapp.coupon.CouponVo;
 import com.sample.myapp.goods.GoodsDAO;
 import com.sample.myapp.goods.GoodsStep1;
 import com.sample.myapp.goods.GoodsVo;
@@ -33,6 +35,8 @@ public class UserController {
 	OrderDAO orderDAO;
 	@Autowired
 	GoodsDAO goodsDAO;
+	@Autowired
+	CouponDao couponDao;
 	/*로그인페이지로 이동*/
 	@RequestMapping("/login")
 	public String login() {
@@ -116,6 +120,21 @@ public class UserController {
 		model.addAttribute("goodsIndexList",goodsIndexList);
 		model.addAttribute("order",order);
 		model.addAttribute("orderList",orderList);
-;		return "user/mypageDetail";
+		return "user/mypageDetail";
+	}
+	/*마이페이지 쿠폰리스트로 이동*/
+	@RequestMapping("/mypage/couponList")
+	public String mypageCoupon(Model model,HttpSession session) {
+		
+		UserVo user = (UserVo)session.getAttribute("user");
+		List<CouponList> coupons = couponDao.selectCouponList(user.getUserId());
+		int couponSize = coupons.size();
+		List<CouponVo> couponList = new ArrayList<>();
+		for(int i = 0;i<couponSize;i++) {
+			couponList.add(couponDao.selectCoupon(coupons.get(i).getCouponId()));
+		}
+		model.addAttribute("couponSize",couponSize);
+		model.addAttribute("couponList",couponList);
+		return "user/mypageCoupon";
 	}
 }
