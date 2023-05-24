@@ -202,13 +202,13 @@
 		</div>	
 		<div class="main"> 
 			<div >
-				<button class="wide">국내배송상품(1)</button>
+				<button class="wide">국내배송상품(${count})</button>
 				<button class="wide">해외배송상품(0)</button>
 			</div>
 		</div>	
 		<div class="main"> 
 			<div class="left"> 
-			 일반상품(1)
+			 일반상품(${count})
 			</div>
 			<div class="right"> 
 			 
@@ -234,22 +234,23 @@
 		<hr>
 		</div>
 		
+		<c:forEach items="${mainImage}" var="list" varStatus="i">
 		<div class="main height"> 
 			<label style="width: 100px;"><input type="checkbox" name="color" value="blue"></label>
-			<a href="detail?goodsId=${list.goodsId}" class="product">
-               <img src="https://sampleprojectbucket.s3.ap-northeast-2.amazonaws.com/bottom/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202023-03-20%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%202.16.09.png" style="width:150px; height:200px; margin:10px;" alt="" class="lb-image">
+			<a href="${pageContext.request.contextPath}/user/detail?goodsId=${list.goodsId}" class="product">
+               <img src=${fn:replace(fn:replace(list.ImageList[0], '[', ''), ']', '')}  style="width:150px; height:180px; margin:10px;" alt="" class="lb-image">
       		<div style="width: 400px;">
-      		<a >리코 부클 꽈배기 크롭 가디건 (5 color)</a>
-      		<a >리코 부클 꽈배기 크롭 가디건 (5 color)</a>
+      		<a >${list.detail}</a>
+      		<a >${list.detail}</a>
       		<a >리코 부클 꽈배기 크롭 가디건 (5 color)</a>
       		</div>
       		
       		<div style="width: 100px;">
-      		14,400원
+      		${list.goodsList.price/list.goodsList.goodsCount}원
       		</div>
       		
       		<div style="width: 100px;">
-      		1
+      		${list.goodsList.goodsCount}
       		</div>
       		
       		<div style="width: 100px;">
@@ -265,15 +266,20 @@
       		</div>
       		
       		<div style="width: 100px;">
-      		14,400원
+      		${list.goodsList.price+2500}원
       		</div>
       		
       		<div style="width:110px;">
       			<button class="d">주문하기</button>
 				<button class="d">관심상품등록</button>
-				<button class="d">삭제</button>
+				<form>
+				<input type="button" id="submit" value="삭제"> 
+				<input type="hidden" id="goodsId" value="${list.goodsId}" class="user"> 
+				</form>
       		</div>
+      		
 		</div>
+		</c:forEach> 
 		
 		<div class="main"> 
 		<hr>
@@ -295,7 +301,7 @@
 		<div class="main"> 
 			<div class="left"> 
 				선택상품을 
-				<button class="d">삭제</button>
+				<input type="button" id="submit" value="삭제"> 
 				<button class="d">해외배송상품 장바구니로 이동</button>
 			</div>
 			
@@ -334,7 +340,7 @@
 		<div class="main order"> 
 			<button class="iamportinit" type="button">전체상품주문</button>
 			<button class="iamportinit" type="button">선택상품주문</button>
-			<button>쇼핑계속하기</button>
+			<button onclick="goHistory()">쇼핑계속하기</button>
 		</div>
 		
 		<div class="main order" style=""> 
@@ -388,7 +394,36 @@
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <!-- 아래 제이쿼리는 1.0이상이면 원하는 버전을 사용하셔도 무방합니다. -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script th:inline="javascript">
+
+<!--var userId = '<%=(String)session.getAttribute("userId")%>';-->
+var userId = 'hyj1077';
+
+$(document).ready(function(){
+	$('#submit').click(function(){   //submit 버튼을 클릭하였을 때
+		var sendData = $("#goodsId").val();   //폼의 이름 값을 변수 안에 담아줌
+		$.ajax({
+			url : "deleteShoppingCart",
+			type : "post",
+			data : {
+				goodsId : sendData,
+				userId : "hyj1077",
+			},
+			success: function (data) {
+		        let url = `shoppingcart?userId=`+userId;
+		        console.log(url);
+		        location.replace(url);
+		    },
+		    error: function () {
+		        alert("취소 실패");
+		        
+		    }
+		})
+	});
+});
+
+
 
 var finalprice = document.getElementById('finalprice').value
 //문서가 준비되면 제일 먼저 실행
@@ -517,6 +552,14 @@ IMP.request_pay({
         alert(msg);
     }
 });
+}
+
+var referrer = document.referrer;
+
+function goHistory() {
+  		
+  			window.location.href = referrer;
+  		
 }
 </script>
 <div id="scrollbottom"></div>

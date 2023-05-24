@@ -122,7 +122,7 @@
 	.product{
 	    display: block;
 	    width: 300px;
-	    text-align: center;
+	    text-align: left;
 	    text-decoration:none;
 	    color: black;
 	    float:left;
@@ -131,10 +131,6 @@
 	    margin-bottom: 30px;
 	}
 	
-	.product-name{
-	    margin-top: 20px;
-	    margin-bottom: 4px;
-	}
 	
 	.clearfix{
 	    clear: both;
@@ -163,6 +159,28 @@
  		width:calc(100vw * (45 / 1920));
  		height: calc(100vw * (45 / 1920));
  	}
+ 	.goodsColors{
+		width:262px;
+		font-size: 15px;
+    	color: #787878;
+    	text-align:left;
+	}
+	.goodsColors li{
+		display:inline-block;
+		width:20px;
+		height:10px;
+		margin-left:1px;
+	}
+	.special{
+		margin-top:5px;
+		width:262px;
+		text-align:left;
+	}
+	.best{
+		color:gray;
+		font-size:16px;
+		border:1px solid gray;
+	}
 </style>
 <body>
     <header><%@ include file="/WEB-INF/views/component/everyHeader.jsp" %></header>
@@ -197,7 +215,7 @@
   		</div>
   		<div class="product-list">
    		<c:forEach items="${mainImage}" var="list" varStatus="i">
-   			<div>
+   			<div class="product">
 
 
    			 <div class="right_area">
@@ -206,14 +224,25 @@
  				  </a>
  			</div>
    			   <a href="detail?goodsId=${list.goodsId}" class="product">
-               <img src=${fn:replace(fn:replace(list.ImageList[0], '[', ''), ']', '')}  style="width:300px; height:400px; margin:10px;" alt="" class="lb-image">
-      					
+               <img src=${fn:replace(fn:replace(list.ImageList[0], '[', ''), ']', '')}  style="width:300px; height:400px;" alt="" class="lb-image">
+      			<ul class="goodsColors">
+				<c:forEach items="${list.colors }" var="color">
+					<li style="background-color:${color};"></li>
+				</c:forEach>
+				</ul>		
 				<div class="product-name">
          	           ${list.goodsName}
                 </div>
                 <div class="product-price">
                     ${list.goodsPrice}원
                 </div>
+                
+                <p class="special">
+					<c:if test="${list.goodsBest !=0}">
+						<span class="best">BEST</span>
+					</c:if>
+					
+				</p>
                  </a>
             </div>
 			

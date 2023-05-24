@@ -185,7 +185,7 @@
 					<li style="background-color:${color};"></li>
 				</c:forEach>
 				</ul>
-				<a href="/goods/detail?goodsId=${goods.goodsIndexId }"><p class="goodsName">${goods.goodsName }</p></a>
+				<a href="${pageContext.request.contextPath}/goods/detail?goodsId=${goods.goodsIndexId }"><p class="goodsName">${goods.goodsName }</p></a>
 
 				<p class="goodsPrice">
 					<c:if test ="${goods.goodsSale!=0 }">
