@@ -1,0 +1,21 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+	<div class="couponlistWrap  mypageCompo">
+		<h1>보유 쿠폰 ${couponSize }</h1>
+		<c:forEach items="${couponList }" var="coupon">
+			<div class="couponWrap">
+				<c:if test="${coupon.discountRate!=0 }">
+					<div class="title">${coupon.discountRate }%</div>
+				</c:if>
+				<c:if test="${coupon.discountAmount!=0 }">
+					<div class="title">${coupon.discountAmount }원</div>
+				</c:if>
+				<div class="title">${coupon.couponName }</div>
+				<div class="condition">
+				<span>${coupon.boundary }원 이상 구매시 사용가능</span><br>
+				<span>${coupon.dday }까지</span>
+				</div>
+			</div>
+		</c:forEach>
+	</div>
+	

@@ -1,0 +1,22 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<div class="loveListWrap  mypageCompo">
+		<h1>찜한 상품</h1>
+		<c:forEach items="${loveList }" var="love">
+			<div class="loveWrap">
+				<div class="left">
+					<img src="${love.index.imageUrls[0]}">
+				</div>
+				<div class="center">
+					<div>${love.index.goodsName}</div>
+					<c:if test="${love.goods!=null}">
+						<div>${love.goods.goodsColor}/${love.goods.goodsSize}</div>
+					</c:if>
+				</div>
+				<div class="right">
+					<button type="button">구매하기</button>
+					<button type="button">장바구니</button>
+				</div>
+			</div>
+		</c:forEach>
+</div>

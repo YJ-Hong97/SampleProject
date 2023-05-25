@@ -65,7 +65,6 @@ h1{
 	font-size:30px;
 	text-align:left;
 	margin-top:20px;
-	margin-left:25%;
 }
 .order{
 	width:100%;
@@ -106,11 +105,54 @@ h1{
 	width:96px;
 	height:96px;
 }
-
+.loveListWrap{
+width:50%;
+	margin:0 auto;
+	text-align:left;
+	display:none;
+}
+.loveWrap{
+width:100%;
+	height:151px;
+	display:flex;
+	flex-direction:row;
+	background:white;
+	margin-top:20px;
+}
+.couponlistWrap{
+	width:50%;
+	margin:0 auto;
+	text-align:left;
+	display:none;
+}
+.couponlistWrap h1{
+	font-size:30px;
+	margin: 20px 0 20px 0;
+}
+.couponWrap{
+	width:100%-20px;
+	height:111px;
+	background:white;
+	margin-top:20px;
+	padding:20px;
+}
+.couponWrap .title{
+	font-style:bold;
+	font-size:20px;
+}
+.couponWrap .condition{
+	font-size:15px;
+	margin-top:10px;
+	color:gray;
+}
+.loveListWrap img{
+	width:97px;
+	height:97px;
+}
 </style>
 <body>
 <%@ include file="/WEB-INF/views/component/homeHeader.jsp" %>
-<div class="mypageWrap">
+<div class="mypageWrap" id="wrapper">
 <%@ include file="/WEB-INF/views/component/mypageSidebar.jsp" %>
 <div class="menuWrap">
 <div class="deliveryImg">
@@ -126,12 +168,12 @@ h1{
 <a><span>적립금</span></a>
 </div>
 </div>
-<h1 class="title">주문 목록</h1>
 <div class="orderWrap">
+	<h1 class="title">주문 목록</h1>
 	<c:forEach items="${orders }" var="order" varStatus="status">
 	<c:choose>
 		<c:when test="${order.orderState==0||order.orderState==7 }">
-		<div class="order order" >
+		<div class="order shop mypageCompo" >
 			<div class="left">
 				<span>
 				<c:choose>
@@ -176,7 +218,7 @@ h1{
 		</div>
 		</c:when>
 		<c:when test="${order.orderState>=1&&order.orderState<=6 }">
-		<div class="order cancel">
+		<div class="order cancel mypageCompo">
 			<div class="left">
 				<span>
 				<c:choose>
@@ -223,20 +265,42 @@ h1{
 	</c:choose>
 	</c:forEach>
 </div>
+	
+<%@ include file="/WEB-INF/views/user/mypageCoupone.html" %>
+<%@ include file="/WEB-INF/views/user/mypageLove.html" %>
 </div>
 <%@ include file="/WEB-INF/views/component/homeFooter.jsp" %>
 <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js" integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
 <script>
 		
 	function fn_shoppingList(){
-		$(".order").css("display","flex");
-		$(".cancel").css("display","none");
+		$(".mypageCompo").each(function(i,el){
+			$(el).css("display","none");
+		});
+		$(".orderWrap").css("display","block");
+		$(".shop").css("display","flex");
 	}
 	function fn_cancelList(){
-		$(".order").css("display","none");
+		$(".mypageCompo").each(function(i,el){
+			$(el).css("display","none");
+		});
+		$(".orderWrap").css("display","block");
 		$(".cancel").css("display","flex");
 	}
-	
+	function fn_couponList(){
+		$(".mypageCompo").each(function(i,el){
+			$(el).css("display","none");
+		});
+		$(".orderWrap").css("display","none");
+		$(".couponlistWrap").css("display","block");
+	}
+	function fn_loveList(){
+		$(".mypageCompo").each(function(i,el){
+			$(el).css("display","none");
+		});
+		$(".orderWrap").css("display","none");
+		$(".loveListWrap").css("display","block");
+	}
 </script>
 </body>
 </html>

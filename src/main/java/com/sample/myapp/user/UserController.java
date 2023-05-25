@@ -24,6 +24,8 @@ import com.sample.myapp.goods.GoodsStep1;
 import com.sample.myapp.goods.GoodsVo;
 import com.sample.myapp.goods.OrderListVo;
 import com.sample.myapp.goods.OrderVo;
+import com.sample.myapp.love.LoveDAO;
+import com.sample.myapp.love.LoveVO;
 import com.sample.myapp.order.OrderDAO;
 
 @Controller
@@ -37,6 +39,8 @@ public class UserController {
 	GoodsDAO goodsDAO;
 	@Autowired
 	CouponDao couponDao;
+	@Autowired
+	LoveDAO loveDAO;
 	/*로그인페이지로 이동*/
 	@RequestMapping("/login")
 	public String login() {
@@ -98,6 +102,35 @@ public class UserController {
 		}
 		model.addAttribute("goodsList",goodsList);
 		model.addAttribute("orderList",orderList);
+		
+		/*쿠폰 리스트*/
+		List<CouponList> coupons = couponDao.selectCouponList(userVo.getUserId());
+		int couponSize = coupons.size();
+		List<CouponVo> couponList = new ArrayList<>();
+		for(int i = 0;i<couponSize;i++) {
+			couponList.add(couponDao.selectCoupon(coupons.get(i).getCouponId()));
+		}
+		model.addAttribute("couponSize",couponSize);
+		model.addAttribute("couponList",couponList);
+		
+		/*찜목록 리스트*/
+		List<LoveVO> loveList = loveDAO.selectLoveUser(userVo.getUserId());
+		for(int i =0;i<loveList.size();i++) {
+			GoodsVo goods = null;
+			if(loveList.get(i).getGoods_id()!=null) {
+				goods = goodsDAO.selectGoods(loveList.get(i).getGoods_id());;
+			}
+			GoodsStep1 index  = null;
+			if(loveList.get(i).getGoods_index_id()!=null) {
+				index= goodsDAO.selectGoodsIndex(loveList.get(i).getGoods_index_id());
+			}else {
+				index = goodsDAO.selectIdtoIndex(loveList.get(i).getGoods_id());
+			}
+			index.setImageUrls(index.getDbImages().replaceAll("\\[","").replaceAll("\\]","").split(","));
+			loveList.get(i).setGoods(goods);
+			loveList.get(i).setIndex(index);
+		}
+		model.addAttribute("loveList",loveList);
 		return "user/mypage";
 	}
 	/*마이페이지 주문 상세보기*/
@@ -122,19 +155,5 @@ public class UserController {
 		model.addAttribute("orderList",orderList);
 		return "user/mypageDetail";
 	}
-	/*마이페이지 쿠폰리스트로 이동*/
-	@RequestMapping("/mypage/couponList")
-	public String mypageCoupon(Model model,HttpSession session) {
-		
-		UserVo user = (UserVo)session.getAttribute("user");
-		List<CouponList> coupons = couponDao.selectCouponList(user.getUserId());
-		int couponSize = coupons.size();
-		List<CouponVo> couponList = new ArrayList<>();
-		for(int i = 0;i<couponSize;i++) {
-			couponList.add(couponDao.selectCoupon(coupons.get(i).getCouponId()));
-		}
-		model.addAttribute("couponSize",couponSize);
-		model.addAttribute("couponList",couponList);
-		return "user/mypageCoupon";
-	}
+	
 }
