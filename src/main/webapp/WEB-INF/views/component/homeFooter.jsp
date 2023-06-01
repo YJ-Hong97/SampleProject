@@ -14,7 +14,6 @@
 		display:flex;
 	}
 	.secondWrap{
-		width:100%;
 		height:15px;
 		background: #D9D9D9;
 		margin-top:1px;

@@ -23,6 +23,7 @@
 	<result column="goods_html" property="goodsHTML"/>
 	<result column="goods_color" property="dbGoodsColor"/>
 	<result column="goods_size" property="dbGoodsSize"/>
+		<result column="star" property="star"/>
 </resultMap>
 <resultMap id="emoji" type="com.sample.myapp.goods.EmojiVo">
 	<result column="emojis_code" property="emojis_code"/>
@@ -189,7 +190,8 @@
  </select>
 
  <delete id="deleteGoods" parameterType="java.lang.Integer">
- 	delete from goods where goods_id = #{goodsId}
+ 	delete from goods where goods_index_id =#{goodsIndexId};
+ 	delete from goods_index where goods_index_id = #{goodsIndexId};
  </delete>
 
 

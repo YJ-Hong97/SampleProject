@@ -127,7 +127,7 @@
 		font-style:bold;
 		background:#f7f7f7;
 	}
-	div{
+	.mySizeWrap div{
 		margin-top:25px;
 	}
 </style>

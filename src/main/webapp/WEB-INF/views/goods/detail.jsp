@@ -11,8 +11,6 @@
 </head>
 <style>
 	body, html{
-		width:100%;
-		height:100%;
 		margin:0;
 		position:relative;
 	}
@@ -21,7 +19,7 @@
 		heigth:579px;
 		display:flex;
 		flex-direction:row;
-		margin-top:62px;
+		margin-top:20px;
 	}
 	.imageWrap{
 		width:361px;
@@ -107,20 +105,27 @@
 		border:0.1px solid black;
 	}
 	#mySize{
-		width: 271px;
+		width: 100%;
 		height: 39px;
 		background: #D9D9D9;
 		border:0;
 		margin:10px 0;
 	}
+	.buttonBox{
+		width:100%;
+		display:flex;
+		flex-direction:row;
+		justify-content:space-between;
+		gap:10px;
+	}
 	.buttonBox button{
 		font-style: normal;
 		font-weight: 400;
-		width: 111px;
 		height: 33px;
 		font-size: 12px;
 		background: #D9D9D9;
 		border:0;
+		flex-grow:0.9;
 	}
 	.invisible{
 		visibility:hidden;
@@ -156,14 +161,255 @@
 		width:40px;
 		display:inline-block;
 	}
+	
+	.detailTail{
+		width:100%;
+	}
+	.detailTail .tailHead{
+		text-align:center;
+	}
+	.menu{
+		position:relative;
+		cursor:pointer;
+	}
+	.menu:nth-child(n+2){
+		margin-left:20px;
+	}
+	.circle{
+		display:inline-block;
+		width:15px;
+		height:15px;
+		border-radius:50%;
+		position:absolute;
+		left:-5px;
+		top:-5px;
+		background:#ABCA9D;		
+		z-index:-1;
+	}
 	.hidden{
 		display:none;
 	}
+
+		.detailLine{
+		width:80%;
+	}
+	
+	.compo .reviewWrap{
+		width:80%;
+		margin:0 auto;
+		display:flex;
+		flex-direction:row;
+	}
+	.reviewWrap .left{
+		padding:42px;
+		width:159px;
+	}
+	.reviewWrap .center{
+		padding:42px;
+		width:500px;
+		text-align:center;
+		margin:0 atuo;
+	}
+.starWrap{
+	width:115px;
+	height:21px;
+	position:relative;
+	overflow:hidden;
+}
+.fiveStar{
+position:absolute;
+	top:5px;
+	left:-50px;
+	width:115px;
+}
+.fourStar{
+	position:absolute;
+	top:-23px;
+	left:-13px;
+	width:115px;
+	
+}
+.threeStar{
+	position:absolute;
+	top:-40px;
+	width:115px;
+}
+.twoStar{
+	position:absolute;
+	top:-60px;
+	width:115px;
+	
+}
+.oneStar{
+	position:absolute;
+	top:-80px;
+	width:115px;
+	
+}
+.zeroStar{
+	position:absolute;
+	top:-100px;
+	width:115px;	
+}
+.big{
+	font-size:30px;
+}
+.gray{
+	color:#D9D9D9;
+}
+.small{
+	font-size:15px;
+}
+.stickWrap{
+	width:30px;
+	height:100%;
+	margin:0 auto;
+	text-align:center;
+	display:inline-block;
+}
+.stick{
+	width:10px;
+	height:55px;
+	background:#EAEAEA;
+	border-radius:2.5px;
+	margin: 0 auto;
+	cursor:pointer;
+}
+.stick svg{
+	width:100%;
+	height:55px;
+	position:relative;
+}
+.stick svg rect{
+	position:absolute;
+	z-index:5;
+	border-radius:2.5px;
+}
+.countBox{
+	width:23px;
+	height:15px;
+	border-radius:1px;
+	background:red;
+	font-size:10px;
+	line-height:15px;
+	color:white;
+}
+.right{
+	width:100%;
+}
+.reviewBox{
+	width:100%;
+	height:34px;
+	line-height:34px;
+	border-radius:5px;
+	border: 3px solid #DEDEDE;
+	display:flex;
+	flex-direction:row;
+}
+.reviewBox span{
+	width:120px;
+}
+.reviewBox span:nth-child(1){
+	color:#8B8B8B;
+	width:50px;
+}
+.reviewBox span:nth-child(2){
+	flex-grow:2;
+}
+.blueStick{
+	width:100%;
+	height:10px;
+	border-radius:2.5px;
+	background:#D9D9D9;
+}
+.reviewList{
+	width:80%;
+	margin:0 auto 100px auto;
+}
+.reviewCount{
+	text-align:right;
+}
+.reviewCount span:nth-child(n+2){
+	border-left:1px solid #8B8B8B;
+}
+.reviewCount span{
+	padding: 0 5px 0 5px;
+	color:#8B8B8B;
+}
+.photo{
+	width:110px;
+	height:110px;
+	margin:0 5px 0 5px;
+}
+.shiftLeft, .shiftRight{
+	width:25px;
+	height:110px;
+}
+.photos{
+	display:inline-block;
+	width:1100px;
+	height:110px;
+	overflow:hidden;
+}
+.photos span{
+	display:flex;
+	flex-direction:row;
+	justify-contents:space-around;
+}
+.photoWrap{
+	width:100%;
+	display:flex;
+	flex-direction:row;
+}
+.photoList{
+	width:100%;
+}
+.rImage img{
+	width:95px;
+	height:95px;
+}
+.reviews{
+	display:flex;
+	height:113px;
+	flex-direction:row;
+	justify-content: space-between;
+	border-bottom:0.8px solid #D9D9D9; 
+	margin-top:20px;
+}
+.reviews .rLeft{
+	width:85%;
+	paddin:5px;
+}
+
+.rStar img{
+	width:14px;
+	height:14px;
+}
+.rStar{
+	margin-bottom:11px;
+}
+.options{
+	color:#ACACAC;
+	font-size:12px;
+}
+
+.photoList p{
+	color:#707680;
+	text-align:center;
+}
+.photoList .bold{
+	    font-weight: bold;
+}
+.photoList .writeReview{
+	width:224px;
+	height:48px;
+	color:white;
+	background:black;
+}
 </style>
 <body>
-<div style="margin-top: -25px;">
 <%@ include file="/WEB-INF/views/component/everyHeader.jsp" %>
-</div>
+<div id="wrapper">
 <%@ include file="/WEB-INF/views/component/mySize.jsp" %>
 <div class="detailHead">
 <div class="imageWrap">
@@ -233,15 +479,34 @@
 	</div>
 </div>
 </div>
+<div class="detailTail">
+	<hr class="detailLine">
+	<div class="tailHead">
+		<span class="menu" onclick="fn_clickCompo(event,0)"><span class="circle"></span>디테일</span><span class="menu" onclick="fn_clickCompo(event,1)"><span class="hidden circle"></span>리뷰</span><span class="menu" onclick="fn_clickCompo(event,2)"><span class="hidden circle"></span>Q&A</span><span class="menu" onclick="fn_clickCompo(event,3)"><span class="hidden circle"></span>가이드</span><span class="menu" onclick="fn_clickCompo(event,4)"><span class="hidden circle"></span>추천상품/관련상품</span>
+	</div>
+	<div class="tailTail">
+		<div class="detailCompo compo">
+		</div>
+		<div class="reviewCompo compo hidden">
+			<%@ include file="/WEB-INF/views/goods/detailReview.html" %>
+		</div>
+		<div class="qnaCompo comp hidden"></div>
+		<div class="guideCompo compo hidden"></div>
+		<div class="goodsCompo compo hidden"></div>
+	</div>
+</div>
+</div>
 <%@ include file="/WEB-INF/views/component/homeFooter.jsp" %>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="/resources/js/StringUtil.js"></script>
 <script th:inline="javascript">
 var goodsName = `${goods.goodsName}`;
 var indexId = `${goods.goodsIndexId}`;
 var userId = `${user.userId}`;
 var goodsList = [];
+var goods = null;
 <c:forEach items="${goodsList}" var="goods">
-	let goods = {
+	goods = {
 			goodsId:`${goods.goodsId}`,
 			goodsColor:`${goods.goodsColor}`,
 			goodsSize:`${goods.goodsSize}`,
@@ -442,6 +707,129 @@ function fn_clickWish(){
 	}
 	
 }
+function fn_clickCompo(event,type){
+	$(".tailHead").children().each(function(i,el){
+		if(i!=type){
+			$(el).children().eq(0).addClass("hidden");
+		}else{
+			$(el).children().eq(0).removeClass("hidden");
+		}
+	});
+	$(".tailTail").children().each(function(i,el){
+		if(i!=type){
+			$(el).addClass("hidden");
+		}else{
+			$(el).removeClass("hidden");
+		}
+	})
+}
+if(${starMap.five}==${top}){
+	$(".stickWrap").each(function(i,el){
+		if(i==0){
+			$(el).children().eq(1).children().eq(0).children().eq(0).attr("fill","red");
+			$(el).children().eq(0).removeClass("hidden");
+		}
+	})
+}
+if(${starMap.four}==${top}){
+	$(".stickWrap").each(function(i,el){
+		if(i==1){
+			$(el).children().eq(1).children().eq(0).children().eq(0).attr("fill","red");
+			$(el).children().eq(0).removeClass("hidden");
+		}
+	})
+}
+if(${starMap.three}==${top}){
+	$(".stickWrap").each(function(i,el){
+		if(i==2){
+			$(el).children().eq(1).children().eq(0).children().eq(0).attr("fill","red");
+			$(el).children().eq(0).removeClass("hidden");
+		}
+	})
+}
+if(${starMap.two}==${top}){
+	$(".stickWrap").each(function(i,el){
+		if(i==3){
+			$(el).children().eq(1).children().eq(0).children().eq(0).attr("fill","red");
+			$(el).children().eq(0).removeClass("hidden");
+		}
+	})
+}
+if(${starMap.one}==${top}){
+	$(".stickWrap").each(function(i,el){
+		if(i==4){
+			$(el).children().eq(1).children().eq(0).children().eq(0).attr("fill","red");
+			$(el).children().eq(0).removeClass("hidden");
+		}
+	})
+}
+if(${starMap.zero}==${top}){
+	$(".stickWrap").each(function(i,el){
+		if(i==5){
+			$(el).children().eq(1).children().eq(0).children().eq(0).attr("fill","red");
+			$(el).children().eq(0).removeClass("hidden");
+		}
+	})
+}
+let nick = "";
+let starImg = null;
+let notStar = null;
+<c:forEach items='${reviewList}' var="review" varStatus="status">
+	$(".nick").eq(`${status.index}`).text(blindNick(`${review.userId}`));
+	<c:if test="${review.star!=null}">
+	for(let i= 0;i<${review.star};i++){
+		starImg = document.createElement("img");
+		starImg.setAttribute("src","/resources/images/KakaoTalk_Photo_2023-05-30-12-51-39.png");
+		
+		$(".rStar").eq(`${status.index}`).append(starImg);
+	}
+	for(let i=0;i<${5-review.star};i++){
+		notStar = document.createElement("img");
+		notStar.setAttribute("src","/resources/images/KakaoTalk_Photo_2023-05-30-12-51-43.png");
+		$(".rStar").eq(`${status.index}`).append(notStar);
+	}
+	</c:if>
+</c:forEach>
+var width = 0;
+<c:forEach items="${reviewList}" var="review">
+	<c:forEach items="${review.imageUrls}" var="img">
+		width +=120;
+	</c:forEach>
+</c:forEach>
+
+$(".shiftRight").click(function(event){
+	let boxWidth =document.querySelector(".photos").clientWidth+""
+	let amount = Math.floor(boxWidth/120);
+	let marginLeft = amount*120;
+	let old = $(".photos span").css("marginLeft");
+	let left = 0;
+	if(old=="0px"){
+		left = -marginLeft
+	}else{
+		left = old.replaceAll(/[a-z|\%]/g,"")-marginLeft
+	}
+	if(left<-width){
+		left = 0;
+	}
+	$(".photos span").css({"margin-left":left+"px","transition":"all ease 2s 0s"})
+	
+	
+});
+$(".shiftLeft").click(function(event){
+	let boxWidth =document.querySelector(".photos").clientWidth+""
+	let amount = Math.floor(boxWidth/120);
+	let marginLeft = amount*120;
+	let old = $(".photos span").css("marginLeft");
+	let left = 0;
+	if(old=="0px"){
+		left = 0;
+	}else{
+		left = Number(old.replaceAll(/[a-z|\%]/g,""))+marginLeft
+	}
+	
+	$(".photos span").css({"margin-left":left+"px","transition":"all ease 2s 0s"})
+	
+})
 </script>
 </body>
 </html>

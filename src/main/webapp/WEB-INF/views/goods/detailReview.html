@@ -1,0 +1,245 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+   <hr class="detailLine">
+ <div class="reviewWrap">
+ 	
+ 	<div class="left">
+ 	<h1>총평점</h1>
+ 	<div class="starWrap">
+ 	<c:if test="${goods.star>=5&&goods.star<6}">
+ 		<img class="fiveStar"src = "/resources/images/—Pngtree—five star to zero rating_8406477.png">
+ 	</c:if>
+ 	<c:if test="${goods.star>=4&&goods.star<5}">
+ 		<img class="fourStar" src = "/resources/images/—Pngtree—five star to zero rating_8406477.png">
+ 	</c:if>
+ 	<c:if test="${goods.star>=3&&goods.star<4}">
+ 		<img class="threeStar" src = "/resources/images/—Pngtree—five star to zero rating_8406477.png">
+ 	</c:if>
+ 	<c:if test="${goods.star>=2&&goods.star<3}">
+ 		<img class="twoStar" src = "/resources/images/—Pngtree—five star to zero rating_8406477.png">
+ 	</c:if>
+ 	<c:if test="${goods.star>=1&&goods.star<2}">
+ 		<img class="oneStar" src = "/resources/images/—Pngtree—five star to zero rating_8406477.png">
+ 	</c:if>
+ 	<c:if test="${goods.star>=0&&goods.star<1}">
+ 		<img class="zeroStar" src = "/resources/images/—Pngtree—five star to zero rating_8406477.png">
+ 	</c:if>
+ 	<c:if test="${goods.star==null}">
+ 		<img class="zeroStar" src = "/resources/images/—Pngtree—five star to zero rating_8406477.png">
+ 	</c:if>
+ 	</div>
+ 	<div class="big">
+ 		<c:if test="${goods.star==null}">
+ 		-<span class="gray">/5.0<spna class="small">(${reviewCount})</spna></span>
+ 		</c:if>
+ 		<c:if test="${goods.star!=null}">
+ 		${goods.star}<span class="gray">/5.0<spna class="small">(${reviewCount})</spna></span>
+ 		</c:if>
+ 	</div>
+ </div>
+ <div class="center">
+ 	<div class="small">평점 비율</div>
+ 	<div class="stickWrap">
+ 	<div class="countBox hidden">${starMap.five}</div>
+ 	<div class="stick" onclick="fn_clickStick(event)">
+ 		<svg>
+ 		<rect x="0" y="${(55-(starMap.five/reviewCount)*55)}" width="100%" height="${(starMap.five/reviewCount)*100}%" fill="#D9D9D9"/>
+ 		</svg>
+ 	</div>
+ 	<div>5점</div>
+ 	</div>
+ 	<div class="stickWrap">
+ 	<div class="countBox hidden">${starMap.four}</div>
+ 	<div class="stick" onclick="fn_clickStick(event)">
+ 		<svg>
+ 			<rect x="0" y="${55-((starMap.four/reviewCount)*55)}" width="100%" height="${(starMap.four/reviewCount)*100}%" fill="#D9D9D9"/>
+ 		</svg>
+ 	</div>
+ 	<div>4점</div>
+ 	</div>
+ 	<div class="stickWrap">
+ 	<div class="countBox hidden">${starMap.three}</div>
+ 	<div class="stick" onclick="fn_clickStick(event)">
+ 	<svg>
+ 	<rect x="0" y="${55-((starMap.three/reviewCount)*55)}" width="100%" height="${(starMap.three/reviewCount)*100}%" fill="#D9D9D9"/>
+ 	</svg>
+ 	</div>
+ 	<div>3점</div>
+ 	</div>
+ 	<div class="stickWrap">
+ 	<div class="countBox hidden">${starMap.two}</div>
+ 	<div class="stick" onclick="fn_clickStick(event)">
+ 	<svg>
+ 		<rect x="0" y="${55-((starMap.two/reviewCount)*55)}" width="100%" height="${(starMap.two/reviewCount)*100}%" fill="#D9D9D9"/>
+ 	</svg>
+ 	</div>
+ 	<div>2점</div>
+ 	</div>
+ 	<div class="stickWrap">
+ 	<div class="countBox hidden">${starMap.one}</div>
+ 	<div class="stick" onclick="fn_clickStick(event)">
+ 	<svg>
+ 	<rect x="0" y="${55-((starMap.one/reviewCount)*55)}" width="100%" height="${(starMap.one/reviewCount)*100}%" fill="#D9D9D9"/>
+ 	</svg>
+ 	</div>
+ 	<div>1점</div>
+ 	</div>
+ 	<div class="stickWrap">
+ 	<div class="countBox hidden">${starMap.zero}</div>
+ 	<div class="stick" onclick="fn_clickStick(event)">
+ 	<svg>
+ 		<rect x="0" y="${55-((starMap.zero/reviewCount)*55)}" width="100%" height="${(starMap.zero/reviewCount)*100}%" fill="#D9D9D9"/>
+ 	</svg>
+ 	</div>
+ 	<div>0점</div>
+ 	</div>
+ </div>
+ <div class="right">
+ <div class="reviewColor reviewBox">
+ <span>색상</span>
+ <c:if test="${maxReview.reviewColor==0}">
+<span>화면과 달라요</span>
+ </c:if>
+  <c:if test="${maxReview.reviewColor==1}">
+<span>화면과 비슷해요</span>
+ </c:if>
+  <span class="blueStickWrap">
+ 	<svg class="blueStick">
+ 		<rect x="0" y="0" width="${(sumReview.reviewColor/reviewCount)*100}%" height="10px" fill="#4AA8FF"/>
+ 	</svg>
+ </span>
+ <span>
+ <c:if test="${sumReview.reviewColor==null}">
+ 	0
+ </c:if>
+ <c:if test="${sumReview.reviewColor!=null}">
+ 	${(sumReview.reviewColor/reviewCount)*100}%(${sumReview.reviewColor})
+ </c:if>
+ </span>
+ </div>
+ <div class="reviewSize reviewBox">
+  <span>사이즈</span>
+ <c:if test="${maxReview.reviewSize==0}">
+<span>작아요</span>
+ </c:if>
+  <c:if test="${maxReview.reviewSize==1}">
+<span>정사이즈예요</span>
+ </c:if>
+   <c:if test="${maxReview.reviewSize==2}">
+<span>커요</span>
+ </c:if>
+  <span class="blueStickWrap">
+ 	<svg class="blueStick">
+ 		<rect x="0" y="0" width="${(sumReview.reviewSize/reviewCount)*100}%" height="10px" fill="#4AA8FF"/>
+ 	</svg>
+ </span>
+ <span>
+ 	 <c:if test="${sumReview.reviewSize==null}">
+ 	0
+ </c:if>
+ <c:if test="${sumReview.reviewSize!=null}">
+ 	${(sumReview.reviewSize/reviewCount)*100}%(${sumReview.reviewSize})
+ </c:if>
+ </span>
+ </div>
+ <div class="reviewComf reviewBox">
+ 	 <span>착용감</span>
+ <c:if test="${maxReview.reviewComf==0}">
+<span>불편해요</span>
+ </c:if>
+  <c:if test="${maxReview.reviewComf==1}">
+<span>편해요</span>
+ </c:if>
+   <c:if test="${maxReview.reviewComf==2}">
+<span>아주 편해요</span>
+ </c:if>
+ <span class="blueStickWrap">
+ 	<svg class="blueStick">
+ 		<rect x="0" y="0" width="${(sumReview.reviewComf/reviewCount)*100}%" height="10px" fill="#4AA8FF"/>
+ 	</svg>
+ </span>
+ <span>
+ 	 <c:if test="${sumReview.reviewComf==null}">
+ 	0
+ </c:if>
+ <c:if test="${sumReview.reviewComf!=null}">
+ 	${(sumReview.reviewComf/reviewCount)*100}%(${sumReview.reviewComf})
+ </c:if>
+ </span>
+ </div>
+ <div class="reviewQual reviewBox">
+ 	 <span>퀄리티</span>
+ <c:if test="${maxReview.reviewQual==0}">
+<span>안 좋아요</span>
+ </c:if>
+  <c:if test="${maxReview.reviewQual==1}">
+<span>좋아요</span>
+ </c:if>
+   <c:if test="${maxReview.reviewQual==2}">
+<span>아주 좋아요</span>
+ </c:if>
+  <span class="blueStickWrap">
+ 	<svg class="blueStick">
+ 		<rect x="0" y="0" width="${(sumReview.reviewQual/reviewCount)*100}%" height="10px" fill="#4AA8FF"/>
+ 	</svg>
+ </span>
+ <span>
+ 	 <c:if test="${sumReview.reviewQual==null}">
+ 	0
+ </c:if>
+ <c:if test="${sumReview.reviewQual!=null}">
+ 	${(sumReview.reviewQual/reviewCount)*100}%(${sumReview.reviewQual})
+ </c:if>
+ </span>
+ </div>
+ </div>
+ </div>
+  <hr class="detailLine">
+  <div class="reviewList">
+ 	 <div class="photoList">
+ 	 	<div class="reviewCount"><span>전체리뷰(${reviewCount})</span><span>텍스트리뷰(${textReview})</span><span>포토리뷰(${reviewCount-textReview})</span></div>
+ 	 	<c:if test="${reviewList.size()==0}">
+ 	 		<p>리뷰가 없습니다.</p>
+ 	 		<p class="bold">리뷰를 작성해 보세요!</p>
+ 	 		<p><button class="writeReview">리뷰 작성하기</button></p>
+ 	 	</c:if>
+ 	 	
+ 	 	<c:if test="${reviewList.size()!=0}">
+ 	 	<div class="photoWrap">
+ 	 		<img src="/resources/images/KakaoTalk_Image_2023-05-30-11-16-33.png" class="shiftLeft">
+ 	 		<span class="photos">
+ 	 			<span>
+ 	 			<c:forEach items="${reviewList}" var="review">
+ 	 				<c:forEach items="${review.imageUrls}" var="image">
+ 	 					<img class="photo"src="${image}">
+ 	 				</c:forEach>
+ 	 			</c:forEach>
+ 	 			</span>
+ 	 		</span>
+ 	 		<img src="/resources/images/KakaoTalk_Photo_2023-05-30-11-17-18.png" class="shiftRight">
+ 	 	</div>
+ 	 	</c:if>
+ 	 	<div>
+ 	 		<c:forEach items="${reviewList}" var="review">
+ 	 			<div class="reviews">
+ 	 				<div class="rLeft">
+ 	 					<div class="nick"></div>
+ 	 					<div class="rStar"></div>
+ 	 					<div class="options">옵션: [색상]${review.options.goodsColor}/[사이즈]${review.options.goodsSize}</div>
+ 	 					<div class="rContent">${review.reviewContents}</div>
+ 	 				</div>
+ 	 				<div class=rRight>
+ 	 					<div class="rDate">
+ 	 						${review.regdate}
+ 	 					</div>
+ 	 					<div class="rImage">
+ 	 						<c:if test="${review.imageUrls!=null}">
+ 	 						<img src="${review.imageUrls[0]}">
+ 	 						</c:if>
+ 	 					</div>
+ 	 				</div>
+ 	 			</div>
+ 	 		</c:forEach>
+ 	 	</div>
+ 	 </div>
+  </div>
