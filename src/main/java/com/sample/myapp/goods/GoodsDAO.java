@@ -266,4 +266,7 @@ public class GoodsDAO {
 	public GoodsStep1 selectIdtoIndex(int goodsId) {
 		return session.selectOne("goodsMapper.selectIdtoIndex",goodsId);
 	}
+	public void deleteGoods(int goodsIndexId) {
+		session.delete("goodsMapper.deleteGoods",goodsIndexId);
+	}
 }

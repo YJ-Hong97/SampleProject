@@ -27,4 +27,5 @@ public class GoodsStep1 {
 	private String dbGoodsColor;
 	private String dbGoodsSize;
 	private String[] imageUrls;
+	private Float star;
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reviewMapper">
+	<resultMap id="review" type="com.sample.myapp.review.ReviewVo">
+		<result column="review_id" property="reviewId"/>
+		<result column="regdate" property="regdate"/>
+		<result column="updatedate" property="updatedate"/>
+		<result column="review_title" property="reviewTitle"/>
+		<result column="review_contents" property="reviewContents"/>
+		<result column="review_answer" property="reviewAnswer"/>
+		<result column="review_color" property="reviewColor"/>
+		<result column="review_size" property="reviewSize"/>
+		<result column="review_comf" property="reviewComf"/>
+		<result column="review_qual" property="reviewQual"/>
+		<result column="user_id" property="userId"/>
+		<result column="star" property="star"/>
+		<result column="goods_index_id" property="goodsIndexId"/>  
+		<result column="db_image" property="dbImage"/>
+		<result column="goods_id" property="goodsId"/>
+	</resultMap>  
+	
+	<select id="reviewMapper.selectReview" parameterType="java.lang.Integer" resultMap="review">
+		SELECT * FROM review WHERE goods_index_id=#{goodsIndexId}
+	</select>
+	<select id="reviewMapper.selectMax" parameterType="java.lang.Integer" resultMap="review">
+		SELECT MAX(review_color) as 'review_color', MAX(review_size) as 'review_size',
+		MAX(review_conf) as 'review_comf', MAX(review_qual) as 'review_qual' 
+		from review where goods_index_id=#{goodsIndexId};
+	</select>
+	<select id="reviewMapper.selectSum" parameterType="java.lang.Integer" resultMap="review">
+		SELECT SUM(review_color) as 'review_color', SUM(review_size) as 'review_size',
+		SUM(review_conf) as 'review_comf', SUM(review_qual) as 'review_qual' 
+		from review where goods_index_id=#{goodsIndexId};
+	</select>
+</mapper>

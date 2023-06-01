@@ -254,5 +254,10 @@ public class ManagerController {
 		model.addAttribute("total", total);
 		return "/admin/visit";
 	}
-
+	/*상품 삭제*/
+	@RequestMapping("/goods/delete")
+	public String deleteGoods(int goodsId) {
+		goodsDAO.deleteGoods(goodsId);
+		return "redirect:/manager/goods";
+	}
 }
