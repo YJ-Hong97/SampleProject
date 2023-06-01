@@ -15,16 +15,17 @@
 		position:relative;
 	}
 	.detailHead{
-		width:100%;
+		width:80%;
 		heigth:579px;
 		display:flex;
 		flex-direction:row;
-		margin-top:20px;
+		margin:20px auto 0 auto;
+		flex-wrap:wrap;
 	}
 	.imageWrap{
-		width:361px;
 		height:100%;
-		margin-left:230px;
+		width:50%;
+		min-width:500px;
 		
 	}
 	.bigImage{
@@ -62,9 +63,10 @@
 		height:48px;
 	}
 	.detailWrap{
-		margin-left:86px;
-		width:415px;
+		flex:1;
+		flex-shrink:0;
 		height:100%;
+		min-width:500px;
 	}
 	.title{
 		font-size: 16px;
@@ -199,16 +201,21 @@
 		margin:0 auto;
 		display:flex;
 		flex-direction:row;
+		flex-wrap:wrap;
+		justify-content:space-between;
+		
 	}
 	.reviewWrap .left{
-		padding:42px;
-		width:159px;
+	padding:21px ;
+		margin:0 auto;
+	}
+	.left div,.left h1{
+		margin:10px;
 	}
 	.reviewWrap .center{
-		padding:42px;
-		width:500px;
+		padding:21px;
+		flex-shrink:0;
 		text-align:center;
-		margin:0 atuo;
 	}
 .starWrap{
 	width:115px;
@@ -261,7 +268,6 @@ position:absolute;
 	font-size:15px;
 }
 .stickWrap{
-	width:30px;
 	height:100%;
 	margin:0 auto;
 	text-align:center;
@@ -295,7 +301,8 @@ position:absolute;
 	color:white;
 }
 .right{
-	width:100%;
+	min-width:500px;
+	flex-grow:2;
 }
 .reviewBox{
 	width:100%;
@@ -305,16 +312,15 @@ position:absolute;
 	border: 3px solid #DEDEDE;
 	display:flex;
 	flex-direction:row;
+	justify-content:space-between;
 }
-.reviewBox span{
-	width:120px;
-}
+
 .reviewBox span:nth-child(1){
 	color:#8B8B8B;
 	width:50px;
 }
 .reviewBox span:nth-child(2){
-	flex-grow:2;
+	width:120px;
 }
 .blueStick{
 	width:100%;
@@ -408,7 +414,7 @@ position:absolute;
 }
 </style>
 <body>
-<%@ include file="/WEB-INF/views/component/everyHeader.jsp" %>
+<%@ include file="/WEB-INF/views/component/homeHeader.jsp" %>
 <div id="wrapper">
 <%@ include file="/WEB-INF/views/component/mySize.jsp" %>
 <div class="detailHead">
